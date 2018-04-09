@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">RFC</string>
+    <string name="login_button">Sign In</string>
+
+    <!-- Strings related to Shared Preference -->
+    <string name="sp_name">current_user_sp</string>
+    <string name="sp_username">current_user_username</string>
+    <string name="sp_session">current_user_session</string>
+
+    <!-- Strings related to URLs -->
+    <string name="check_session_url">http://www.fardeenpanjwani.com/rfc_reboot/login/check_session.php</string>
+    <string name="check_login_url">http://www.fardeenpanjwani.com/rfc_reboot/login/check_login.php</string>
+    <string name="session_logout_url">http://www.fardeenpanjwani.com/rfc_reboot/login/logout.php</string>
+</resources>
