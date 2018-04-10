@@ -11,4 +11,6 @@
     <string name="check_session_url">http://www.fardeenpanjwani.com/rfc_reboot/login/check_session.php</string>
     <string name="check_login_url">http://www.fardeenpanjwani.com/rfc_reboot/login/check_login.php</string>
     <string name="session_logout_url">http://www.fardeenpanjwani.com/rfc_reboot/login/logout.php</string>
+    <string name="get_subscribers_url">http://www.fardeenpanjwani.com/rfc_reboot/get/get_subscribers.php</string>
+    <string name="get_toys_url">http://www.fardeenpanjwani.com/rfc_reboot/get/get_toys.php</string>
 </resources>
