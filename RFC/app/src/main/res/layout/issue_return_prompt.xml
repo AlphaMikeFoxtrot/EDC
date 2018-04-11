@@ -4,41 +4,61 @@
     xmlns:tool="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:padding="12dp"
+    android:padding="2dp"
     android:gravity="center"
     android:orientation="vertical">
 
     <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
         android:layout_gravity="center"
         android:layout_margin="12dp"
         android:id="@+id/prompt_icon" />
 
-    <android.support.design.widget.TextInputLayout
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp">
+        android:text="Id: "
+        android:textStyle="bold"
+        android:fontFamily="sans-serif-smallcaps"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:paddingRight="12dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="12dp"/>
 
-        <AutoCompleteTextView
-            android:id="@+id/prompt_id"
-            android:fontFamily="sans-serif-smallcaps"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+    <AutoCompleteTextView
+        android:padding="12dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginBottom="8dp"
+        android:id="@+id/prompt_id"
+        android:fontFamily="sans-serif-smallcaps"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp">
+        android:text="Subscriber Id: "
+        android:textStyle="bold"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:paddingRight="12dp"
+        android:fontFamily="sans-serif-smallcaps"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp" />
 
-        <AutoCompleteTextView
-            android:id="@+id/prompt_subscriber_id"
-            android:fontFamily="sans-serif-smallcaps"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-    </android.support.design.widget.TextInputLayout>
+    <AutoCompleteTextView
+        android:padding="12dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginBottom="8dp"
+        android:id="@+id/prompt_subscriber_id"
+        android:fontFamily="sans-serif-smallcaps"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
