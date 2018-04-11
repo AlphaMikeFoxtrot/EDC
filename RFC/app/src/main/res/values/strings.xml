@@ -17,4 +17,5 @@
     <string name="get_issued_books_url">http://www.fardeenpanjwani.com/rfc_reboot/get/get_issued_books.php</string>
     <string name="get_issued_toys_url">http://www.fardeenpanjwani.com/rfc_reboot/get/get_issued_toys.php</string>
     <string name="protocol_url">http://www.fardeenpanjwani.com/rfc_reboot/update/protocol.php</string>
+    <string name="get_issued_to_subscribers_url">http://www.fardeenpanjwani.com/rfc_reboot/get/get_issued_to_subscribers.php</string>
 </resources>

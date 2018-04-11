@@ -50,6 +50,9 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
     ArrayList<Subscriber> subscribers = new ArrayList<>();
     ArrayList<String> subscriberNames = new ArrayList<>();
 
+    ArrayList<Subscriber> issuedToSubscribers = new ArrayList<>();
+    ArrayList<String> issuedToSubscriberNames = new ArrayList<>();
+
     ArrayList<Toy> toys = new ArrayList<Toy>();
     ArrayList<String> toyIds = new ArrayList<>();
 
@@ -257,6 +260,8 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
     // Done :--------------------------------------------------------------------------- //
     private void issueToyClicked() throws ExecutionException, InterruptedException {
 
+        progressDialog.setMessage("please wait....");
+
         LayoutInflater layoutInflater = LayoutInflater.from(this);
         View prompt = layoutInflater.inflate(R.layout.issue_return_prompt, null);
 
@@ -282,6 +287,8 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
         final ArrayAdapter<String> adapterToy = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, new GetToys().execute().get());
         toyId.setAdapter(adapterToy);
+
+        progressDialog.dismiss();
 
         builder
                 .setCancelable(false)
@@ -311,6 +318,8 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
     // Done :--------------------------------------------------------------------------- //
     private void issueBookClicked() throws ExecutionException, InterruptedException {
 
+        progressDialog.setMessage("please wait....");
+
         LayoutInflater layoutInflater = LayoutInflater.from(this);
         View prompt = layoutInflater.inflate(R.layout.issue_return_prompt, null);
 
@@ -336,6 +345,8 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
         final ArrayAdapter<String> adapterToy = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, new GetBooks().execute().get());
         bookId.setAdapter(adapterToy);
+
+        progressDialog.dismiss();
 
         builder
                 .setCancelable(false)
@@ -365,6 +376,8 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
     // Done :--------------------------------------------------------------------------- //
     private void returnBookClicked() throws ExecutionException, InterruptedException {
 
+        progressDialog.setMessage("please wait....");
+
         LayoutInflater layoutInflater = LayoutInflater.from(this);
         View prompt = layoutInflater.inflate(R.layout.issue_return_prompt, null);
 
@@ -380,13 +393,18 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
         bookId.setSelection(bookId.getText().length());
 
         final AutoCompleteTextView subscriberId = prompt.findViewById(R.id.prompt_subscriber_id);
-        subscriberId.setVisibility(View.GONE);
+        subscriberId.setText("SB/Lib/");
+        subscriberId.setSelection(subscriberId.getText().length());
+        final ArrayAdapter<String> adapterSubscriber = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, new GetIssuedToSubscribers().execute().get());
+        subscriberId.setAdapter(adapterSubscriber);
 
         final ImageView icon = prompt.findViewById(R.id.prompt_icon);
         icon.setImageResource(R.drawable.return_arrow);
 
         final ArrayAdapter<String> adapterBook = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, new GetIssuedBooks().execute().get());
         bookId.setAdapter(adapterBook);
+
+        progressDialog.dismiss();
 
         builder
                 .setCancelable(false)
@@ -415,6 +433,8 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
     // Done :--------------------------------------------------------------------------- //
     private void returnToyClicked() throws ExecutionException, InterruptedException {
 
+        progressDialog.setMessage("please wait...");
+
         LayoutInflater layoutInflater = LayoutInflater.from(this);
         View prompt = layoutInflater.inflate(R.layout.issue_return_prompt, null);
 
@@ -433,10 +453,15 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
         icon.setImageResource(R.drawable.return_arrow);
 
         final AutoCompleteTextView subscriberId = prompt.findViewById(R.id.prompt_subscriber_id);
-        subscriberId.setVisibility(View.GONE);
+        subscriberId.setText("SB/Lib/");
+        subscriberId.setSelection(subscriberId.getText().length());
+        final ArrayAdapter<String> adapterSubscriber = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, new GetIssuedToSubscribers().execute().get());
+        subscriberId.setAdapter(adapterSubscriber);
 
         final ArrayAdapter<String> adapterToy = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, new GetIssuedToys().execute().get());
         toyId.setAdapter(adapterToy);
+
+        progressDialog.dismiss();
 
         builder
                 .setCancelable(false)
@@ -483,9 +508,10 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
     }
 
     private void viewSummaryClicked() throws ExecutionException, InterruptedException {
-
     }
 
+
+    /* Async Tasks *********************************************************************/
     private class LogoutAST extends AsyncTask<Void, Void, String>{
 
         @Override
@@ -571,6 +597,70 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
                 e.printStackTrace();
                 Log.v(LOG_TAG, e.toString());
                 return subscriberNames;
+            }
+
+        }
+
+    }
+
+    private class GetIssuedToSubscribers extends AsyncTask<Void, Void, ArrayList<String>> {
+
+        @Override
+        protected ArrayList<String> doInBackground(Void... voids) {
+
+            HttpURLConnection httpURLConnection = null;
+            BufferedReader bufferedReader = null;
+
+            try {
+
+                URL url = new URL(getString(R.string.get_issued_to_subscribers_url));
+                httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.connect();
+
+                bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+
+                String line;
+                StringBuilder response = new StringBuilder();
+
+                while ((line = bufferedReader.readLine()) != null){
+                    response.append(line);
+                }
+
+                if (response.toString().isEmpty()){
+                    return issuedToSubscriberNames;
+                } else {
+
+                    JSONArray root = new JSONArray(response.toString());
+                    for (int i = 0; i < root.length(); i++){
+
+                        JSONObject subscriber = root.getJSONObject(i);
+                        Subscriber current = new Subscriber();
+                        current.setId(subscriber.getString("subscriber_id"));
+                        current.setName(subscriber.getString("subscriber_name"));
+
+                        issuedToSubscriberNames.add(subscriber.getString("subscriber_name"));
+
+                        issuedToSubscribers.add(current);
+
+                    }
+
+                    return issuedToSubscriberNames;
+
+                }
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+                Log.v(LOG_TAG, e.toString());
+                return issuedToSubscriberNames;
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.v(LOG_TAG, e.toString());
+                return issuedToSubscriberNames;
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.v(LOG_TAG, e.toString());
+                return issuedToSubscriberNames;
             }
 
         }
@@ -925,22 +1015,5 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
         }
 
     }
-
-    private class Return extends AsyncTask<String, Void, String>{
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected String doInBackground(String... strings) {
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-        }
-    }
+    /* **********************************************************************************/
 }
