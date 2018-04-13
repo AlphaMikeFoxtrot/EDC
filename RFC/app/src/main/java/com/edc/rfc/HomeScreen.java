@@ -9,6 +9,9 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -489,6 +492,18 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
     private void viewIssuedBooksClicked() throws ExecutionException, InterruptedException {
 
+        LayoutInflater layoutInflater = LayoutInflater.from(this);
+        View prompt = layoutInflater.inflate(R.layout.view_stuff, null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(
+                this
+        );
+
+        builder.setView(prompt);
+
+        final RecyclerView promptRV = prompt.findViewById(R.id.prompt_recycler_view);
+        promptRV.setLayoutManager(new LinearLayoutManager(this));
+
     }
 
     private void viewIssuedToysClicked() throws ExecutionException, InterruptedException {
@@ -540,6 +555,12 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
     }
 
     private class GetSubscribers extends AsyncTask<Void, Void, ArrayList<String>> {
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog.setMessage("please wait....");
+            progressDialog.show();
+        }
 
         @Override
         protected ArrayList<String> doInBackground(Void... voids) {
@@ -601,9 +622,24 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
         }
 
+        @Override
+        protected void onPostExecute(ArrayList<String> strings) {
+            progressDialog.dismiss();
+        }
     }
 
     private class GetIssuedToSubscribers extends AsyncTask<Void, Void, ArrayList<String>> {
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog.setMessage("please wait....");
+            progressDialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<String> strings) {
+            progressDialog.dismiss();
+        }
 
         @Override
         protected ArrayList<String> doInBackground(Void... voids) {
@@ -670,6 +706,17 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
     private class GetToys extends AsyncTask<Void, Void, ArrayList<String>> {
 
         @Override
+        protected void onPreExecute() {
+            progressDialog.setMessage("please wait....");
+            progressDialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<String> strings) {
+            progressDialog.dismiss();
+        }
+
+        @Override
         protected ArrayList<String> doInBackground(Void... voids) {
 
             HttpURLConnection httpURLConnection = null;
@@ -732,6 +779,17 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
     }
 
     private class GetBooks extends AsyncTask<Void, Void, ArrayList<String>> {
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog.setMessage("please wait....");
+            progressDialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<String> strings) {
+            progressDialog.dismiss();
+        }
 
         @Override
         protected ArrayList<String> doInBackground(Void... voids) {
@@ -798,6 +856,17 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
     private class GetIssuedBooks extends AsyncTask<Void, Void, ArrayList<String>> {
 
         @Override
+        protected void onPreExecute() {
+            progressDialog.setMessage("please wait....");
+            progressDialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<String> strings) {
+            progressDialog.dismiss();
+        }
+
+        @Override
         protected ArrayList<String> doInBackground(Void... voids) {
 
             HttpURLConnection httpURLConnection = null;
@@ -860,6 +929,17 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
     }
 
     private class GetIssuedToys extends AsyncTask<Void, Void, ArrayList<String>> {
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog.setMessage("please wait....");
+            progressDialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<String> strings) {
+            progressDialog.dismiss();
+        }
 
         @Override
         protected ArrayList<String> doInBackground(Void... voids) {
