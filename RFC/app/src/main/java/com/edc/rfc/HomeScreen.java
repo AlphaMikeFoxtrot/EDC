@@ -396,7 +396,6 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
         bookId.setSelection(bookId.getText().length());
 
         final AutoCompleteTextView subscriberId = prompt.findViewById(R.id.prompt_subscriber_id);
-        subscriberId.setText("SB/Lib/");
         subscriberId.setSelection(subscriberId.getText().length());
         final ArrayAdapter<String> adapterSubscriber = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, new GetIssuedToSubscribers().execute().get());
         subscriberId.setAdapter(adapterSubscriber);
