@@ -17,11 +17,13 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.edc.rfc.Adapters.ViewIssuedBooksAdapter;
 import com.edc.rfc.Classes.Book;
 import com.edc.rfc.Classes.Subscriber;
 import com.edc.rfc.Classes.Toy;
@@ -190,7 +192,6 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
                 break;
 
             case R.id.view_issued_books_card:
-                // Toast.makeText(this, "view_issued_books_card", Toast.LENGTH_SHORT).show();
                 try {
                     viewIssuedBooksClicked();
                 } catch (ExecutionException e) {
@@ -500,8 +501,24 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
         builder.setView(prompt);
 
-        final RecyclerView promptRV = prompt.findViewById(R.id.prompt_recycler_view);
-        promptRV.setLayoutManager(new LinearLayoutManager(this));
+        RecyclerView recyclerView = prompt.findViewById(R.id.prompt_recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        ArrayList<Book> books = new GetIssuedBooksRaw().execute().get();
+        ViewIssuedBooksAdapter adapter = new ViewIssuedBooksAdapter(this, books);
+        recyclerView.setAdapter(adapter);
+
+        builder
+                .setTitle("Recycler View")
+                .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
 
     }
 
@@ -898,6 +915,8 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
                         Book current = new Book();
                         current.setBookId(book.getString("book_id"));
                         current.setBookName(book.getString("book_name"));
+                        current.setIssuedToId(book.getString("issued_to_id"));
+                        current.setIssuedToId(book.getString("issued_to_name"));
 
                         issuedBookIds.add(book.getString("book_id"));
 
@@ -921,6 +940,83 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
                 e.printStackTrace();
                 Log.v(LOG_TAG, e.toString());
                 return issuedBookIds;
+            }
+
+        }
+
+    }
+
+    private class GetIssuedBooksRaw extends AsyncTask<Void, Void, ArrayList<Book>> {
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog.setMessage("please wait....");
+            progressDialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<Book> books) {
+            progressDialog.dismiss();
+        }
+
+        @Override
+        protected ArrayList<Book> doInBackground(Void... voids) {
+
+            HttpURLConnection httpURLConnection = null;
+            BufferedReader bufferedReader = null;
+
+            try {
+
+                URL url = new URL(getString(R.string.get_issued_books_url));
+                httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.connect();
+
+                bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+
+                String line;
+                StringBuilder response = new StringBuilder();
+
+                while ((line = bufferedReader.readLine()) != null){
+                    response.append(line);
+                }
+
+                if (response.toString().isEmpty()){
+                    return issuedBooks;
+                } else {
+
+                    JSONArray root = new JSONArray(response.toString());
+                    for (int i = 0; i < root.length(); i++){
+
+                        JSONObject book = root.getJSONObject(i);
+                        Book current = new Book();
+                        current.setBookId(book.getString("book_id"));
+                        current.setBookName(book.getString("book_name"));
+                        current.setIssuedToId(book.getString("issued_to_id"));
+                        current.setIssuedToId(book.getString("issued_to_name"));
+
+                        issuedBookIds.add(book.getString("book_id"));
+
+                        issuedBooks.add(current);
+
+                    }
+
+                    return issuedBooks;
+
+                }
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+                Log.v(LOG_TAG, e.toString());
+                return issuedBooks;
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.v(LOG_TAG, e.toString());
+                return issuedBooks;
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.v(LOG_TAG, e.toString());
+                return issuedBooks;
             }
 
         }
@@ -973,8 +1069,10 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
                         Toy current = new Toy();
                         current.setToyId(toy.getString("toy_id"));
                         current.setToyName(toy.getString("toy_name"));
+                        current.setIssuedToId(toy.getString("issued_to_id"));
+                        current.setIssuedToName(toy.getString("issued_to_name"));
 
-                        issuedToyIds.add(toy.getString("book_id"));
+                        issuedToyIds.add(toy.getString("toy_id"));
 
                         issuedToys.add(current);
 
