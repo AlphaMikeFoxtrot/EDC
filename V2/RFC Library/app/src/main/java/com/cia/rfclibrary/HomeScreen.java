@@ -18,6 +18,12 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.cia.rfclibrary.Classes.Book;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -38,9 +44,9 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
     ProgressDialog progressDialog;
     public static final String LOG_TAG = "home_screen_log";
 
-    ArrayList<String> subscriberNames = new ArrayList<>();
-    ArrayList<String> bookIds = new ArrayList<>();
-    ArrayList<String> toyIds = new ArrayList<>();
+    ArrayList<String> dialogSubscriberNames = new ArrayList<>();
+    ArrayList<String> dialogBookIds = new ArrayList<>();
+    ArrayList<String> dialogToyIds = new ArrayList<>();
 
     CardView issueBook,
             issueToy,
@@ -469,17 +475,70 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
         @Override
         protected void onPreExecute() {
-            super.onPreExecute();
+
+            progressDialog.setMessage("please wait");
+            progressDialog.show();
+
         }
 
         @Override
         protected ArrayList<String> doInBackground(Void... voids) {
-            return null;
+
+            HttpURLConnection httpURLConnection = null;
+            BufferedReader bufferedReader = null;
+
+            try {
+
+                URL url = new URL(getString(R.string.get_books_url));
+                httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.connect();
+
+                bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+
+                String line;
+                StringBuilder response = new StringBuilder();
+
+                while ((line = bufferedReader.readLine()) != null){
+                    response.append(line);
+                }
+
+                if (response.toString().isEmpty()){
+                    return dialogBookIds;
+                } else {
+
+                    JSONArray root = new JSONArray(response.toString());
+                    for (int i = 0; i < root.length(); i++){
+
+                        JSONObject book = root.getJSONObject(i);
+                        dialogBookIds.add(book.getString("book_id"));
+                        dialogBookIds.add(book.getString("book_name"));
+
+                    }
+
+                    return dialogBookIds;
+
+                }
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+                Log.v(LOG_TAG, e.toString());
+                return dialogBookIds;
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.v(LOG_TAG, e.toString());
+                return dialogBookIds;
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.v(LOG_TAG, e.toString());
+                return dialogBookIds;
+            }
+
         }
 
         @Override
         protected void onPostExecute(ArrayList<String> strings) {
-            super.onPostExecute(strings);
+            progressDialog.dismiss();
         }
     }
 
@@ -487,12 +546,63 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
         @Override
         protected void onPreExecute() {
-            super.onPreExecute();
+            progressDialog.setMessage("please wait");
+            progressDialog.show();
         }
 
         @Override
         protected ArrayList<String> doInBackground(Void... voids) {
-            return null;
+
+            HttpURLConnection httpURLConnection = null;
+            BufferedReader bufferedReader = null;
+
+            try {
+
+                URL url = new URL(getString(R.string.get_toys_url));
+                httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.connect();
+
+                bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+
+                String line;
+                StringBuilder response = new StringBuilder();
+
+                while ((line = bufferedReader.readLine()) != null){
+                    response.append(line);
+                }
+
+                if (response.toString().isEmpty()){
+                    return dialogToyIds;
+                } else {
+
+                    JSONArray root = new JSONArray(response.toString());
+                    for (int i = 0; i < root.length(); i++){
+
+                        JSONObject toy = root.getJSONObject(i);
+                        dialogToyIds.add(toy.getString("toy_id"));
+                        dialogToyIds.add(toy.getString("toy_name"));
+
+                    }
+
+                    return dialogToyIds;
+
+                }
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+                Log.v(LOG_TAG, e.toString());
+                return dialogToyIds;
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.v(LOG_TAG, e.toString());
+                return dialogToyIds;
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.v(LOG_TAG, e.toString());
+                return dialogToyIds;
+            }
+
         }
 
         @Override
@@ -510,7 +620,57 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
         @Override
         protected ArrayList<String> doInBackground(Void... voids) {
-            return null;
+
+            HttpURLConnection httpURLConnection = null;
+            BufferedReader bufferedReader = null;
+
+            try {
+
+                URL url = new URL(getString(R.string.get_subscribers_url));
+                httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.connect();
+
+                bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+
+                String line;
+                StringBuilder response = new StringBuilder();
+
+                while ((line = bufferedReader.readLine()) != null){
+                    response.append(line);
+                }
+
+                if (response.toString().isEmpty()){
+                    return dialogSubscriberNames;
+                } else {
+
+                    JSONArray root = new JSONArray(response.toString());
+                    for (int i = 0; i < root.length(); i++){
+
+                        JSONObject subscriber = root.getJSONObject(i);
+                        dialogSubscriberNames.add(subscriber.getString("subscriber_id"));
+                        dialogSubscriberNames.add(subscriber.getString("subscriber_name"));
+
+                    }
+
+                    return dialogSubscriberNames;
+
+                }
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+                Log.v(LOG_TAG, e.toString());
+                return dialogSubscriberNames;
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.v(LOG_TAG, e.toString());
+                return dialogSubscriberNames;
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.v(LOG_TAG, e.toString());
+                return dialogSubscriberNames;
+            }
+
         }
 
         @Override
