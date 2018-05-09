@@ -2,6 +2,7 @@ package com.cia.rfclibrary;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
@@ -102,6 +104,7 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
         viewBooks.setOnClickListener(this);
         viewToys.setOnClickListener(this);
         viewSummary.setOnClickListener(this);
+
     }
 
     @Override
