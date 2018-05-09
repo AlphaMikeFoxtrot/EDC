@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -162,13 +163,33 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(prompt);
 
-        final AutoCompleteTextView toyId = prompt.findViewById(R.id.prompt_id);
-        toyId.setHint("issued book id...");
-        toyId.setText("SB-");
-        toyId.setSelection(toyId.getText().toString().length());
+        final AutoCompleteTextView bookId = prompt.findViewById(R.id.prompt_id);
+        bookId.setHint("issued book id...");
+        try {
+            final ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                    this,
+                    android.R.layout.simple_dropdown_item_1line,
+                    new GetBookIdsAST().execute().get());
+            bookId.setAdapter(adapter);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
 
         final AutoCompleteTextView subscriberId = prompt.findViewById(R.id.prompt_subscriber_id);
-        subscriberId.setHint("Subscriber Name...");
+        subscriberId.setHint("Subscriber Name or ID...");
+        try {
+            final ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                    this,
+                    android.R.layout.simple_dropdown_item_1line,
+                    new GetSubscriberNamesAST().execute().get());
+            subscriberId.setAdapter(adapter);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
 
         final ImageView icon = prompt.findViewById(R.id.prompt_icon);
         icon.setImageResource(R.drawable.issue);
@@ -178,14 +199,13 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
                 .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(HomeScreen.this, "submit clicked", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(HomeScreen.this, "id: " + bookId.getText().toString() + "\nsub id: " + subscriberId.getText().toString(), Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(HomeScreen.this, "cancel clicked", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                     }
                 })
@@ -204,13 +224,33 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(prompt);
 
-        final AutoCompleteTextView toyId = prompt.findViewById(R.id.prompt_id);
-        toyId.setHint("returned book id...");
-        toyId.setText("SB-");
-        toyId.setSelection(toyId.getText().toString().length());
+        final AutoCompleteTextView bookId = prompt.findViewById(R.id.prompt_id);
+        bookId.setHint("returned book id...");
+        try {
+            final ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                    this,
+                    android.R.layout.simple_dropdown_item_1line,
+                    new GetIssuedBookIdsAST().execute().get());
+            bookId.setAdapter(adapter);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
 
         final AutoCompleteTextView subscriberId = prompt.findViewById(R.id.prompt_subscriber_id);
         subscriberId.setHint("Subscriber Name...");
+        try {
+            final ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                    this,
+                    android.R.layout.simple_dropdown_item_1line,
+                    new GetIssuedToSubscriberNamesAST().execute().get());
+            subscriberId.setAdapter(adapter);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
 
         final ImageView icon = prompt.findViewById(R.id.prompt_icon);
         icon.setImageResource(R.drawable.return_arrow);
@@ -220,14 +260,13 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
                 .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(HomeScreen.this, "submit clicked", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(HomeScreen.this, "id: " + bookId.getText().toString() + "\nsub id: " + subscriberId.getText().toString(), Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(HomeScreen.this, "cancel clicked", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                     }
                 })
@@ -247,11 +286,31 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
         final AutoCompleteTextView toyId = prompt.findViewById(R.id.prompt_id);
         toyId.setHint("issued toy id...");
-        toyId.setText("TL/SB/");
-        toyId.setSelection(toyId.getText().toString().length());
+        try {
+            final ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                    this,
+                    android.R.layout.simple_dropdown_item_1line,
+                    new GetToyIdsAST().execute().get());
+            toyId.setAdapter(adapter);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
 
         final AutoCompleteTextView subscriberId = prompt.findViewById(R.id.prompt_subscriber_id);
         subscriberId.setHint("Subscriber Name...");
+        try {
+            final ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                    this,
+                    android.R.layout.simple_dropdown_item_1line,
+                    new GetSubscriberNamesAST().execute().get());
+            subscriberId.setAdapter(adapter);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
 
         final ImageView icon = prompt.findViewById(R.id.prompt_icon);
         icon.setImageResource(R.drawable.issue);
@@ -261,14 +320,13 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
                 .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(HomeScreen.this, "submit clicked", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(HomeScreen.this, "id: " + toyId.getText().toString() + "\nsub id: " + subscriberId.getText().toString(), Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(HomeScreen.this, "cancel clicked", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                     }
                 })
@@ -288,11 +346,31 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
         final AutoCompleteTextView toyId = prompt.findViewById(R.id.prompt_id);
         toyId.setHint("returned toy id...");
-        toyId.setText("TL/SB/");
-        toyId.setSelection(toyId.getText().toString().length());
+        try {
+            final ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                    this,
+                    android.R.layout.simple_dropdown_item_1line,
+                    new GetIssuedToyIdsAST().execute().get());
+            toyId.setAdapter(adapter);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
 
         final AutoCompleteTextView subscriberId = prompt.findViewById(R.id.prompt_subscriber_id);
         subscriberId.setHint("Subscriber Name...");
+        try {
+            final ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                    this,
+                    android.R.layout.simple_dropdown_item_1line,
+                    new GetIssuedToSubscriberNamesAST().execute().get());
+            subscriberId.setAdapter(adapter);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
 
         final ImageView icon = prompt.findViewById(R.id.prompt_icon);
         icon.setImageResource(R.drawable.return_arrow);
@@ -302,14 +380,13 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
                 .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(HomeScreen.this, "submit clicked", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(HomeScreen.this, "id: " + toyId.getText().toString() + "\nsub id: " + subscriberId.getText().toString(), Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(HomeScreen.this, "cancel clicked", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                     }
                 })
@@ -369,8 +446,8 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
         @Override
         protected void onPreExecute() {
             progressDialog = new ProgressDialog(HomeScreen.this);
-            progressDialog.setMessage("logging you out...");
-            progressDialog.show();
+            // progressDialog.setMessage("logging you out...");
+            // progressDialog.show();
         }
 
         @Override
@@ -384,7 +461,7 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
         @Override
         protected void onPostExecute(String s) {
-            progressDialog.dismiss();
+            // progressDialog.dismiss();
             Intent toLogin = new Intent(HomeScreen.this, LoginActivity.class);
             toLogin.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(toLogin);
@@ -395,8 +472,8 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
         @Override
         protected void onPreExecute() {
-            progressDialog.setMessage("running protocol");
-            progressDialog.show();
+            // progressDialog.setMessage("running protocol");
+            // progressDialog.show();
         }
 
         @Override
@@ -464,7 +541,7 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
         @Override
         protected void onPostExecute(String s) {
-            progressDialog.dismiss();
+            // progressDialog.dismiss();
             if(s.contains("success")){
                 Toast.makeText(HomeScreen.this, "success", Toast.LENGTH_SHORT).show();
             }
@@ -476,8 +553,11 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
         @Override
         protected void onPreExecute() {
 
-            progressDialog.setMessage("please wait");
-            progressDialog.show();
+            // progressDialog.setMessage("please wait");
+            // progressDialog.show();
+            if(dialogBookIds.size() > 0){
+                dialogBookIds.clear();
+            }
 
         }
 
@@ -538,7 +618,7 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
         @Override
         protected void onPostExecute(ArrayList<String> strings) {
-            progressDialog.dismiss();
+            // progressDialog.dismiss();
         }
     }
 
@@ -546,8 +626,11 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
         @Override
         protected void onPreExecute() {
-            progressDialog.setMessage("please wait");
-            progressDialog.show();
+            // progressDialog.setMessage("please wait");
+            // progressDialog.show();
+            if(dialogToyIds.size() > 0){
+                dialogToyIds.clear();
+            }
         }
 
         @Override
@@ -615,7 +698,9 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
         @Override
         protected void onPreExecute() {
-            super.onPreExecute();
+            if(dialogSubscriberNames.size() > 0){
+                dialogSubscriberNames.clear();
+            }
         }
 
         @Override
@@ -737,17 +822,69 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
         @Override
         protected void onPreExecute() {
-            super.onPreExecute();
+            // progressDialog.setMessage("please wait...");
+            // progressDialog.show();
+            if(dialogBookIds.size() > 0){
+                dialogBookIds.clear();
+            }
         }
 
         @Override
         protected ArrayList<String> doInBackground(Void... voids) {
-            return null;
+            HttpURLConnection httpURLConnection = null;
+            BufferedReader bufferedReader = null;
+
+            try {
+
+                URL url = new URL(getString(R.string.get_issued_books_url));
+                httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.connect();
+
+                bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+
+                String line;
+                StringBuilder response = new StringBuilder();
+
+                while ((line = bufferedReader.readLine()) != null){
+                    response.append(line);
+                }
+
+                if (response.toString().isEmpty()){
+                    return dialogBookIds;
+                } else {
+
+                    JSONArray root = new JSONArray(response.toString());
+                    for (int i = 0; i < root.length(); i++){
+
+                        JSONObject book = root.getJSONObject(i);
+                        dialogBookIds.add(book.getString("book_id"));
+                        dialogBookIds.add(book.getString("book_name"));
+
+                    }
+
+                    return dialogBookIds;
+
+                }
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+                Log.v(LOG_TAG, e.toString());
+                return dialogBookIds;
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.v(LOG_TAG, e.toString());
+                return dialogBookIds;
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.v(LOG_TAG, e.toString());
+                return dialogBookIds;
+            }
         }
 
         @Override
         protected void onPostExecute(ArrayList<String> strings) {
-            super.onPostExecute(strings);
+            // progressDialog.dismiss();
         }
     }
 
@@ -755,17 +892,69 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
         @Override
         protected void onPreExecute() {
-            super.onPreExecute();
+            // progressDialog.setMessage("please wait...");
+            // progressDialog.show();
+            if(dialogToyIds.size() > 0){
+                dialogToyIds.clear();
+            }
         }
 
         @Override
         protected ArrayList<String> doInBackground(Void... voids) {
-            return null;
+            HttpURLConnection httpURLConnection = null;
+            BufferedReader bufferedReader = null;
+
+            try {
+
+                URL url = new URL(getString(R.string.get_issued_toys_url));
+                httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.connect();
+
+                bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+
+                String line;
+                StringBuilder response = new StringBuilder();
+
+                while ((line = bufferedReader.readLine()) != null){
+                    response.append(line);
+                }
+
+                if (response.toString().isEmpty()){
+                    return dialogToyIds;
+                } else {
+
+                    JSONArray root = new JSONArray(response.toString());
+                    for (int i = 0; i < root.length(); i++){
+
+                        JSONObject toy = root.getJSONObject(i);
+                        dialogToyIds.add(toy.getString("toy_id"));
+                        dialogToyIds.add(toy.getString("toy_name"));
+
+                    }
+
+                    return dialogToyIds;
+
+                }
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+                Log.v(LOG_TAG, e.toString());
+                return dialogToyIds;
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.v(LOG_TAG, e.toString());
+                return dialogToyIds;
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.v(LOG_TAG, e.toString());
+                return dialogToyIds;
+            }
         }
 
         @Override
         protected void onPostExecute(ArrayList<String> strings) {
-            super.onPostExecute(strings);
+            // progressDialog.dismiss();
         }
     }
 
@@ -773,17 +962,69 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
         @Override
         protected void onPreExecute() {
-            super.onPreExecute();
+            // progressDialog.setMessage("please wait...");
+            // progressDialog.show();
+            if(dialogSubscriberNames.size() > 0){
+                dialogSubscriberNames.clear();
+            }
         }
 
         @Override
         protected ArrayList<String> doInBackground(Void... voids) {
-            return null;
+            HttpURLConnection httpURLConnection = null;
+            BufferedReader bufferedReader = null;
+
+            try {
+
+                URL url = new URL(getString(R.string.get_issued_to_subscribers_url));
+                httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.connect();
+
+                bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+
+                String line;
+                StringBuilder response = new StringBuilder();
+
+                while ((line = bufferedReader.readLine()) != null){
+                    response.append(line);
+                }
+
+                if (response.toString().isEmpty()){
+                    return dialogSubscriberNames;
+                } else {
+
+                    JSONArray root = new JSONArray(response.toString());
+                    for (int i = 0; i < root.length(); i++){
+
+                        JSONObject subscriber = root.getJSONObject(i);
+                        dialogSubscriberNames.add(subscriber.getString("subscriber_id"));
+                        dialogSubscriberNames.add(subscriber.getString("subscriber_name"));
+
+                    }
+
+                    return dialogSubscriberNames;
+
+                }
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+                Log.v(LOG_TAG, e.toString());
+                return dialogSubscriberNames;
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.v(LOG_TAG, e.toString());
+                return dialogSubscriberNames;
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.v(LOG_TAG, e.toString());
+                return dialogSubscriberNames;
+            }
         }
 
         @Override
         protected void onPostExecute(ArrayList<String> strings) {
-            super.onPostExecute(strings);
+            // progressDialog.dismiss();
         }
     }
 
