@@ -30,13 +30,18 @@
             android:textStyle="bold"
             android:fontFamily="sans-serif-smallcaps"/>
 
-        <AutoCompleteTextView
+        <!--<AutoCompleteTextView-->
+            <!--android:id="@+id/prompt_id"-->
+            <!--android:fontFamily="sans-serif-smallcaps"-->
+            <!--android:layout_marginBottom="12dp"-->
+            <!--android:padding="12dp"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content" />-->
+
+        <com.toptoche.searchablespinnerlibrary.SearchableSpinner
             android:id="@+id/prompt_id"
-            android:fontFamily="sans-serif-smallcaps"
-            android:layout_marginBottom="12dp"
-            android:padding="12dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="35dp"/>
 
     </LinearLayout>
 
@@ -54,13 +59,18 @@
             android:textStyle="bold"
             android:fontFamily="sans-serif-smallcaps" />
 
-        <AutoCompleteTextView
+        <!--<AutoCompleteTextView-->
+            <!--android:id="@+id/prompt_subscriber_id"-->
+            <!--android:layout_marginBottom="12dp"-->
+            <!--android:padding="12dp"-->
+            <!--android:fontFamily="sans-serif-smallcaps"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content" />-->
+
+        <com.toptoche.searchablespinnerlibrary.SearchableSpinner
             android:id="@+id/prompt_subscriber_id"
-            android:layout_marginBottom="12dp"
-            android:padding="12dp"
-            android:fontFamily="sans-serif-smallcaps"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="35dp"/>
 
     </LinearLayout>
 

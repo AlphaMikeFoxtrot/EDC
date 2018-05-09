@@ -16,12 +16,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.cia.rfclibrary.Classes.Book;
+import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -46,6 +48,8 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
     SharedPreferences.Editor editor;
     ProgressDialog progressDialog;
     public static final String LOG_TAG = "home_screen_log";
+
+    String selectedSubId, selectedBookId, selectedToyId;
 
     ArrayList<String> dialogSubscriberNames = new ArrayList<>();
     ArrayList<String> dialogBookIds = new ArrayList<>();
@@ -166,33 +170,74 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(prompt);
 
-        final AutoCompleteTextView bookId = prompt.findViewById(R.id.prompt_id);
-        bookId.setHint("issued book id...");
+        final SearchableSpinner bookId = prompt.findViewById(R.id.prompt_id);
+        bookId.setTitle("issued book id.....");
         try {
+            dialogBookIds = new GetBookIdsAST().execute().get();
             final ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                     this,
-                    android.R.layout.simple_dropdown_item_1line,
-                    new GetBookIdsAST().execute().get());
+                    android.R.layout.simple_spinner_item,
+                    dialogBookIds);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             bookId.setAdapter(adapter);
+            bookId.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    selectedBookId = dialogBookIds.get(position);
+                    Toast.makeText(HomeScreen.this, selectedBookId, Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
 
-        final AutoCompleteTextView subscriberId = prompt.findViewById(R.id.prompt_subscriber_id);
-        subscriberId.setHint("Subscriber Name or ID...");
+        final SearchableSpinner subscriberId = prompt.findViewById(R.id.prompt_subscriber_id);
         try {
+            dialogSubscriberNames = new GetSubscriberNamesAST().execute("100").get();
             final ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                     this,
-                    android.R.layout.simple_dropdown_item_1line,
-                    new GetSubscriberNamesAST().execute().get());
+                    android.R.layout.simple_spinner_item,
+                    dialogSubscriberNames);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             subscriberId.setAdapter(adapter);
+            subscriberId.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    selectedSubId = dialogSubscriberNames.get(position);
+                    Toast.makeText(HomeScreen.this, selectedSubId, Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+
+//        final AutoCompleteTextView subscriberId = prompt.findViewById(R.id.prompt_subscriber_id);
+//        subscriberId.setHint("Subscriber Name or ID...");
+//        try {
+//            final ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+//                    this,
+//                    android.R.layout.simple_dropdown_item_1line,
+//                    new GetSubscriberNamesAST().execute().get());
+//            subscriberId.setAdapter(adapter);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        } catch (ExecutionException e) {
+//            e.printStackTrace();
+//        }
 
         final ImageView icon = prompt.findViewById(R.id.prompt_icon);
         icon.setImageResource(R.drawable.issue);
@@ -202,7 +247,8 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
                 .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(HomeScreen.this, "id: " + bookId.getText().toString() + "\nsub id: " + subscriberId.getText().toString(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(HomeScreen.this, "id: " + selectedBookId + "\nsub id: " + selectedSubId, Toast.LENGTH_SHORT).show();
+                        new ProtocolAST().execute("issue", "book", selectedBookId, selectedSubId);
                         dialog.dismiss();
                     }
                 })
@@ -227,33 +273,88 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(prompt);
 
-        final AutoCompleteTextView bookId = prompt.findViewById(R.id.prompt_id);
-        bookId.setHint("returned book id...");
+        final SearchableSpinner bookId = prompt.findViewById(R.id.prompt_id);
+        bookId.setTitle("returned book id.....");
         try {
+            dialogBookIds = new GetIssuedBookIdsAST().execute().get();
             final ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                     this,
-                    android.R.layout.simple_dropdown_item_1line,
-                    new GetIssuedBookIdsAST().execute().get());
+                    android.R.layout.simple_spinner_item,
+                    dialogBookIds);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             bookId.setAdapter(adapter);
+            bookId.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    selectedBookId = dialogBookIds.get(position);
+                    Toast.makeText(HomeScreen.this, selectedBookId, Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
 
-        final AutoCompleteTextView subscriberId = prompt.findViewById(R.id.prompt_subscriber_id);
-        subscriberId.setHint("Subscriber Name...");
+        final SearchableSpinner subscriberId = prompt.findViewById(R.id.prompt_subscriber_id);
         try {
+            dialogSubscriberNames = new GetIssuedToSubscriberNamesAST().execute().get();
             final ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                     this,
-                    android.R.layout.simple_dropdown_item_1line,
-                    new GetIssuedToSubscriberNamesAST().execute().get());
+                    android.R.layout.simple_spinner_item,
+                    dialogSubscriberNames);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             subscriberId.setAdapter(adapter);
+            subscriberId.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    selectedSubId = dialogSubscriberNames.get(position);
+                    Toast.makeText(HomeScreen.this, selectedSubId, Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+
+//        final AutoCompleteTextView bookId = prompt.findViewById(R.id.prompt_id);
+//        bookId.setHint("returned book id...");
+//        try {
+//            final ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+//                    this,
+//                    android.R.layout.simple_dropdown_item_1line,
+//                    new GetIssuedBookIdsAST().execute().get());
+//            bookId.setAdapter(adapter);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        } catch (ExecutionException e) {
+//            e.printStackTrace();
+//        }
+//
+//        final AutoCompleteTextView subscriberId = prompt.findViewById(R.id.prompt_subscriber_id);
+//        subscriberId.setHint("Subscriber Name...");
+//        try {
+//            final ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+//                    this,
+//                    android.R.layout.simple_dropdown_item_1line,
+//                    new GetIssuedToSubscriberNamesAST().execute().get());
+//            subscriberId.setAdapter(adapter);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        } catch (ExecutionException e) {
+//            e.printStackTrace();
+//        }
 
         final ImageView icon = prompt.findViewById(R.id.prompt_icon);
         icon.setImageResource(R.drawable.return_arrow);
@@ -263,7 +364,8 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
                 .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(HomeScreen.this, "id: " + bookId.getText().toString() + "\nsub id: " + subscriberId.getText().toString(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(HomeScreen.this, "id: " + selectedBookId + "\nsub id: " + selectedSubId, Toast.LENGTH_SHORT).show();
+                        new ProtocolAST().execute("return", "book", selectedBookId, selectedSubId);
                         dialog.dismiss();
                     }
                 })
@@ -287,28 +389,59 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(prompt);
 
-        final AutoCompleteTextView toyId = prompt.findViewById(R.id.prompt_id);
-        toyId.setHint("issued toy id...");
+        final SearchableSpinner toyId = prompt.findViewById(R.id.prompt_id);
+        toyId.setTitle("issued toy id.....");
         try {
+            dialogToyIds = new GetToyIdsAST().execute().get();
             final ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                     this,
-                    android.R.layout.simple_dropdown_item_1line,
-                    new GetToyIdsAST().execute().get());
+                    android.R.layout.simple_spinner_item,
+                    dialogToyIds);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             toyId.setAdapter(adapter);
+            toyId.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    selectedToyId = dialogToyIds.get(position);
+                    Toast.makeText(HomeScreen.this, selectedToyId, Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
 
-        final AutoCompleteTextView subscriberId = prompt.findViewById(R.id.prompt_subscriber_id);
-        subscriberId.setHint("Subscriber Name...");
+        final SearchableSpinner subscriberId = prompt.findViewById(R.id.prompt_subscriber_id);
         try {
+            dialogSubscriberNames = new GetSubscriberNamesAST().execute("300").get();
             final ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                     this,
-                    android.R.layout.simple_dropdown_item_1line,
-                    new GetSubscriberNamesAST().execute().get());
+                    android.R.layout.simple_spinner_item,
+                    dialogSubscriberNames);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             subscriberId.setAdapter(adapter);
+            subscriberId.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    if(dialogSubscriberNames.size() > 0) {
+                        selectedSubId = dialogSubscriberNames.get(position);
+                    } else {
+                        selectedSubId = " ";
+                    }
+                    Toast.makeText(HomeScreen.this, selectedSubId, Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -323,7 +456,8 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
                 .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(HomeScreen.this, "id: " + toyId.getText().toString() + "\nsub id: " + subscriberId.getText().toString(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(HomeScreen.this, "id: " + selectedToyId + "\nsub id: " + selectedSubId, Toast.LENGTH_SHORT).show();
+                        new ProtocolAST().execute("issue", "toy", selectedToyId, selectedSubId);
                         dialog.dismiss();
                     }
                 })
@@ -347,28 +481,59 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(prompt);
 
-        final AutoCompleteTextView toyId = prompt.findViewById(R.id.prompt_id);
-        toyId.setHint("returned toy id...");
+        final SearchableSpinner toyId = prompt.findViewById(R.id.prompt_id);
+        toyId.setTitle("returned toy id.....");
         try {
+            dialogToyIds = new GetIssuedToyIdsAST().execute().get();
             final ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                     this,
-                    android.R.layout.simple_dropdown_item_1line,
-                    new GetIssuedToyIdsAST().execute().get());
+                    android.R.layout.simple_spinner_item,
+                    dialogToyIds);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             toyId.setAdapter(adapter);
+            toyId.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    if(dialogToyIds.size() > 0) {
+                        selectedToyId = dialogToyIds.get(position);
+                    } else {
+                        selectedToyId = " ";
+                    }
+                    // Toast.makeText(HomeScreen.this, selectedBookId, Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
 
-        final AutoCompleteTextView subscriberId = prompt.findViewById(R.id.prompt_subscriber_id);
-        subscriberId.setHint("Subscriber Name...");
+        final SearchableSpinner subscriberId = prompt.findViewById(R.id.prompt_subscriber_id);
         try {
+            dialogSubscriberNames = new GetIssuedToSubscriberNamesAST().execute().get();
             final ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                     this,
-                    android.R.layout.simple_dropdown_item_1line,
-                    new GetIssuedToSubscriberNamesAST().execute().get());
+                    android.R.layout.simple_spinner_item,
+                    dialogSubscriberNames);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             subscriberId.setAdapter(adapter);
+            subscriberId.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    selectedSubId = dialogSubscriberNames.get(position);
+                    // Toast.makeText(HomeScreen.this, selectedSubId, Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -383,7 +548,8 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
                 .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(HomeScreen.this, "id: " + toyId.getText().toString() + "\nsub id: " + subscriberId.getText().toString(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(HomeScreen.this, "id: " + selectedToyId + "\nsub id: " + selectedSubId, Toast.LENGTH_SHORT).show();
+                        new ProtocolAST().execute("return", "toy", selectedToyId, selectedSubId);
                         dialog.dismiss();
                     }
                 })
@@ -475,8 +641,8 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
         @Override
         protected void onPreExecute() {
-            // progressDialog.setMessage("running protocol");
-            // progressDialog.show();
+            progressDialog.setMessage("running protocol...");
+            progressDialog.show();
         }
 
         @Override
@@ -484,7 +650,34 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
             String protocol = strings[0];
             String type = strings[1];
             String obj_id = strings[2];
-            String sub_id = strings[3];
+            String subscriber_id = strings[3];
+            String sub_id = "";
+
+            if(!subscriber_id.contains("/")){
+                // Toast.makeText(HomeScreen.this, "subscriber_id not id but name", Toast.LENGTH_SHORT).show();
+                Log.v("name to id", "not id");
+                try {
+                    Log.v("name to id", "try start protocol");
+                    sub_id = new GetIdFromName().execute(subscriber_id).get();
+                    if(sub_id.length() < 0){
+                        Log.v("name to id","sub_id.length() < 0");
+                        // Toast.makeText(HomeScreen.this, "Sorry something went wrong when running protocol", Toast.LENGTH_SHORT).show();
+                        return "";
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    Log.v("name to id","interrupted");
+                    // Toast.makeText(HomeScreen.this, "Sorry something went wrong when running protocol", Toast.LENGTH_SHORT).show();
+                    return "";
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                    Log.v("name to id","execution");
+                    // Toast.makeText(HomeScreen.this, "Sorry something went wrong when running protocol", Toast.LENGTH_SHORT).show();
+                    return "";
+                }
+            } else {
+                sub_id = subscriber_id;
+            }
 
             HttpURLConnection httpURLConnection = null;
             BufferedReader bufferedReader = null;
@@ -544,9 +737,11 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
         @Override
         protected void onPostExecute(String s) {
-            // progressDialog.dismiss();
+            progressDialog.dismiss();
             if(s.contains("success")){
                 Toast.makeText(HomeScreen.this, "success", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(HomeScreen.this, "Something went wrong when running protocol:\n" + s, Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -595,7 +790,7 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
                         JSONObject book = root.getJSONObject(i);
                         dialogBookIds.add(book.getString("book_id"));
-                        dialogBookIds.add(book.getString("book_name"));
+                        // dialogBookIds.add(book.getString("book_name"));
 
                     }
 
@@ -667,7 +862,7 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
                         JSONObject toy = root.getJSONObject(i);
                         dialogToyIds.add(toy.getString("toy_id"));
-                        dialogToyIds.add(toy.getString("toy_name"));
+//                        dialogToyIds.add(toy.getString("toy_name"));
 
                     }
 
@@ -697,7 +892,7 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
         }
     }
 
-    private class GetSubscriberNamesAST extends AsyncTask<Void, Void, ArrayList<String>>{
+    private class GetSubscriberNamesAST extends AsyncTask<String, Void, ArrayList<String>>{
 
         @Override
         protected void onPreExecute() {
@@ -707,10 +902,13 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
         }
 
         @Override
-        protected ArrayList<String> doInBackground(Void... voids) {
+        protected ArrayList<String> doInBackground(String... voids) {
+
+            String code = voids[0];
 
             HttpURLConnection httpURLConnection = null;
             BufferedReader bufferedReader = null;
+            BufferedWriter bufferedWriter = null;
 
             try {
 
@@ -718,6 +916,14 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
                 httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setDoOutput(true);
                 httpURLConnection.connect();
+
+                bufferedWriter = new BufferedWriter(new OutputStreamWriter(httpURLConnection.getOutputStream(), "UTF-8"));
+
+                String data = URLEncoder.encode("code", "UTF-8") +"="+ URLEncoder.encode(code, "UTF-8");
+
+                bufferedWriter.write(data);
+                bufferedWriter.flush();
+                bufferedWriter.close();
 
                 bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
 
@@ -737,7 +943,7 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
                         JSONObject subscriber = root.getJSONObject(i);
                         dialogSubscriberNames.add(subscriber.getString("subscriber_id"));
-                        dialogSubscriberNames.add(subscriber.getString("subscriber_name"));
+//                        dialogSubscriberNames.add(subscriber.getString("subscriber_name"));
 
                     }
 
@@ -862,7 +1068,7 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
                         JSONObject book = root.getJSONObject(i);
                         dialogBookIds.add(book.getString("book_id"));
-                        dialogBookIds.add(book.getString("book_name"));
+                        // dialogBookIds.add(book.getString("book_name"));
 
                     }
 
@@ -932,7 +1138,6 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
                         JSONObject toy = root.getJSONObject(i);
                         dialogToyIds.add(toy.getString("toy_id"));
-                        dialogToyIds.add(toy.getString("toy_name"));
 
                     }
 
@@ -1002,7 +1207,7 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
                         JSONObject subscriber = root.getJSONObject(i);
                         dialogSubscriberNames.add(subscriber.getString("subscriber_id"));
-                        dialogSubscriberNames.add(subscriber.getString("subscriber_name"));
+//                        dialogSubscriberNames.add(subscriber.getString("subscriber_name"));
 
                     }
 
@@ -1029,6 +1234,74 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
         protected void onPostExecute(ArrayList<String> strings) {
             // progressDialog.dismiss();
         }
+    }
+
+    private class GetIdFromName extends AsyncTask<String, Void, String>{
+
+        @Override
+        protected String doInBackground(String... strings) {
+            Log.v("name to id", "do in background start." + strings[0]);
+            String name = strings[0];
+
+            HttpURLConnection httpURLConnection = null;
+            BufferedWriter bufferedWriter = null;
+            BufferedReader bufferedReader = null;
+
+            try {
+
+                Log.v("name to id", "try start");
+
+                URL url = new URL(getString(R.string.get_name_from_id));
+                httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setDoInput(true);
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.connect();
+
+                bufferedWriter = new BufferedWriter(new OutputStreamWriter(httpURLConnection.getOutputStream(), "UTF-8"));
+
+                String data = URLEncoder.encode("name", "UTF-8") +"="+ URLEncoder.encode(name, "UTF-8");
+
+                bufferedWriter.write(data);
+                bufferedWriter.flush();
+                bufferedWriter.close();
+
+                Log.v("name to id", "write complete");
+
+                bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+
+                String line;
+                StringBuilder response = new StringBuilder();
+
+                Log.v("name to id", "read complete.result: " + response.toString());
+
+                while((line = bufferedReader.readLine()) != null){
+                    response.append(line);
+                }
+
+                return response.toString();
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+                Log.v(LOG_TAG, e.toString());
+                return "";
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.v(LOG_TAG, e.toString());
+                return "";
+            } finally {
+                if(httpURLConnection != null){
+                    httpURLConnection.disconnect();
+                }
+                if(bufferedReader != null){
+                    try {
+                        bufferedReader.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+
     }
 
 }
