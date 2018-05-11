@@ -137,7 +137,8 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
                 break;
 
             case R.id.view_issued_books_card:
-                Toast.makeText(this, "view_issued_books_card", Toast.LENGTH_SHORT).show();break;
+                viewIssuedBooksClicked();
+                break;
 
             case R.id.view_issued_toys_card:
                 Toast.makeText(this, "view_issued_toys_card", Toast.LENGTH_SHORT).show();
@@ -148,7 +149,8 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
                 break;
 
             case R.id.view_books_card:
-                Toast.makeText(this, "view_books_card", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(this, "view_books_card", Toast.LENGTH_SHORT).show();
+                viewBooksClicked();
                 break;
 
             case R.id.view_toys_card:
@@ -567,7 +569,10 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
     private void viewIssuedBooksClicked(){
 
-        
+        Intent toView = new Intent(this, ViewActivity.class);
+        toView.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        toView.putExtra("mode", 150);
+        startActivity(toView);
 
     }
 
@@ -576,6 +581,11 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
     }
 
     private void viewBooksClicked(){
+
+        Intent toView = new Intent(this, ViewActivity.class);
+        toView.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        toView.putExtra("mode", 100);
+        startActivity(toView);
 
     }
 

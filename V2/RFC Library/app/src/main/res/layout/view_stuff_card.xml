@@ -13,81 +13,100 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_gravity="center"
         android:gravity="center">
+
+        <TextView
+            android:id="@+id/view_stuff_obj_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:fontFamily="sans-serif-smallcaps"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+            tools:text="The Accountant"
+            android:layout_margin="4dp"/>
+
+        <TextView
+            android:id="@+id/view_stuff_obj_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:fontFamily="sans-serif-smallcaps"
+            tools:text="SB-12454"
+            android:layout_margin="4dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="center"
-            android:padding="4dp">
-
+            android:gravity="center">
 
             <TextView
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="ID"
-                android:gravity="center_vertical|end"
-                android:fontFamily="sans-serif-smallcaps"
                 android:textStyle="bold"
                 android:textColor="@android:color/black"
-                android:layout_margin="8dp"
-                android:padding="4dp"/>
+                android:fontFamily="sans-serif-smallcaps"
+                android:text="Currently issued:"
+                android:gravity="center_vertical"
+                android:layout_margin="4dp"/>
 
             <TextView
-                android:id="@+id/view_stuff_obj_id"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:id="@+id/view_stuff_is_issued"
+                android:layout_width="wrap_content"
                 android:layout_weight="1"
-                tools:text="SB-234"
-                android:gravity="center_vertical|start"
-                android:fontFamily="sans-serif-smallcaps"
+                android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:textColor="@android:color/darker_gray"
-                android:layout_margin="8dp"
-                android:padding="4dp"/>
+                android:fontFamily="sans-serif-smallcaps"
+                tools:text="FALSE"
+                android:layout_margin="4dp"/>
 
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/view_stuff_issued_to_container"
+            android:visibility="invisible"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="center"
-            android:padding="4dp">
-
+            android:gravity="center">
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Subscriber Name"
-                android:gravity="center_vertical|end"
-                android:fontFamily="sans-serif-smallcaps"
+                android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:textColor="@android:color/black"
-                android:layout_margin="8dp"
-                android:padding="4dp"/>
+                android:fontFamily="sans-serif-smallcaps"
+                tools:text="Issued to"
+                android:gravity="center_vertical"
+                android:layout_margin="4dp"/>
 
             <TextView
-                android:id="@+id/view_stuff_sub_id"
+                android:id="@+id/view_stuff_issued_to"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:ellipsize="end"
-                android:lines="2"
-                tools:text="Fardeen Panjwani"
-                android:gravity="center_vertical|start"
-                android:fontFamily="sans-serif-smallcaps"
+                android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:textColor="@android:color/darker_gray"
-                android:layout_margin="8dp"
-                android:padding="4dp"/>
+                android:fontFamily="sans-serif-smallcaps"
+                tools:text="Someone Surname"
+                android:layout_margin="4dp"/>
 
         </LinearLayout>
 
     </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/view_stuff_overflow_menu"
+        android:layout_width="50px"
+        android:layout_margin="4dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|top"
+        android:src="@mipmap/ic_overflow_menu"
+        android:scaleType="fitCenter"
+        android:background="@android:color/white" />
 
 </android.support.v7.widget.CardView>

@@ -1,15 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".View">
+    android:gravity="center"
+    tools:context=".ViewActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:theme="@style/Base.ThemeOverlay.AppCompat.Dark"
+        android:id="@+id/view_stuff_toolbar">
+
+        <TextView
+            android:id="@+id/view_stuff_toolbar_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="@android:color/white"
+            android:fontFamily="sans-serif-smallcaps"
+            android:textStyle="bold"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+            android:gravity="center_vertical"
+            android:textAllCaps="true"
+            tools:text="View BOoks"/>
+
+    </android.support.v7.widget.Toolbar>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/view_stuff_rv"
+        android:layout_below="@id/view_stuff_toolbar"
+        android:id="@+id/view_act_rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-</android.support.constraint.ConstraintLayout>
+    <TextView
+        android:layout_below="@id/view_stuff_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="invisible"
+        android:id="@+id/view_act_error"
+        android:fontFamily="sans-serif-smallcaps"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+        android:textStyle="bold" />
+
+</RelativeLayout>
