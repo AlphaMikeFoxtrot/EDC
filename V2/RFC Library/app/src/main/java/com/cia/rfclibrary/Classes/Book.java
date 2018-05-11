@@ -1,12 +1,44 @@
 package com.cia.rfclibrary.Classes;
 
-public class Book {
+import android.os.Parcel;
+import android.os.Parcelable;
 
-    private String bookName, bookId, isIssued, issuedToId, issuedToName;
+public class Book implements Parcelable{
+
+    private String bookName, bookId, isIssued, issuedToId, issuedToName, issuedTo;
 
     public Book(){
         // empty constructor
         // ...
+    }
+
+    protected Book(Parcel in) {
+        bookName = in.readString();
+        bookId = in.readString();
+        isIssued = in.readString();
+        issuedToId = in.readString();
+        issuedToName = in.readString();
+        issuedTo = in.readString();
+    }
+
+    public static final Creator<Book> CREATOR = new Creator<Book>() {
+        @Override
+        public Book createFromParcel(Parcel in) {
+            return new Book(in);
+        }
+
+        @Override
+        public Book[] newArray(int size) {
+            return new Book[size];
+        }
+    };
+
+    public String getIssuedTo() {
+        return issuedTo;
+    }
+
+    public void setIssuedTo(String issuedTo) {
+        this.issuedTo = issuedTo;
     }
 
     public String getBookName() {
@@ -47,5 +79,20 @@ public class Book {
 
     public void setIssuedToName(String issuedToName) {
         this.issuedToName = issuedToName;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(bookName);
+        dest.writeString(bookId);
+        dest.writeString(isIssued);
+        dest.writeString(issuedToId);
+        dest.writeString(issuedToName);
+        dest.writeString(issuedTo);
     }
 }

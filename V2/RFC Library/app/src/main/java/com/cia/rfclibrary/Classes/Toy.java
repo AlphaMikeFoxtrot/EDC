@@ -2,10 +2,18 @@ package com.cia.rfclibrary.Classes;
 
 public class Toy {
 
-    private String toyName, toyId, issuedToId, issuedToName;
+    private String toyName, toyId, issuedToId, issuedToName, issuedOn;
 
     public Toy() {
 
+    }
+
+    public String getIssuedOn() {
+        return issuedOn;
+    }
+
+    public void setIssuedOn(String issuedOn) {
+        this.issuedOn = issuedOn;
     }
 
     public String getIssuedToId() {
