@@ -1,4 +1,4 @@
-package com.cia.rfclibrary.Adapters.Book;
+package com.cia.rfclibrary.Adapters.Toy;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -9,20 +9,18 @@ import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.cia.rfclibrary.Classes.Book;
+import com.cia.rfclibrary.Adapters.Book.BookRVAdapter;
+import com.cia.rfclibrary.Classes.Toy;
 import com.cia.rfclibrary.HomeScreen;
 import com.cia.rfclibrary.R;
 
@@ -37,37 +35,37 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
-public class BookRVAdapter extends RecyclerView.Adapter<BookRVAdapter.IssuedBookViewHolder> {
+public class ToyRVAdapter extends RecyclerView.Adapter<ToyRVAdapter.IssuedToyViewHolder> {
 
     Context context;
-    private ArrayList<Book> books = new ArrayList<>();
-    public static final String LOG_TAG = "book_rv_ada";
+    private ArrayList<Toy> toys = new ArrayList<>();
+    public static final String LOG_TAG = "toy_rv_ada";
 
-    public BookRVAdapter(Context context, ArrayList<Book> books) {
+    public ToyRVAdapter(Context context, ArrayList<Toy> toys) {
         this.context = context;
-        this.books = books;
+        this.toys = toys;
     }
 
     @NonNull
     @Override
-    public IssuedBookViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public IssuedToyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View listItemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_stuff_card, parent, false);
-        return new IssuedBookViewHolder(listItemView, this.context, this.books);
+        return new IssuedToyViewHolder(listItemView, this.context, this.toys);
 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull IssuedBookViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull IssuedToyViewHolder holder, int position) {
 
-        holder.bookId.setText(this.books.get(position).getBookId());
-        holder.bookName.setText(this.books.get(position).getBookName());
-        String isIssued = this.books.get(position).getIsIssued();
+        holder.toyId.setText(this.toys.get(position).getToyId());
+        holder.toyName.setText(this.toys.get(position).getToyName());
+        String isIssued = this.toys.get(position).getIsIssued();
 
         if(isIssued.contains("1")){
             holder.isIssued.setText("TRUE");
             holder.issuedToCon.setVisibility(View.VISIBLE);
-            holder.issuedTo.setText(this.books.get(position).getIssuedToName());
+            holder.issuedTo.setText(this.toys.get(position).getIssuedToName());
         } else {
             holder.isIssued.setText("FALSE");
         }
@@ -76,22 +74,22 @@ public class BookRVAdapter extends RecyclerView.Adapter<BookRVAdapter.IssuedBook
 
     @Override
     public int getItemCount() {
-        return this.books.size();
+        return this.toys.size();
     }
 
-    public class IssuedBookViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class IssuedToyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        TextView bookId, bookName, isIssued, issuedTo;
+        TextView toyId, toyName, isIssued, issuedTo;
         LinearLayout issuedToCon;
         ImageButton overflow;
         Context context;
-        ArrayList<Book> books;
+        ArrayList<Toy> toys;
 
-        public IssuedBookViewHolder(View itemView, Context context, ArrayList<Book> books) {
+        public IssuedToyViewHolder(View itemView, Context context, ArrayList<Toy> toys) {
             super(itemView);
 
-            this.bookId = itemView.findViewById(R.id.view_stuff_obj_id);
-            this.bookName = itemView.findViewById(R.id.view_stuff_obj_name);
+            this.toyId = itemView.findViewById(R.id.view_stuff_obj_id);
+            this.toyName = itemView.findViewById(R.id.view_stuff_obj_name);
             this.isIssued = itemView.findViewById(R.id.view_stuff_is_issued);
             this.issuedToCon = itemView.findViewById(R.id.view_stuff_issued_to_container);
             this.issuedTo = itemView.findViewById(R.id.view_stuff_issued_to);
@@ -100,7 +98,7 @@ public class BookRVAdapter extends RecyclerView.Adapter<BookRVAdapter.IssuedBook
             this.overflow.setOnClickListener(this);
 
             this.context = context;
-            this.books = books;
+            this.toys = toys;
 
         }
 
@@ -116,12 +114,12 @@ public class BookRVAdapter extends RecyclerView.Adapter<BookRVAdapter.IssuedBook
                 public boolean onMenuItemClick(MenuItem item) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     builder.setTitle("WARNING");
-                    builder.setMessage("Are you sure you want to delete the book?");
+                    builder.setMessage("Are you sure you want to delete the Toy?");
                     builder.setCancelable(false);
                     builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            new DeleteAST().execute("book", books.get(getAdapterPosition()).getBookId());
+                            new DeleteAST().execute("toy", toys.get(getAdapterPosition()).getToyId());
                         }
                     }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                         @Override
@@ -132,7 +130,6 @@ public class BookRVAdapter extends RecyclerView.Adapter<BookRVAdapter.IssuedBook
 
                     AlertDialog alertDialog = builder.create();
                     alertDialog.show();
-
                     return true;
                 }
             });
@@ -141,7 +138,7 @@ public class BookRVAdapter extends RecyclerView.Adapter<BookRVAdapter.IssuedBook
 
         }
 
-        private class DeleteAST extends AsyncTask<String, Void, String>{
+        private class DeleteAST extends AsyncTask<String, Void, String> {
 
             ProgressDialog progressDialog = new ProgressDialog(context);
 
@@ -219,11 +216,13 @@ public class BookRVAdapter extends RecyclerView.Adapter<BookRVAdapter.IssuedBook
                 progressDialog.dismiss();
                 if(s.isEmpty()){
                     Toast.makeText(context, "Sorry! Something went wrong when deleting: \n" + s, Toast.LENGTH_SHORT).show();
-                } else {
+                } else if(s.contains("success")){
                     Toast.makeText(context, "Successfully deleted", Toast.LENGTH_SHORT).show();
                     Intent toHome = new Intent(context, HomeScreen.class);
                     toHome.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(toHome);
+                } else if(s.contains("fail")){
+                    Toast.makeText(context, "Sorry! Something went wrong when deleting: \n" + s, Toast.LENGTH_SHORT).show();
                 }
             }
         }

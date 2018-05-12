@@ -55,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
         if(loggedIn()){
 
             // already logged in
-            Toast.makeText(this, "logged in as: " + sharedPreferences.getString(getString(R.string.sp_username), ""), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "logged in as " + sharedPreferences.getString(getString(R.string.sp_username), ""), Toast.LENGTH_SHORT).show();
             Intent toHome = new Intent(this, HomeScreen.class);
             toHome.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(toHome);

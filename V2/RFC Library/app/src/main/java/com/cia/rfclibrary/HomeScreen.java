@@ -141,11 +141,13 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
                 break;
 
             case R.id.view_issued_toys_card:
-                Toast.makeText(this, "view_issued_toys_card", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(this, "view_issued_toys_card", Toast.LENGTH_SHORT).show();
+                viewIssuedToysClicked();
                 break;
 
             case R.id.view_subscribers_card:
-                Toast.makeText(this, "view_subscribers_card", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(this, "view_subscribers_card", Toast.LENGTH_SHORT).show();
+                viewSubscribersClicked();
                 break;
 
             case R.id.view_books_card:
@@ -154,11 +156,12 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
                 break;
 
             case R.id.view_toys_card:
-                Toast.makeText(this, "view_toys_card", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(this, "view_toys_card", Toast.LENGTH_SHORT).show();
+                viewToysClicked();
                 break;
 
             case R.id.view_summary_card:
-                Toast.makeText(this, "view_summary_card", Toast.LENGTH_SHORT).show();break;
+                // Toast.makeText(this, "view_summary_card", Toast.LENGTH_SHORT).show();break;
 
         }
 
@@ -249,7 +252,7 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
                 .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(HomeScreen.this, "id: " + selectedBookId + "\nsub id: " + selectedSubId, Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(HomeScreen.this, "id: " + selectedBookId + "\nsub id: " + selectedSubId, Toast.LENGTH_SHORT).show();
                         new ProtocolAST().execute("issue", "book", selectedBookId, selectedSubId);
                         dialog.dismiss();
                     }
@@ -366,7 +369,7 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
                 .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(HomeScreen.this, "id: " + selectedBookId + "\nsub id: " + selectedSubId, Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(HomeScreen.this, "id: " + selectedBookId + "\nsub id: " + selectedSubId, Toast.LENGTH_SHORT).show();
                         new ProtocolAST().execute("return", "book", selectedBookId, selectedSubId);
                         dialog.dismiss();
                     }
@@ -458,7 +461,7 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
                 .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(HomeScreen.this, "id: " + selectedToyId + "\nsub id: " + selectedSubId, Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(HomeScreen.this, "id: " + selectedToyId + "\nsub id: " + selectedSubId, Toast.LENGTH_SHORT).show();
                         new ProtocolAST().execute("issue", "toy", selectedToyId, selectedSubId);
                         dialog.dismiss();
                     }
@@ -550,7 +553,7 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
                 .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(HomeScreen.this, "id: " + selectedToyId + "\nsub id: " + selectedSubId, Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(HomeScreen.this, "id: " + selectedToyId + "\nsub id: " + selectedSubId, Toast.LENGTH_SHORT).show();
                         new ProtocolAST().execute("return", "toy", selectedToyId, selectedSubId);
                         dialog.dismiss();
                     }
@@ -578,6 +581,11 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
     private void viewIssuedToysClicked(){
 
+        Intent toView = new Intent(this, ViewActivity.class);
+        toView.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        toView.putExtra("mode", 350);
+        startActivity(toView);
+
     }
 
     private void viewBooksClicked(){
@@ -591,9 +599,19 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
     private void viewToysClicked(){
 
+        Intent toView = new Intent(this, ViewActivity.class);
+        toView.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        toView.putExtra("mode", 300);
+        startActivity(toView);
+
     }
 
     private void viewSubscribersClicked(){
+
+        Intent toView = new Intent(this, ViewActivity.class);
+        toView.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        toView.putExtra("mode", 200);
+        startActivity(toView);
 
     }
 
@@ -982,147 +1000,6 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
         @Override
         protected void onPostExecute(ArrayList<String> strings) {
             super.onPostExecute(strings);
-        }
-    }
-
-    private class GetBooksAST extends AsyncTask<Void, Void, ArrayList<String>>{
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected ArrayList<String> doInBackground(Void... voids) {
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<String> strings) {
-            super.onPostExecute(strings);
-        }
-    }
-
-    private class GetToysAST extends AsyncTask<Void, Void, ArrayList<String>>{
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected ArrayList<String> doInBackground(Void... voids) {
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<String> strings) {
-            super.onPostExecute(strings);
-        }
-    }
-
-    private class GetSubscribersAST extends AsyncTask<Void, Void, ArrayList<String>>{
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected ArrayList<String> doInBackground(Void... voids) {
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<String> strings) {
-            super.onPostExecute(strings);
-        }
-    }
-
-    private class GetIssuedBooksAST extends AsyncTask<Void, Void, ArrayList<Book>>{
-
-        @Override
-        protected void onPreExecute() {
-
-            progressDialog.setMessage("please wait...");
-            progressDialog.show();
-
-        }
-
-        @Override
-        protected ArrayList<Book> doInBackground(Void... voids) {
-
-            HttpURLConnection httpURLConnection = null;
-            BufferedReader bufferedReader = null;
-            ArrayList<Book> books = new ArrayList<Book>();
-
-            try {
-
-                URL url = new URL(getString(R.string.get_issued_books_url));
-                httpURLConnection = (HttpURLConnection) url.openConnection();
-                httpURLConnection.setDoOutput(true);
-                httpURLConnection.connect();
-
-                bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
-
-                String line;
-                StringBuilder response = new StringBuilder();
-
-                while((line = bufferedReader.readLine()) != null){
-                    response.append(line);
-                }
-
-                if(response.toString().length() < 0){
-
-                    return books;
-
-                } else {
-
-                    JSONArray root = new JSONArray(response.toString());
-                    for(int i = 0; i < root.length(); i++){
-
-                        JSONObject iBook = root.getJSONObject(i);
-                        Book book = new Book();
-                        book.setBookId(iBook.getString("book_id"));
-                        book.setIssuedToName(iBook.getString("issued_to_name"));
-                        books.add(book);
-
-                    }
-
-                    return books;
-
-                }
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-                Log.v(LOG_TAG, e.toString());
-                return books;
-            } catch (IOException e) {
-                e.printStackTrace();
-                Log.v(LOG_TAG, e.toString());
-                return books;
-            } catch (JSONException e) {
-                e.printStackTrace();
-                Log.v(LOG_TAG, e.toString());
-                return books;
-            } finally {
-                if(httpURLConnection != null){
-                    httpURLConnection.disconnect();
-                }
-                if(bufferedReader != null){
-                    try {
-                        bufferedReader.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<Book> books) {
-            progressDialog.dismiss();
         }
     }
 

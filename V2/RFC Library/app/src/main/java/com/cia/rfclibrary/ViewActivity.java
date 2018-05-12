@@ -19,6 +19,8 @@ import android.widget.Toolbar;
 
 import com.cia.rfclibrary.Adapters.Book.BookRVAdapter;
 import com.cia.rfclibrary.Adapters.Book.IssuedBookRVAdapter;
+import com.cia.rfclibrary.Adapters.Toy.IssuedToyRVAdapter;
+import com.cia.rfclibrary.Adapters.Toy.ToyRVAdapter;
 import com.cia.rfclibrary.Classes.Book;
 import com.cia.rfclibrary.Classes.Subscriber;
 import com.cia.rfclibrary.Classes.Toy;
@@ -59,6 +61,8 @@ public class ViewActivity extends AppCompatActivity {
 
     BookRVAdapter bookAdapter;
     IssuedBookRVAdapter issuedBookAdapter;
+    ToyRVAdapter toyAdapter;
+    IssuedToyRVAdapter issuedToyAdapter;
 
     android.support.v7.widget.Toolbar toolbar;
     int mode;
@@ -112,11 +116,15 @@ public class ViewActivity extends AppCompatActivity {
             case 300:
                 // toys
                 title.setText("View Toys");
+                GetToysAST getToysAST = new GetToysAST();
+                getToysAST.execute();
                 break;
 
             case 350:
                 // issued toys
                 title.setText("View Issued Toys");
+                GetIssuedToysAST getIssuedToysAST = new GetIssuedToysAST();
+                getIssuedToysAST.execute();
                 break;
 
             default:
@@ -134,7 +142,7 @@ public class ViewActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
 
-                progressBar.setVisibility(View.VISIBLE);
+//                progressBar.setVisibility(View.VISIBLE);
                 progressBar.setIndeterminate(true);
 
                 switch (mode){
@@ -164,9 +172,9 @@ public class ViewActivity extends AppCompatActivity {
 
                                 books.clear();
                                 books = list;
-                                BookRVAdapter adapter = new BookRVAdapter(ViewActivity.this, books);
+                                BookRVAdapter adapter = new BookRVAdapter(ViewActivity.this, list);
                                 mRecyclerView.setAdapter(adapter);
-//                                progressBar.setVisibility(View.INVISIBLE);
+////                                progressBar.setVisibility(View.INVISIBLE);
 
                             }
 
@@ -187,6 +195,47 @@ public class ViewActivity extends AppCompatActivity {
 
                     case 150:
                         // issued books
+                        try {
+
+                            String json = new SearchAST().execute("150", query).get();
+                            if(json.isEmpty()){
+                                setSearchError();
+                            } else {
+
+                                ArrayList<Book> list = new ArrayList<>();
+                                JSONArray root = new JSONArray(json.toString());
+                                for(int i = 0; i < root.length(); i++){
+
+                                    JSONObject iBook = root.getJSONObject(i);
+                                    Book book = new Book();
+                                    book.setBookId(iBook.getString("book_id"));
+                                    book.setBookName(iBook.getString("book_name"));
+                                    book.setIsIssued(iBook.getString("is_issued"));
+                                    book.setIssuedToName(iBook.getString("issued_to_name"));
+                                    list.add(book);
+
+                                }
+
+                                issuedBooks.clear();
+                                issuedBooks = list;
+                                BookRVAdapter adapter = new BookRVAdapter(ViewActivity.this, issuedBooks);
+                                mRecyclerView.setAdapter(adapter);
+
+                            }
+
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                            Log.v(LOG_TAG, e.toString());
+                            Toast.makeText(ViewActivity.this, "Sorry! Something went wrong when searching for results:\n" + e.toString(), Toast.LENGTH_SHORT).show();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                            Log.v(LOG_TAG, e.toString());
+                            Toast.makeText(ViewActivity.this, "Sorry! Something went wrong when searching for results:\n" + e.toString(), Toast.LENGTH_SHORT).show();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.v(LOG_TAG, e.toString());
+                            Toast.makeText(ViewActivity.this, "Sorry! Something went wrong when searching for results:\n" + e.toString(), Toast.LENGTH_SHORT).show();
+                        }
                         break;
 
                     case 200:
@@ -195,6 +244,48 @@ public class ViewActivity extends AppCompatActivity {
 
                     case 300:
                         // toys
+                        try {
+
+                            String json = new SearchAST().execute("300", query).get();
+                            if(json.isEmpty()){
+                                setSearchError();
+                            } else {
+
+                                ArrayList<Toy> list = new ArrayList<>();
+                                JSONArray root = new JSONArray(json.toString());
+                                for(int i = 0; i < root.length(); i++){
+
+                                    JSONObject iToy = root.getJSONObject(i);
+                                    Toy toy = new Toy();
+                                    toy.setToyId(iToy.getString("toy_id"));
+                                    toy.setToyName(iToy.getString("toy_name"));
+                                    toy.setIsIssued(iToy.getString("is_issued"));
+                                    toy.setIssuedToName(iToy.getString("issued_to_name"));
+                                    list.add(toy);
+
+                                }
+
+                                toys.clear();
+                                toys = list;
+                                ToyRVAdapter adapter = new ToyRVAdapter(ViewActivity.this, toys);
+                                mRecyclerView.setAdapter(adapter);
+////                                progressBar.setVisibility(View.INVISIBLE);
+
+                            }
+
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                            Log.v(LOG_TAG, e.toString());
+                            Toast.makeText(ViewActivity.this, "Sorry! Something went wrong when searching for results:\n" + e.toString(), Toast.LENGTH_SHORT).show();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                            Log.v(LOG_TAG, e.toString());
+                            Toast.makeText(ViewActivity.this, "Sorry! Something went wrong when searching for results:\n" + e.toString(), Toast.LENGTH_SHORT).show();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.v(LOG_TAG, e.toString());
+                            Toast.makeText(ViewActivity.this, "Sorry! Something went wrong when searching for results:\n" + e.toString(), Toast.LENGTH_SHORT).show();
+                        }
                         break;
 
                     case 350:
@@ -272,6 +363,7 @@ public class ViewActivity extends AppCompatActivity {
                         book.setBookId(iBook.getString("book_id"));
                         book.setBookName(iBook.getString("book_name"));
                         book.setIsIssued(iBook.getString("is_issued"));
+                        book.setIssuedToId(iBook.getString("issued_to_id"));
                         book.setIssuedToName(iBook.getString("issued_to_name"));
                         books.add(book);
 
@@ -317,6 +409,103 @@ public class ViewActivity extends AppCompatActivity {
             } else {
                 error.setVisibility(View.VISIBLE);
                 error.setText("Sorry there seems to be no books issued currently!");
+            }
+        }
+    }
+
+    private class GetIssuedToysAST extends AsyncTask<Void, Void, ArrayList<Toy>> {
+
+        @Override
+        protected void onPreExecute() {
+
+            progressDialog.setMessage("please wait...");
+            progressDialog.show();
+
+        }
+
+        @Override
+        protected ArrayList<Toy> doInBackground(Void... voids) {
+
+            HttpURLConnection httpURLConnection = null;
+            BufferedReader bufferedReader = null;
+            ArrayList<Toy> toys = new ArrayList<Toy>();
+
+            try {
+
+                URL url = new URL(getString(R.string.get_issued_toys_url));
+                httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.connect();
+
+                bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+
+                String line;
+                StringBuilder response = new StringBuilder();
+
+                while((line = bufferedReader.readLine()) != null){
+                    response.append(line);
+                }
+
+                if(response.toString().length() < 0){
+
+                    return toys;
+
+                } else {
+
+                    JSONArray root = new JSONArray(response.toString());
+                    for(int i = 0; i < root.length(); i++){
+
+                        JSONObject iToy = root.getJSONObject(i);
+                        Toy toy = new Toy();
+                        toy.setToyId(iToy.getString("toy_id"));
+                        toy.setToyName(iToy.getString("toy_name"));
+                        toy.setIsIssued(iToy.getString("is_issued"));
+                        toy.setIssuedToId(iToy.getString("issued_to_id"));
+                        toy.setIssuedToName(iToy.getString("issued_to_name"));
+                        toys.add(toy);
+
+                    }
+
+                    return toys;
+
+                }
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+                Log.v(LOG_TAG, e.toString());
+                return toys;
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.v(LOG_TAG, e.toString());
+                return toys;
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.v(LOG_TAG, e.toString());
+                return toys;
+            } finally {
+                if(httpURLConnection != null){
+                    httpURLConnection.disconnect();
+                }
+                if(bufferedReader != null){
+                    try {
+                        bufferedReader.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<Toy> toys) {
+            progressDialog.dismiss();
+            if(toys.size() > 0){
+                issuedToyAdapter = new IssuedToyRVAdapter(ViewActivity.this, toys);
+                mRecyclerView.setAdapter(issuedToyAdapter);
+            } else {
+                error.setVisibility(View.VISIBLE);
+                error.setText("Sorry there seems to be no toys issued currently!");
             }
         }
     }
@@ -417,6 +606,102 @@ public class ViewActivity extends AppCompatActivity {
 
     }
 
+    private class GetToysAST extends AsyncTask<Void, Void, ArrayList<Toy>>{
+
+        @Override
+        protected void onPreExecute() {
+
+            progressDialog.setMessage("please wait...");
+            progressDialog.show();
+
+        }
+
+        @Override
+        protected ArrayList<Toy> doInBackground(Void... voids) {
+
+            HttpURLConnection httpURLConnection = null;
+            BufferedReader bufferedReader = null;
+
+            try {
+
+                URL url = new URL(getString(R.string.get_toys_url));
+                httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.connect();
+
+                bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+
+                String line;
+                StringBuilder response = new StringBuilder();
+
+                while((line = bufferedReader.readLine()) != null){
+                    response.append(line);
+                }
+
+                if(response.toString().length() < 0){
+
+                    return toys;
+
+                } else {
+
+                    JSONArray root = new JSONArray(response.toString());
+                    for(int i = 0; i < root.length(); i++){
+
+                        JSONObject iToy = root.getJSONObject(i);
+                        Toy toy = new Toy();
+                        toy.setToyId(iToy.getString("toy_id"));
+                        toy.setToyName(iToy.getString("toy_name"));
+                        toy.setIsIssued(iToy.getString("is_issued"));
+                        toy.setIssuedToName(iToy.getString("issued_to_name"));
+                        toys.add(toy);
+
+                    }
+
+                    return toys;
+
+                }
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+                Log.v(LOG_TAG, e.toString());
+                return toys;
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.v(LOG_TAG, e.toString());
+                return toys;
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.v(LOG_TAG, e.toString());
+                return toys;
+            } finally {
+                if(httpURLConnection != null){
+                    httpURLConnection.disconnect();
+                }
+                if(bufferedReader != null){
+                    try {
+                        bufferedReader.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<Toy> toys) {
+            progressDialog.dismiss();
+            if(toys.size() > 0){
+                toyAdapter = new ToyRVAdapter(ViewActivity.this, toys);
+                mRecyclerView.setAdapter(toyAdapter);
+            } else {
+                error.setVisibility(View.VISIBLE);
+                error.setText("Sorry there seems to be no toys issued currently!");
+            }
+        }
+
+    }
+
     private class SearchAST extends AsyncTask<String, Void, String>{
 
         @Override
@@ -480,5 +765,7 @@ public class ViewActivity extends AppCompatActivity {
             }
         }
     }
+
+
 
 }

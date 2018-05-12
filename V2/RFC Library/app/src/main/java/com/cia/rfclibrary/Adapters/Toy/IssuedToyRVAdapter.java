@@ -1,4 +1,4 @@
-package com.cia.rfclibrary.Adapters.Book;
+package com.cia.rfclibrary.Adapters.Toy;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -16,7 +16,8 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.cia.rfclibrary.Classes.Book;
+import com.cia.rfclibrary.Adapters.Book.IssuedBookRVAdapter;
+import com.cia.rfclibrary.Classes.Toy;
 import com.cia.rfclibrary.HomeScreen;
 import com.cia.rfclibrary.R;
 
@@ -30,62 +31,60 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
-public class IssuedBookRVAdapter extends RecyclerView.Adapter<IssuedBookRVAdapter.IssuedBookViewHolder> {
+public class IssuedToyRVAdapter extends RecyclerView.Adapter<IssuedToyRVAdapter.IssuedToyViewHolder> {
 
     Context context;
-    private static final String LOG_TAG = "issued_book_rv_adapter";
-    ArrayList<Book> books;
+    ArrayList<Toy> toys;
+    private static final String LOG_TAG = "issued_toy_rv";
 
-    public IssuedBookRVAdapter(Context context, ArrayList<Book> books) {
+    public IssuedToyRVAdapter(Context context, ArrayList<Toy> toys) {
         this.context = context;
-        this.books = books;
+        this.toys = toys;
     }
 
     @NonNull
     @Override
-    public IssuedBookViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public IssuedToyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View listItemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_issued_stuff_card, parent, false);
-        return new IssuedBookViewHolder(listItemView, this.context, this.books);
+        return new IssuedToyViewHolder(listItemView, this.context, this.toys);
 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull IssuedBookViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull IssuedToyViewHolder holder, int position) {
 
-        holder.bookId.setText(this.books.get(position).getBookId());
-        holder.subId.setText(this.books.get(position).getIssuedToName());
+        holder.toyId.setText(this.toys.get(position).getToyId());
+        holder.subId.setText(this.toys.get(position).getIssuedToName());
 
     }
 
     @Override
     public int getItemCount() {
-        return this.books.size();
+        return this.toys.size();
     }
 
-    public class IssuedBookViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class IssuedToyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        TextView bookId, subId;
-        ImageButton overflow;
+        TextView toyId, subId;
         Context context;
-        ArrayList<Book> books;
+        ImageButton overflow;
+        ArrayList<Toy> toys;
 
-        public IssuedBookViewHolder(View itemView, Context context, ArrayList<Book> books) {
+        public IssuedToyViewHolder(View itemView, Context context, ArrayList<Toy> toys) {
             super(itemView);
 
-            this.bookId = itemView.findViewById(R.id.view_issued_stuff_obj_id);
+            this.toyId = itemView.findViewById(R.id.view_issued_stuff_obj_id);
             this.subId = itemView.findViewById(R.id.view_issued_stuff_sub_id);
             this.overflow = itemView.findViewById(R.id.view_issued_stuff_overflow_menu);
 
             this.context = context;
-            this.books = books;
+            this.toys = toys;
 
             this.overflow.setOnClickListener(this);
 
         }
-
 
         @Override
         public void onClick(View v) {
@@ -97,12 +96,13 @@ public class IssuedBookRVAdapter extends RecyclerView.Adapter<IssuedBookRVAdapte
             //registering popup with OnMenuItemClickListener
             popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem item) {
-                    new ProtocolAST().execute("return", "book", books.get(getAdapterPosition()).getBookId(), books.get(getAdapterPosition()).getIssuedToId());
+                    new ProtocolAST().execute("return", "toy", toys.get(getAdapterPosition()).getToyId(), toys.get(getAdapterPosition()).getIssuedToId());
                     return true;
                 }
             });
 
             popup.show();//showing popup menu
+
         }
 
         private class ProtocolAST extends AsyncTask<String, Void, String> {
@@ -192,7 +192,6 @@ public class IssuedBookRVAdapter extends RecyclerView.Adapter<IssuedBookRVAdapte
                 }
             }
         }
-
     }
 
 }

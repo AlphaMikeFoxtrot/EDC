@@ -70,24 +70,21 @@
             android:visibility="invisible"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
+            android:orientation="horizontal">
 
             <TextView
-                android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:textColor="@android:color/black"
                 android:fontFamily="sans-serif-smallcaps"
-                tools:text="Issued to"
+                android:text="Issued to"
                 android:gravity="center_vertical"
                 android:layout_margin="4dp"/>
 
             <TextView
                 android:id="@+id/view_stuff_issued_to"
-                android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:textColor="@android:color/darker_gray"

@@ -20,4 +20,6 @@
     <string name="get_issued_to_subscribers_url">http://www.fardeenpanjwani.com/rfc_reboot/get/get_issued_to_subscribers.php</string>
     <string name="get_name_from_id">http://www.fardeenpanjwani.com/rfc_reboot/get/get_sub_name_from_id.php</string>
     <string name="search_url">http://www.fardeenpanjwani.com/rfc_reboot/get/search.php</string>
+    <string name="delete_url">http://www.fardeenpanjwani.com/rfc_reboot/update/delete.php</string>
+
 </resources>
