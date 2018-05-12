@@ -15,17 +15,24 @@
         android:theme="@style/Base.ThemeOverlay.AppCompat.Dark"
         android:id="@+id/view_stuff_toolbar">
 
-        <TextView
-            android:id="@+id/view_stuff_toolbar_title"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:textColor="@android:color/white"
-            android:fontFamily="sans-serif-smallcaps"
-            android:textStyle="bold"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
-            android:gravity="center_vertical"
-            android:textAllCaps="true"
-            tools:text="View BOoks"/>
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/view_stuff_toolbar_title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@android:color/white"
+                android:fontFamily="sans-serif-smallcaps"
+                android:textStyle="bold"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                android:gravity="center_vertical"
+                android:textAllCaps="true"
+                tools:text="View BOoks"/>
+
+        </RelativeLayout>
 
     </android.support.v7.widget.Toolbar>
 
@@ -45,5 +52,14 @@
         android:fontFamily="sans-serif-smallcaps"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
         android:textStyle="bold" />
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:id="@+id/view_stuff_bar"
+        android:layout_height="wrap_content"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_centerInParent="true"
+        android:layout_margin="4dp"
+        android:visibility="invisible"/>
 
 </RelativeLayout>

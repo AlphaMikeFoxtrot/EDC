@@ -2,6 +2,7 @@ package com.cia.rfclibrary;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
+import android.os.HandlerThread;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
@@ -27,17 +29,23 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 public class ViewActivity extends AppCompatActivity {
 
     RecyclerView mRecyclerView;
     TextView error, title;
+
+    ProgressBar progressBar;
 
     private final String LOG_TAG = "view_act";
 
@@ -62,6 +70,7 @@ public class ViewActivity extends AppCompatActivity {
 
         progressDialog = new ProgressDialog(this);
         mRecyclerView = findViewById(R.id.view_act_rv);
+        progressBar = findViewById(R.id.view_stuff_bar);
         error = findViewById(R.id.view_act_error);
         title = findViewById(R.id.view_stuff_toolbar_title);
         toolbar = findViewById(R.id.view_stuff_toolbar);
@@ -124,61 +133,72 @@ public class ViewActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                // Toast.makeText(ViewActivity.this, "" + query, Toast.LENGTH_SHORT).show();
-                return true;
-            }
 
-            @Override
-            public boolean onQueryTextChange(String newText) {
-
-                newText = newText.toLowerCase();
+                progressBar.setVisibility(View.VISIBLE);
+                progressBar.setIndeterminate(true);
 
                 switch (mode){
 
-                    /*
-                     * MODE CODES:
-                     * 100 : books
-                     * 150 : issued books
-                     * 200 : subscribers
-                     * 300 : toys
-                     * 350 : issued toys
-                     */
-
                     case 100:
                         // books
-                        ArrayList<Book> newList = new ArrayList<>();
-                        for (int i = 0; i < books.size(); i++){
-                            if(books.get(i).getBookName().toLowerCase().contains(newText)){
-                                newList.add(books.get(i));
+                        try {
+
+                            String json = new SearchAST().execute("100", query).get();
+                            if(json.isEmpty()){
+                                setSearchError();
+                            } else {
+
+                                ArrayList<Book> list = new ArrayList<>();
+                                JSONArray root = new JSONArray(json.toString());
+                                for(int i = 0; i < root.length(); i++){
+
+                                    JSONObject iBook = root.getJSONObject(i);
+                                    Book book = new Book();
+                                    book.setBookId(iBook.getString("book_id"));
+                                    book.setBookName(iBook.getString("book_name"));
+                                    book.setIsIssued(iBook.getString("is_issued"));
+                                    book.setIssuedToName(iBook.getString("issued_to_name"));
+                                    list.add(book);
+
+                                }
+
+                                books.clear();
+                                books = list;
+                                BookRVAdapter adapter = new BookRVAdapter(ViewActivity.this, books);
+                                mRecyclerView.setAdapter(adapter);
+//                                progressBar.setVisibility(View.INVISIBLE);
+
                             }
+
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                            Log.v(LOG_TAG, e.toString());
+                            Toast.makeText(ViewActivity.this, "Sorry! Something went wrong when searching for results:\n" + e.toString(), Toast.LENGTH_SHORT).show();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                            Log.v(LOG_TAG, e.toString());
+                            Toast.makeText(ViewActivity.this, "Sorry! Something went wrong when searching for results:\n" + e.toString(), Toast.LENGTH_SHORT).show();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.v(LOG_TAG, e.toString());
+                            Toast.makeText(ViewActivity.this, "Sorry! Something went wrong when searching for results:\n" + e.toString(), Toast.LENGTH_SHORT).show();
                         }
-                        bookAdapter.setFilter(newList);
                         break;
 
                     case 150:
                         // issued books
-                        ArrayList<Book> newIssuedBookList = new ArrayList<>();
-                        for (int i = 0; i < books.size(); i++){
-                            if(books.get(i).getBookName().toLowerCase().contains(newText)){
-                                newIssuedBookList.add(books.get(i));
-                            }
-                        }
-                        issuedBookAdapter.setFilter(newIssuedBookList);
                         break;
 
                     case 200:
                         // subscribers
-                        title.setText("View Subscribers");
                         break;
 
                     case 300:
                         // toys
-                        title.setText("View Toys");
                         break;
 
                     case 350:
                         // issued toys
-                        title.setText("View Issued Toys");
                         break;
 
                     default:
@@ -186,11 +206,23 @@ public class ViewActivity extends AppCompatActivity {
 
                 }
 
-                return false;
+                return true;
 
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
             }
         });
         return true;
+    }
+
+    public void setSearchError(){
+
+        error.setVisibility(View.VISIBLE);
+        error.setText("Sorry! Your search query returned no results!");
+
     }
 
     private class GetIssuedBooksAST extends AsyncTask<Void, Void, ArrayList<Book>> {
@@ -383,6 +415,70 @@ public class ViewActivity extends AppCompatActivity {
             }
         }
 
+    }
+
+    private class SearchAST extends AsyncTask<String, Void, String>{
+
+        @Override
+        protected String doInBackground(String... strings) {
+            String mode = strings[0];
+            String query = strings[1];
+
+            HttpURLConnection httpURLConnection = null;
+            BufferedWriter bufferedWriter = null;
+            BufferedReader bufferedReader = null;
+
+            try {
+
+                URL url = new URL(getString(R.string.search_url));
+                httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setDoInput(true);
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.connect();
+
+                bufferedWriter = new BufferedWriter(new OutputStreamWriter(httpURLConnection.getOutputStream(), "UTF-8"));
+
+                String data = URLEncoder.encode("mode", "UTF-8") +"="+ URLEncoder.encode(mode, "UTF-8") +"&"+
+                        URLEncoder.encode("query", "UTF-8") +"="+ URLEncoder.encode(query, "UTF-8");
+
+                bufferedWriter.write(data);
+                bufferedWriter.flush();
+                bufferedWriter.close();
+
+                bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+
+                String line;
+                StringBuilder response = new StringBuilder();
+
+                while((line = bufferedReader.readLine()) != null){
+                    response.append(line);
+                }
+
+                return response.toString();
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+                Log.v(LOG_TAG, e.toString());
+                return "";
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.v(LOG_TAG, e.toString());
+                return "";
+            } finally {
+                if(httpURLConnection != null){
+                    httpURLConnection.disconnect();
+                }
+                if(bufferedReader != null){
+                    try {
+                        bufferedReader.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Log.v(LOG_TAG, e.toString());
+                        return "";
+                    }
+                }
+            }
+        }
     }
 
 }
