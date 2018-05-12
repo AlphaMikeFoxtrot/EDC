@@ -21,5 +21,6 @@
     <string name="get_name_from_id">http://www.fardeenpanjwani.com/rfc_reboot/get/get_sub_name_from_id.php</string>
     <string name="search_url">http://www.fardeenpanjwani.com/rfc_reboot/get/search.php</string>
     <string name="delete_url">http://www.fardeenpanjwani.com/rfc_reboot/update/delete.php</string>
+    <string name="get_subscribers_raw_url">http://fardeenpanjwani.com/rfc_reboot/get/get_subscribers_raw.php</string>
 
 </resources>

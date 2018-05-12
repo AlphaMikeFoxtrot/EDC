@@ -19,6 +19,7 @@ import android.widget.Toolbar;
 
 import com.cia.rfclibrary.Adapters.Book.BookRVAdapter;
 import com.cia.rfclibrary.Adapters.Book.IssuedBookRVAdapter;
+import com.cia.rfclibrary.Adapters.Subscriber.SubscriberRVAdapter;
 import com.cia.rfclibrary.Adapters.Toy.IssuedToyRVAdapter;
 import com.cia.rfclibrary.Adapters.Toy.ToyRVAdapter;
 import com.cia.rfclibrary.Classes.Book;
@@ -63,6 +64,7 @@ public class ViewActivity extends AppCompatActivity {
     IssuedBookRVAdapter issuedBookAdapter;
     ToyRVAdapter toyAdapter;
     IssuedToyRVAdapter issuedToyAdapter;
+    SubscriberRVAdapter subscriberAdapter;
 
     android.support.v7.widget.Toolbar toolbar;
     int mode;
@@ -111,6 +113,8 @@ public class ViewActivity extends AppCompatActivity {
             case 200:
                 // subscribers
                 title.setText("View Subscribers");
+                GetSubscribersAST getSubscribersAST = new GetSubscribersAST();
+                getSubscribersAST.execute();
                 break;
 
             case 300:
@@ -240,6 +244,58 @@ public class ViewActivity extends AppCompatActivity {
 
                     case 200:
                         // subscribers
+                        try {
+
+                            String json = new SearchAST().execute("200", query).get();
+                            if(json.isEmpty()){
+                                setSearchError();
+                            } else {
+
+                                ArrayList<Subscriber> list = new ArrayList<>();
+                                JSONArray root = new JSONArray(json.toString());
+                                for(int i = 0; i < root.length(); i++){
+
+                                    JSONObject iSubscriber = root.getJSONObject(i);
+                                    Subscriber subscriber = new Subscriber();
+                                    subscriber.setId(iSubscriber.getString("subscriber_id"));
+                                    subscriber.setName(iSubscriber.getString("subscriber_name"));
+                                    subscriber.setBookIssued(iSubscriber.getString("book_issued"));
+                                    subscriber.setToyIssued(iSubscriber.getString("toy_issued"));
+                                    subscriber.setIsGen(iSubscriber.getString("is_gen"));
+                                    subscriber.setIsToy(iSubscriber.getString("is_toy"));
+                                    subscriber.setEnrolledFor(iSubscriber.getString("subscriber_enrolled_for"));
+                                    subscriber.setEnrolledOn(iSubscriber.getString("subscriber_enrolled_on"));
+                                    subscriber.setEnrollmentType(iSubscriber.getString("subscriber_enrollement_type"));
+                                    subscriber.setLeb(iSubscriber.getString("subscriber_local_education_board"));
+                                    subscriber.setReb(iSubscriber.getString("subscriber_regional_education_board"));
+                                    subscriber.setCenter(iSubscriber.getString("subscriber_center"));
+                                    subscriber.setPhone(iSubscriber.getString("subscriber_phone"));
+                                    subscriber.setDob(iSubscriber.getString("subscriber_date_of_birth"));
+                                    subscriber.setGender(iSubscriber.getString("subscriber_gender"));
+                                    list.add(subscriber);
+
+                                }
+
+                                subscribers.clear();
+                                subscribers = list;
+                                SubscriberRVAdapter adapter = new SubscriberRVAdapter(ViewActivity.this, subscribers);
+                                mRecyclerView.setAdapter(adapter);
+
+                            }
+
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                            Log.v(LOG_TAG, e.toString());
+                            Toast.makeText(ViewActivity.this, "Sorry! Something went wrong when searching for results:\n" + e.toString(), Toast.LENGTH_SHORT).show();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                            Log.v(LOG_TAG, e.toString());
+                            Toast.makeText(ViewActivity.this, "Sorry! Something went wrong when searching for results:\n" + e.toString(), Toast.LENGTH_SHORT).show();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.v(LOG_TAG, e.toString());
+                            Toast.makeText(ViewActivity.this, "Sorry! Something went wrong when searching for results:\n" + e.toString(), Toast.LENGTH_SHORT).show();
+                        }
                         break;
 
                     case 300:
@@ -702,6 +758,113 @@ public class ViewActivity extends AppCompatActivity {
 
     }
 
+    private class GetSubscribersAST extends AsyncTask<Void, Void, ArrayList<Subscriber>>{
+
+        @Override
+        protected void onPreExecute() {
+
+            progressDialog.setMessage("please wait...");
+            progressDialog.show();
+
+        }
+
+        @Override
+        protected ArrayList<Subscriber> doInBackground(Void... voids) {
+
+            HttpURLConnection httpURLConnection = null;
+            BufferedReader bufferedReader = null;
+
+            try {
+
+                URL url = new URL(getString(R.string.get_subscribers_raw_url));
+                httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.connect();
+
+                bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+
+                String line;
+                StringBuilder response = new StringBuilder();
+
+                while((line = bufferedReader.readLine()) != null){
+                    response.append(line);
+                }
+
+                if(response.toString().length() < 0){
+
+                    return subscribers;
+
+                } else {
+
+                    JSONArray root = new JSONArray(response.toString());
+                    for(int i = 0; i < root.length(); i++){
+
+                        JSONObject iSubscriber = root.getJSONObject(i);
+                        Subscriber subscriber = new Subscriber();
+                        subscriber.setId(iSubscriber.getString("subscriber_id"));
+                        subscriber.setName(iSubscriber.getString("subscriber_name"));
+                        subscriber.setBookIssued(iSubscriber.getString("book_issued"));
+                        subscriber.setToyIssued(iSubscriber.getString("toy_issued"));
+                        subscriber.setIsGen(iSubscriber.getString("is_gen"));
+                        subscriber.setIsToy(iSubscriber.getString("is_toy"));
+                        subscriber.setEnrolledFor(iSubscriber.getString("subscriber_enrolled_for"));
+                        subscriber.setEnrolledOn(iSubscriber.getString("subscriber_enrolled_on"));
+                        subscriber.setEnrollmentType(iSubscriber.getString("subscriber_enrollement_type"));
+                        subscriber.setLeb(iSubscriber.getString("subscriber_local_education_board"));
+                        subscriber.setReb(iSubscriber.getString("subscriber_regional_education_board"));
+                        subscriber.setCenter(iSubscriber.getString("subscriber_center"));
+                        subscriber.setPhone(iSubscriber.getString("subscriber_phone"));
+                        subscriber.setDob(iSubscriber.getString("subscriber_date_of_birth"));
+                        subscriber.setGender(iSubscriber.getString("subscriber_gender"));
+                        subscribers.add(subscriber);
+
+                    }
+
+                    return subscribers;
+
+                }
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+                Log.v(LOG_TAG, e.toString());
+                return subscribers;
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.v(LOG_TAG, e.toString());
+                return subscribers;
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.v(LOG_TAG, e.toString());
+                return subscribers;
+            } finally {
+                if(httpURLConnection != null){
+                    httpURLConnection.disconnect();
+                }
+                if(bufferedReader != null){
+                    try {
+                        bufferedReader.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<Subscriber> subscribers) {
+            progressDialog.dismiss();
+            if(subscribers.size() > 0){
+                subscriberAdapter = new SubscriberRVAdapter(ViewActivity.this, subscribers);
+                mRecyclerView.setAdapter(subscriberAdapter);
+            } else {
+                error.setVisibility(View.VISIBLE);
+                error.setText("Sorry there seems to be no subscribers available right now!");
+            }
+        }
+
+    }
+
     private class SearchAST extends AsyncTask<String, Void, String>{
 
         @Override
@@ -765,7 +928,5 @@ public class ViewActivity extends AppCompatActivity {
             }
         }
     }
-
-
 
 }
