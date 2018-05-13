@@ -21,7 +21,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".HomeScreen" />
-        <activity android:name=".ViewActivity"/>
+        <activity android:name=".ViewActivity" />
+        <activity android:name=".SubscriberDetails" />
     </application>
 
 </manifest>

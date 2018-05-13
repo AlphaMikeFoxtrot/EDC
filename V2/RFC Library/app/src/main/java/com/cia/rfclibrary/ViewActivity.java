@@ -135,234 +135,477 @@ public class ViewActivity extends AppCompatActivity {
                 break;
 
         }
+
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.view_stuff_menu, menu);
-        MenuItem menuItem = menu.findItem(R.id.view_stuff_search);
-        SearchView searchView = (SearchView) menuItem.getActionView();
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.view_subscribers_refresh){
+
+            new GetSubscribersAST().execute();
+
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+
+        if(mode != 200) {
+
+            getMenuInflater().inflate(R.menu.view_stuff_menu, menu);
+            MenuItem menuItem = menu.findItem(R.id.view_stuff_search);
+            SearchView searchView = (SearchView) menuItem.getActionView();
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
 
 //                progressBar.setVisibility(View.VISIBLE);
-                progressBar.setIndeterminate(true);
+                    progressBar.setIndeterminate(true);
 
-                switch (mode){
+                    switch (mode) {
 
-                    case 100:
-                        // books
-                        try {
+                        case 100:
+                            // books
+                            try {
 
-                            String json = new SearchAST().execute("100", query).get();
-                            if(json.isEmpty()){
-                                setSearchError();
-                            } else {
+                                String json = new SearchAST().execute("100", query).get();
+                                if (json.isEmpty()) {
+                                    setSearchError();
+                                } else {
 
-                                ArrayList<Book> list = new ArrayList<>();
-                                JSONArray root = new JSONArray(json.toString());
-                                for(int i = 0; i < root.length(); i++){
+                                    ArrayList<Book> list = new ArrayList<>();
+                                    JSONArray root = new JSONArray(json.toString());
+                                    for (int i = 0; i < root.length(); i++) {
 
-                                    JSONObject iBook = root.getJSONObject(i);
-                                    Book book = new Book();
-                                    book.setBookId(iBook.getString("book_id"));
-                                    book.setBookName(iBook.getString("book_name"));
-                                    book.setIsIssued(iBook.getString("is_issued"));
-                                    book.setIssuedToName(iBook.getString("issued_to_name"));
-                                    list.add(book);
+                                        JSONObject iBook = root.getJSONObject(i);
+                                        Book book = new Book();
+                                        book.setBookId(iBook.getString("book_id"));
+                                        book.setBookName(iBook.getString("book_name"));
+                                        book.setIsIssued(iBook.getString("is_issued"));
+                                        book.setIssuedToName(iBook.getString("issued_to_name"));
+                                        list.add(book);
 
-                                }
+                                    }
 
-                                books.clear();
-                                books = list;
-                                BookRVAdapter adapter = new BookRVAdapter(ViewActivity.this, list);
-                                mRecyclerView.setAdapter(adapter);
+                                    books.clear();
+                                    books = list;
+                                    BookRVAdapter adapter = new BookRVAdapter(ViewActivity.this, list);
+                                    mRecyclerView.setAdapter(adapter);
 ////                                progressBar.setVisibility(View.INVISIBLE);
 
+                                }
+
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                                Log.v(LOG_TAG, e.toString());
+                                Toast.makeText(ViewActivity.this, "Sorry! Something went wrong when searching for results:\n" + e.toString(), Toast.LENGTH_SHORT).show();
+                            } catch (ExecutionException e) {
+                                e.printStackTrace();
+                                Log.v(LOG_TAG, e.toString());
+                                Toast.makeText(ViewActivity.this, "Sorry! Something went wrong when searching for results:\n" + e.toString(), Toast.LENGTH_SHORT).show();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                Log.v(LOG_TAG, e.toString());
+                                Toast.makeText(ViewActivity.this, "Sorry! Something went wrong when searching for results:\n" + e.toString(), Toast.LENGTH_SHORT).show();
                             }
+                            break;
 
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                            Log.v(LOG_TAG, e.toString());
-                            Toast.makeText(ViewActivity.this, "Sorry! Something went wrong when searching for results:\n" + e.toString(), Toast.LENGTH_SHORT).show();
-                        } catch (ExecutionException e) {
-                            e.printStackTrace();
-                            Log.v(LOG_TAG, e.toString());
-                            Toast.makeText(ViewActivity.this, "Sorry! Something went wrong when searching for results:\n" + e.toString(), Toast.LENGTH_SHORT).show();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Log.v(LOG_TAG, e.toString());
-                            Toast.makeText(ViewActivity.this, "Sorry! Something went wrong when searching for results:\n" + e.toString(), Toast.LENGTH_SHORT).show();
-                        }
-                        break;
+                        case 150:
+                            // issued books
+                            try {
 
-                    case 150:
-                        // issued books
-                        try {
+                                String json = new SearchAST().execute("150", query).get();
+                                if (json.isEmpty()) {
+                                    setSearchError();
+                                } else {
 
-                            String json = new SearchAST().execute("150", query).get();
-                            if(json.isEmpty()){
-                                setSearchError();
-                            } else {
+                                    ArrayList<Book> list = new ArrayList<>();
+                                    JSONArray root = new JSONArray(json.toString());
+                                    for (int i = 0; i < root.length(); i++) {
 
-                                ArrayList<Book> list = new ArrayList<>();
-                                JSONArray root = new JSONArray(json.toString());
-                                for(int i = 0; i < root.length(); i++){
+                                        JSONObject iBook = root.getJSONObject(i);
+                                        Book book = new Book();
+                                        book.setBookId(iBook.getString("book_id"));
+                                        book.setBookName(iBook.getString("book_name"));
+                                        book.setIsIssued(iBook.getString("is_issued"));
+                                        book.setIssuedToName(iBook.getString("issued_to_name"));
+                                        list.add(book);
 
-                                    JSONObject iBook = root.getJSONObject(i);
-                                    Book book = new Book();
-                                    book.setBookId(iBook.getString("book_id"));
-                                    book.setBookName(iBook.getString("book_name"));
-                                    book.setIsIssued(iBook.getString("is_issued"));
-                                    book.setIssuedToName(iBook.getString("issued_to_name"));
-                                    list.add(book);
+                                    }
+
+                                    issuedBooks.clear();
+                                    issuedBooks = list;
+                                    BookRVAdapter adapter = new BookRVAdapter(ViewActivity.this, issuedBooks);
+                                    mRecyclerView.setAdapter(adapter);
 
                                 }
 
-                                issuedBooks.clear();
-                                issuedBooks = list;
-                                BookRVAdapter adapter = new BookRVAdapter(ViewActivity.this, issuedBooks);
-                                mRecyclerView.setAdapter(adapter);
-
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                                Log.v(LOG_TAG, e.toString());
+                                Toast.makeText(ViewActivity.this, "Sorry! Something went wrong when searching for results:\n" + e.toString(), Toast.LENGTH_SHORT).show();
+                            } catch (ExecutionException e) {
+                                e.printStackTrace();
+                                Log.v(LOG_TAG, e.toString());
+                                Toast.makeText(ViewActivity.this, "Sorry! Something went wrong when searching for results:\n" + e.toString(), Toast.LENGTH_SHORT).show();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                Log.v(LOG_TAG, e.toString());
+                                Toast.makeText(ViewActivity.this, "Sorry! Something went wrong when searching for results:\n" + e.toString(), Toast.LENGTH_SHORT).show();
                             }
+                            break;
 
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                            Log.v(LOG_TAG, e.toString());
-                            Toast.makeText(ViewActivity.this, "Sorry! Something went wrong when searching for results:\n" + e.toString(), Toast.LENGTH_SHORT).show();
-                        } catch (ExecutionException e) {
-                            e.printStackTrace();
-                            Log.v(LOG_TAG, e.toString());
-                            Toast.makeText(ViewActivity.this, "Sorry! Something went wrong when searching for results:\n" + e.toString(), Toast.LENGTH_SHORT).show();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Log.v(LOG_TAG, e.toString());
-                            Toast.makeText(ViewActivity.this, "Sorry! Something went wrong when searching for results:\n" + e.toString(), Toast.LENGTH_SHORT).show();
-                        }
-                        break;
+                        case 200:
+                            // subscribers
+                            try {
 
-                    case 200:
-                        // subscribers
-                        try {
+                                String json = new SearchAST().execute("200", query).get();
+                                if (json.isEmpty()) {
+                                    setSearchError();
+                                } else {
 
-                            String json = new SearchAST().execute("200", query).get();
-                            if(json.isEmpty()){
-                                setSearchError();
-                            } else {
+                                    ArrayList<Subscriber> list = new ArrayList<>();
+                                    JSONArray root = new JSONArray(json.toString());
+                                    for (int i = 0; i < root.length(); i++) {
 
-                                ArrayList<Subscriber> list = new ArrayList<>();
-                                JSONArray root = new JSONArray(json.toString());
-                                for(int i = 0; i < root.length(); i++){
+                                        JSONObject iSubscriber = root.getJSONObject(i);
+                                        Subscriber subscriber = new Subscriber();
+                                        subscriber.setId(iSubscriber.getString("subscriber_id"));
+                                        subscriber.setName(iSubscriber.getString("subscriber_name"));
+                                        subscriber.setBookIssued(iSubscriber.getString("book_issued"));
+                                        subscriber.setToyIssued(iSubscriber.getString("toy_issued"));
+                                        subscriber.setIsGen(iSubscriber.getString("is_gen"));
+                                        subscriber.setIsToy(iSubscriber.getString("is_toy"));
+                                        subscriber.setEnrolledFor(iSubscriber.getString("subscriber_enrolled_for"));
+                                        subscriber.setEnrolledOn(iSubscriber.getString("subscriber_enrolled_on"));
+                                        subscriber.setEnrollmentType(iSubscriber.getString("subscriber_enrollement_type"));
+                                        subscriber.setLeb(iSubscriber.getString("subscriber_local_education_board"));
+                                        subscriber.setReb(iSubscriber.getString("subscriber_regional_education_board"));
+                                        subscriber.setCenter(iSubscriber.getString("subscriber_center"));
+                                        subscriber.setPhone(iSubscriber.getString("subscriber_phone"));
+                                        subscriber.setDob(iSubscriber.getString("subscriber_date_of_birth"));
+                                        subscriber.setGender(iSubscriber.getString("subscriber_gender"));
+                                        list.add(subscriber);
 
-                                    JSONObject iSubscriber = root.getJSONObject(i);
-                                    Subscriber subscriber = new Subscriber();
-                                    subscriber.setId(iSubscriber.getString("subscriber_id"));
-                                    subscriber.setName(iSubscriber.getString("subscriber_name"));
-                                    subscriber.setBookIssued(iSubscriber.getString("book_issued"));
-                                    subscriber.setToyIssued(iSubscriber.getString("toy_issued"));
-                                    subscriber.setIsGen(iSubscriber.getString("is_gen"));
-                                    subscriber.setIsToy(iSubscriber.getString("is_toy"));
-                                    subscriber.setEnrolledFor(iSubscriber.getString("subscriber_enrolled_for"));
-                                    subscriber.setEnrolledOn(iSubscriber.getString("subscriber_enrolled_on"));
-                                    subscriber.setEnrollmentType(iSubscriber.getString("subscriber_enrollement_type"));
-                                    subscriber.setLeb(iSubscriber.getString("subscriber_local_education_board"));
-                                    subscriber.setReb(iSubscriber.getString("subscriber_regional_education_board"));
-                                    subscriber.setCenter(iSubscriber.getString("subscriber_center"));
-                                    subscriber.setPhone(iSubscriber.getString("subscriber_phone"));
-                                    subscriber.setDob(iSubscriber.getString("subscriber_date_of_birth"));
-                                    subscriber.setGender(iSubscriber.getString("subscriber_gender"));
-                                    list.add(subscriber);
+                                    }
+
+                                    subscribers.clear();
+                                    subscribers = list;
+                                    SubscriberRVAdapter adapter = new SubscriberRVAdapter(ViewActivity.this, subscribers);
+                                    mRecyclerView.setAdapter(adapter);
 
                                 }
 
-                                subscribers.clear();
-                                subscribers = list;
-                                SubscriberRVAdapter adapter = new SubscriberRVAdapter(ViewActivity.this, subscribers);
-                                mRecyclerView.setAdapter(adapter);
-
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                                Log.v(LOG_TAG, e.toString());
+                                Toast.makeText(ViewActivity.this, "Sorry! Something went wrong when searching for results:\n" + e.toString(), Toast.LENGTH_SHORT).show();
+                            } catch (ExecutionException e) {
+                                e.printStackTrace();
+                                Log.v(LOG_TAG, e.toString());
+                                Toast.makeText(ViewActivity.this, "Sorry! Something went wrong when searching for results:\n" + e.toString(), Toast.LENGTH_SHORT).show();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                Log.v(LOG_TAG, e.toString());
+                                Toast.makeText(ViewActivity.this, "Sorry! Something went wrong when searching for results:\n" + e.toString(), Toast.LENGTH_SHORT).show();
                             }
+                            break;
 
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                            Log.v(LOG_TAG, e.toString());
-                            Toast.makeText(ViewActivity.this, "Sorry! Something went wrong when searching for results:\n" + e.toString(), Toast.LENGTH_SHORT).show();
-                        } catch (ExecutionException e) {
-                            e.printStackTrace();
-                            Log.v(LOG_TAG, e.toString());
-                            Toast.makeText(ViewActivity.this, "Sorry! Something went wrong when searching for results:\n" + e.toString(), Toast.LENGTH_SHORT).show();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Log.v(LOG_TAG, e.toString());
-                            Toast.makeText(ViewActivity.this, "Sorry! Something went wrong when searching for results:\n" + e.toString(), Toast.LENGTH_SHORT).show();
-                        }
-                        break;
+                        case 300:
+                            // toys
+                            try {
 
-                    case 300:
-                        // toys
-                        try {
+                                String json = new SearchAST().execute("300", query).get();
+                                if (json.isEmpty()) {
+                                    setSearchError();
+                                } else {
 
-                            String json = new SearchAST().execute("300", query).get();
-                            if(json.isEmpty()){
-                                setSearchError();
-                            } else {
+                                    ArrayList<Toy> list = new ArrayList<>();
+                                    JSONArray root = new JSONArray(json.toString());
+                                    for (int i = 0; i < root.length(); i++) {
 
-                                ArrayList<Toy> list = new ArrayList<>();
-                                JSONArray root = new JSONArray(json.toString());
-                                for(int i = 0; i < root.length(); i++){
+                                        JSONObject iToy = root.getJSONObject(i);
+                                        Toy toy = new Toy();
+                                        toy.setToyId(iToy.getString("toy_id"));
+                                        toy.setToyName(iToy.getString("toy_name"));
+                                        toy.setIsIssued(iToy.getString("is_issued"));
+                                        toy.setIssuedToName(iToy.getString("issued_to_name"));
+                                        list.add(toy);
 
-                                    JSONObject iToy = root.getJSONObject(i);
-                                    Toy toy = new Toy();
-                                    toy.setToyId(iToy.getString("toy_id"));
-                                    toy.setToyName(iToy.getString("toy_name"));
-                                    toy.setIsIssued(iToy.getString("is_issued"));
-                                    toy.setIssuedToName(iToy.getString("issued_to_name"));
-                                    list.add(toy);
+                                    }
 
-                                }
-
-                                toys.clear();
-                                toys = list;
-                                ToyRVAdapter adapter = new ToyRVAdapter(ViewActivity.this, toys);
-                                mRecyclerView.setAdapter(adapter);
+                                    toys.clear();
+                                    toys = list;
+                                    ToyRVAdapter adapter = new ToyRVAdapter(ViewActivity.this, toys);
+                                    mRecyclerView.setAdapter(adapter);
 ////                                progressBar.setVisibility(View.INVISIBLE);
 
+                                }
+
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                                Log.v(LOG_TAG, e.toString());
+                                Toast.makeText(ViewActivity.this, "Sorry! Something went wrong when searching for results:\n" + e.toString(), Toast.LENGTH_SHORT).show();
+                            } catch (ExecutionException e) {
+                                e.printStackTrace();
+                                Log.v(LOG_TAG, e.toString());
+                                Toast.makeText(ViewActivity.this, "Sorry! Something went wrong when searching for results:\n" + e.toString(), Toast.LENGTH_SHORT).show();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                Log.v(LOG_TAG, e.toString());
+                                Toast.makeText(ViewActivity.this, "Sorry! Something went wrong when searching for results:\n" + e.toString(), Toast.LENGTH_SHORT).show();
                             }
+                            break;
 
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                            Log.v(LOG_TAG, e.toString());
-                            Toast.makeText(ViewActivity.this, "Sorry! Something went wrong when searching for results:\n" + e.toString(), Toast.LENGTH_SHORT).show();
-                        } catch (ExecutionException e) {
-                            e.printStackTrace();
-                            Log.v(LOG_TAG, e.toString());
-                            Toast.makeText(ViewActivity.this, "Sorry! Something went wrong when searching for results:\n" + e.toString(), Toast.LENGTH_SHORT).show();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Log.v(LOG_TAG, e.toString());
-                            Toast.makeText(ViewActivity.this, "Sorry! Something went wrong when searching for results:\n" + e.toString(), Toast.LENGTH_SHORT).show();
-                        }
-                        break;
+                        case 350:
+                            // issued toys
+                            break;
 
-                    case 350:
-                        // issued toys
-                        break;
+                        default:
+                            break;
 
-                    default:
-                        break;
+                    }
+
+                    return true;
 
                 }
 
-                return true;
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    return false;
+                }
+            });
+            return true;
+        } else {
 
-            }
+            getMenuInflater().inflate(R.menu.view_subscriber_menu, menu);
+            MenuItem menuItem = menu.findItem(R.id.view_subscriber_search);
+            SearchView searchView = (SearchView) menuItem.getActionView();
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
 
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
-        return true;
+//                progressBar.setVisibility(View.VISIBLE);
+                    progressBar.setIndeterminate(true);
+
+                    switch (mode) {
+
+                        case 100:
+                            // books
+                            try {
+
+                                String json = new SearchAST().execute("100", query).get();
+                                if (json.isEmpty()) {
+                                    setSearchError();
+                                } else {
+
+                                    ArrayList<Book> list = new ArrayList<>();
+                                    JSONArray root = new JSONArray(json.toString());
+                                    for (int i = 0; i < root.length(); i++) {
+
+                                        JSONObject iBook = root.getJSONObject(i);
+                                        Book book = new Book();
+                                        book.setBookId(iBook.getString("book_id"));
+                                        book.setBookName(iBook.getString("book_name"));
+                                        book.setIsIssued(iBook.getString("is_issued"));
+                                        book.setIssuedToName(iBook.getString("issued_to_name"));
+                                        list.add(book);
+
+                                    }
+
+                                    books.clear();
+                                    books = list;
+                                    BookRVAdapter adapter = new BookRVAdapter(ViewActivity.this, list);
+                                    mRecyclerView.setAdapter(adapter);
+////                                progressBar.setVisibility(View.INVISIBLE);
+
+                                }
+
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                                Log.v(LOG_TAG, e.toString());
+                                Toast.makeText(ViewActivity.this, "Sorry! Something went wrong when searching for results:\n" + e.toString(), Toast.LENGTH_SHORT).show();
+                            } catch (ExecutionException e) {
+                                e.printStackTrace();
+                                Log.v(LOG_TAG, e.toString());
+                                Toast.makeText(ViewActivity.this, "Sorry! Something went wrong when searching for results:\n" + e.toString(), Toast.LENGTH_SHORT).show();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                Log.v(LOG_TAG, e.toString());
+                                Toast.makeText(ViewActivity.this, "Sorry! Something went wrong when searching for results:\n" + e.toString(), Toast.LENGTH_SHORT).show();
+                            }
+                            break;
+
+                        case 150:
+                            // issued books
+                            try {
+
+                                String json = new SearchAST().execute("150", query).get();
+                                if (json.isEmpty()) {
+                                    setSearchError();
+                                } else {
+
+                                    ArrayList<Book> list = new ArrayList<>();
+                                    JSONArray root = new JSONArray(json.toString());
+                                    for (int i = 0; i < root.length(); i++) {
+
+                                        JSONObject iBook = root.getJSONObject(i);
+                                        Book book = new Book();
+                                        book.setBookId(iBook.getString("book_id"));
+                                        book.setBookName(iBook.getString("book_name"));
+                                        book.setIsIssued(iBook.getString("is_issued"));
+                                        book.setIssuedToName(iBook.getString("issued_to_name"));
+                                        list.add(book);
+
+                                    }
+
+                                    issuedBooks.clear();
+                                    issuedBooks = list;
+                                    BookRVAdapter adapter = new BookRVAdapter(ViewActivity.this, issuedBooks);
+                                    mRecyclerView.setAdapter(adapter);
+
+                                }
+
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                                Log.v(LOG_TAG, e.toString());
+                                Toast.makeText(ViewActivity.this, "Sorry! Something went wrong when searching for results:\n" + e.toString(), Toast.LENGTH_SHORT).show();
+                            } catch (ExecutionException e) {
+                                e.printStackTrace();
+                                Log.v(LOG_TAG, e.toString());
+                                Toast.makeText(ViewActivity.this, "Sorry! Something went wrong when searching for results:\n" + e.toString(), Toast.LENGTH_SHORT).show();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                Log.v(LOG_TAG, e.toString());
+                                Toast.makeText(ViewActivity.this, "Sorry! Something went wrong when searching for results:\n" + e.toString(), Toast.LENGTH_SHORT).show();
+                            }
+                            break;
+
+                        case 200:
+                            // subscribers
+                            try {
+
+                                String json = new SearchAST().execute("200", query).get();
+                                if (json.isEmpty()) {
+                                    setSearchError();
+                                } else {
+
+                                    ArrayList<Subscriber> list = new ArrayList<>();
+                                    JSONArray root = new JSONArray(json.toString());
+                                    for (int i = 0; i < root.length(); i++) {
+
+                                        JSONObject iSubscriber = root.getJSONObject(i);
+                                        Subscriber subscriber = new Subscriber();
+                                        subscriber.setId(iSubscriber.getString("subscriber_id"));
+                                        subscriber.setName(iSubscriber.getString("subscriber_name"));
+                                        subscriber.setBookIssued(iSubscriber.getString("book_issued"));
+                                        subscriber.setToyIssued(iSubscriber.getString("toy_issued"));
+                                        subscriber.setIsGen(iSubscriber.getString("is_gen"));
+                                        subscriber.setIsToy(iSubscriber.getString("is_toy"));
+                                        subscriber.setEnrolledFor(iSubscriber.getString("subscriber_enrolled_for"));
+                                        subscriber.setEnrolledOn(iSubscriber.getString("subscriber_enrolled_on"));
+                                        subscriber.setEnrollmentType(iSubscriber.getString("subscriber_enrollement_type"));
+                                        subscriber.setLeb(iSubscriber.getString("subscriber_local_education_board"));
+                                        subscriber.setReb(iSubscriber.getString("subscriber_regional_education_board"));
+                                        subscriber.setCenter(iSubscriber.getString("subscriber_center"));
+                                        subscriber.setPhone(iSubscriber.getString("subscriber_phone"));
+                                        subscriber.setDob(iSubscriber.getString("subscriber_date_of_birth"));
+                                        subscriber.setGender(iSubscriber.getString("subscriber_gender"));
+                                        list.add(subscriber);
+
+                                    }
+
+                                    subscribers.clear();
+                                    subscribers = list;
+                                    SubscriberRVAdapter adapter = new SubscriberRVAdapter(ViewActivity.this, subscribers);
+                                    mRecyclerView.setAdapter(adapter);
+
+                                }
+
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                                Log.v(LOG_TAG, e.toString());
+                                Toast.makeText(ViewActivity.this, "Sorry! Something went wrong when searching for results:\n" + e.toString(), Toast.LENGTH_SHORT).show();
+                            } catch (ExecutionException e) {
+                                e.printStackTrace();
+                                Log.v(LOG_TAG, e.toString());
+                                Toast.makeText(ViewActivity.this, "Sorry! Something went wrong when searching for results:\n" + e.toString(), Toast.LENGTH_SHORT).show();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                Log.v(LOG_TAG, e.toString());
+                                Toast.makeText(ViewActivity.this, "Sorry! Something went wrong when searching for results:\n" + e.toString(), Toast.LENGTH_SHORT).show();
+                            }
+                            break;
+
+                        case 300:
+                            // toys
+                            try {
+
+                                String json = new SearchAST().execute("300", query).get();
+                                if (json.isEmpty()) {
+                                    setSearchError();
+                                } else {
+
+                                    ArrayList<Toy> list = new ArrayList<>();
+                                    JSONArray root = new JSONArray(json.toString());
+                                    for (int i = 0; i < root.length(); i++) {
+
+                                        JSONObject iToy = root.getJSONObject(i);
+                                        Toy toy = new Toy();
+                                        toy.setToyId(iToy.getString("toy_id"));
+                                        toy.setToyName(iToy.getString("toy_name"));
+                                        toy.setIsIssued(iToy.getString("is_issued"));
+                                        toy.setIssuedToName(iToy.getString("issued_to_name"));
+                                        list.add(toy);
+
+                                    }
+
+                                    toys.clear();
+                                    toys = list;
+                                    ToyRVAdapter adapter = new ToyRVAdapter(ViewActivity.this, toys);
+                                    mRecyclerView.setAdapter(adapter);
+////                                progressBar.setVisibility(View.INVISIBLE);
+
+                                }
+
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                                Log.v(LOG_TAG, e.toString());
+                                Toast.makeText(ViewActivity.this, "Sorry! Something went wrong when searching for results:\n" + e.toString(), Toast.LENGTH_SHORT).show();
+                            } catch (ExecutionException e) {
+                                e.printStackTrace();
+                                Log.v(LOG_TAG, e.toString());
+                                Toast.makeText(ViewActivity.this, "Sorry! Something went wrong when searching for results:\n" + e.toString(), Toast.LENGTH_SHORT).show();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                Log.v(LOG_TAG, e.toString());
+                                Toast.makeText(ViewActivity.this, "Sorry! Something went wrong when searching for results:\n" + e.toString(), Toast.LENGTH_SHORT).show();
+                            }
+                            break;
+
+                        case 350:
+                            // issued toys
+                            break;
+
+                        default:
+                            break;
+
+                    }
+
+                    return true;
+
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    return false;
+                }
+            });
+            return true;
+
+        }
+
     }
 
     public void setSearchError(){
@@ -763,6 +1006,9 @@ public class ViewActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
 
+            if(subscribers.size() > 0){
+                subscribers.clear();
+            }
             progressDialog.setMessage("please wait...");
             progressDialog.show();
 

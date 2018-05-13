@@ -22,6 +22,7 @@ import com.cia.rfclibrary.Adapters.Book.BookRVAdapter;
 import com.cia.rfclibrary.Classes.Subscriber;
 import com.cia.rfclibrary.HomeScreen;
 import com.cia.rfclibrary.R;
+import com.cia.rfclibrary.SubscriberDetails;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -74,7 +75,7 @@ public class SubscriberRVAdapter extends RecyclerView.Adapter<SubscriberRVAdapte
         Context context;
         ArrayList<Subscriber> subscribers;
 
-        public SubscriberVH(View itemView, Context context, ArrayList<Subscriber> subscribers) {
+        public SubscriberVH(View itemView, final Context context, ArrayList<Subscriber> subscribers) {
             super(itemView);
 
             this.context = context;
@@ -85,6 +86,18 @@ public class SubscriberRVAdapter extends RecyclerView.Adapter<SubscriberRVAdapte
             this.overflow = itemView.findViewById(R.id.view_subscriber_overflow);
 
             this.overflow.setOnClickListener(this);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                Intent toDetails = new Intent(context, SubscriberDetails.class);
+                toDetails.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(toDetails);
+
+                }
+            });
+
         }
 
         @Override

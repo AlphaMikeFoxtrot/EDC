@@ -2,10 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/subscriber_popup_details"
-        android:title="Details"/>
-
-    <item
         android:id="@+id/subscriber_popup_delete"
         android:title="Delete"/>
 
