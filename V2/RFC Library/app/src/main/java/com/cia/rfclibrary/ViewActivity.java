@@ -1062,6 +1062,8 @@ public class ViewActivity extends AppCompatActivity {
                         subscriber.setPhone(iSubscriber.getString("subscriber_phone"));
                         subscriber.setDob(iSubscriber.getString("subscriber_date_of_birth"));
                         subscriber.setGender(iSubscriber.getString("subscriber_gender"));
+                        subscriber.setBookCount(iSubscriber.getString("book_count"));
+                        subscriber.setToyCount(iSubscriber.getString("toy_count"));
                         subscribers.add(subscriber);
 
                     }

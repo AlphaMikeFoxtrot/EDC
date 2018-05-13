@@ -1,10 +1,62 @@
 package com.cia.rfclibrary.Classes;
 
-public class Subscriber {
+import android.os.Parcel;
+import android.os.Parcelable;
 
-    private String name, id, enrolledFor, reb, leb, center, enrollmentType, enrolledOn, dob, gender, phone, jointAccount, toyIssued, bookIssued, isToy, isGen;
+public class Subscriber implements Parcelable{
+
+    private String name, id, enrolledFor, reb, leb, center, enrollmentType, enrolledOn, dob, gender, phone, jointAccount, toyIssued, bookIssued, isToy, isGen, bookCount, toyCount;
 
     public Subscriber() {
+    }
+
+    protected Subscriber(Parcel in) {
+        name = in.readString();
+        id = in.readString();
+        enrolledFor = in.readString();
+        reb = in.readString();
+        leb = in.readString();
+        center = in.readString();
+        enrollmentType = in.readString();
+        enrolledOn = in.readString();
+        dob = in.readString();
+        gender = in.readString();
+        phone = in.readString();
+        jointAccount = in.readString();
+        toyIssued = in.readString();
+        bookIssued = in.readString();
+        isToy = in.readString();
+        isGen = in.readString();
+        bookCount = in.readString();
+        toyCount = in.readString();
+    }
+
+    public static final Creator<Subscriber> CREATOR = new Creator<Subscriber>() {
+        @Override
+        public Subscriber createFromParcel(Parcel in) {
+            return new Subscriber(in);
+        }
+
+        @Override
+        public Subscriber[] newArray(int size) {
+            return new Subscriber[size];
+        }
+    };
+
+    public String getBookCount() {
+        return bookCount;
+    }
+
+    public void setBookCount(String bookCount) {
+        this.bookCount = bookCount;
+    }
+
+    public String getToyCount() {
+        return toyCount;
+    }
+
+    public void setToyCount(String toyCount) {
+        this.toyCount = toyCount;
     }
 
     public String getReb() {
@@ -133,5 +185,32 @@ public class Subscriber {
 
     public void setEnrolledFor(String enrolledFor) {
         this.enrolledFor = enrolledFor;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeString(id);
+        dest.writeString(enrolledFor);
+        dest.writeString(reb);
+        dest.writeString(leb);
+        dest.writeString(center);
+        dest.writeString(enrollmentType);
+        dest.writeString(enrolledOn);
+        dest.writeString(dob);
+        dest.writeString(gender);
+        dest.writeString(phone);
+        dest.writeString(jointAccount);
+        dest.writeString(toyIssued);
+        dest.writeString(bookIssued);
+        dest.writeString(isToy);
+        dest.writeString(isGen);
+        dest.writeString(bookCount);
+        dest.writeString(toyCount);
     }
 }

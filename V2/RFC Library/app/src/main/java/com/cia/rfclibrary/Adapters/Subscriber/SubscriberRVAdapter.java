@@ -75,7 +75,7 @@ public class SubscriberRVAdapter extends RecyclerView.Adapter<SubscriberRVAdapte
         Context context;
         ArrayList<Subscriber> subscribers;
 
-        public SubscriberVH(View itemView, final Context context, ArrayList<Subscriber> subscribers) {
+        public SubscriberVH(View itemView, final Context context, final ArrayList<Subscriber> subscribers) {
             super(itemView);
 
             this.context = context;
@@ -93,6 +93,7 @@ public class SubscriberRVAdapter extends RecyclerView.Adapter<SubscriberRVAdapte
 
                 Intent toDetails = new Intent(context, SubscriberDetails.class);
                 toDetails.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                toDetails.putExtra("subscriber", subscribers.get(getAdapterPosition()));
                 context.startActivity(toDetails);
 
                 }

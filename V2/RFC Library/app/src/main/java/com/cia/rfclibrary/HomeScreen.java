@@ -117,22 +117,18 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
         switch (v.getId()){
 
             case R.id.issue_book_card:
-                // Toast.makeText(this, "issue_book_card", Toast.LENGTH_SHORT).show();
                 issueBookClicked();
                 break;
 
             case R.id.issue_toy_card:
-                // Toast.makeText(this, "issue_toy_card", Toast.LENGTH_SHORT).show();
                 issueToyClicked();
                 break;
 
             case R.id.return_book_card:
-                // Toast.makeText(this, "return_book_card", Toast.LENGTH_SHORT).show();
                 returnBookClicked();
                 break;
 
             case R.id.return_toy_card:
-                // Toast.makeText(this, "return_toy_card", Toast.LENGTH_SHORT).show();
                 returnToyClicked();
                 break;
 
@@ -141,27 +137,22 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
                 break;
 
             case R.id.view_issued_toys_card:
-                // Toast.makeText(this, "view_issued_toys_card", Toast.LENGTH_SHORT).show();
                 viewIssuedToysClicked();
                 break;
 
             case R.id.view_subscribers_card:
-                // Toast.makeText(this, "view_subscribers_card", Toast.LENGTH_SHORT).show();
                 viewSubscribersClicked();
                 break;
 
             case R.id.view_books_card:
-                // Toast.makeText(this, "view_books_card", Toast.LENGTH_SHORT).show();
                 viewBooksClicked();
                 break;
 
             case R.id.view_toys_card:
-                // Toast.makeText(this, "view_toys_card", Toast.LENGTH_SHORT).show();
                 viewToysClicked();
                 break;
 
             case R.id.view_summary_card:
-                // Toast.makeText(this, "view_summary_card", Toast.LENGTH_SHORT).show();break;
 
         }
 
@@ -189,7 +180,6 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     selectedBookId = dialogBookIds.get(position);
-                    Toast.makeText(HomeScreen.this, selectedBookId, Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
@@ -216,7 +206,6 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     selectedSubId = dialogSubscriberNames.get(position);
-                    Toast.makeText(HomeScreen.this, selectedSubId, Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
@@ -230,19 +219,6 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
             e.printStackTrace();
         }
 
-//        final AutoCompleteTextView subscriberId = prompt.findViewById(R.id.prompt_subscriber_id);
-//        subscriberId.setHint("Subscriber Name or ID...");
-//        try {
-//            final ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-//                    this,
-//                    android.R.layout.simple_dropdown_item_1line,
-//                    new GetSubscriberNamesAST().execute().get());
-//            subscriberId.setAdapter(adapter);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        } catch (ExecutionException e) {
-//            e.printStackTrace();
-//        }
 
         final ImageView icon = prompt.findViewById(R.id.prompt_icon);
         icon.setImageResource(R.drawable.issue);
@@ -252,7 +228,6 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
                 .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // Toast.makeText(HomeScreen.this, "id: " + selectedBookId + "\nsub id: " + selectedSubId, Toast.LENGTH_SHORT).show();
                         new ProtocolAST().execute("issue", "book", selectedBookId, selectedSubId);
                         dialog.dismiss();
                     }
@@ -292,7 +267,6 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     selectedBookId = dialogBookIds.get(position);
-                    Toast.makeText(HomeScreen.this, selectedBookId, Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
@@ -319,7 +293,6 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     selectedSubId = dialogSubscriberNames.get(position);
-                    Toast.makeText(HomeScreen.this, selectedSubId, Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
@@ -333,33 +306,7 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
             e.printStackTrace();
         }
 
-//        final AutoCompleteTextView bookId = prompt.findViewById(R.id.prompt_id);
-//        bookId.setHint("returned book id...");
-//        try {
-//            final ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-//                    this,
-//                    android.R.layout.simple_dropdown_item_1line,
-//                    new GetIssuedBookIdsAST().execute().get());
-//            bookId.setAdapter(adapter);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        } catch (ExecutionException e) {
-//            e.printStackTrace();
-//        }
 //
-//        final AutoCompleteTextView subscriberId = prompt.findViewById(R.id.prompt_subscriber_id);
-//        subscriberId.setHint("Subscriber Name...");
-//        try {
-//            final ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-//                    this,
-//                    android.R.layout.simple_dropdown_item_1line,
-//                    new GetIssuedToSubscriberNamesAST().execute().get());
-//            subscriberId.setAdapter(adapter);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        } catch (ExecutionException e) {
-//            e.printStackTrace();
-//        }
 
         final ImageView icon = prompt.findViewById(R.id.prompt_icon);
         icon.setImageResource(R.drawable.return_arrow);
@@ -369,7 +316,6 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
                 .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // Toast.makeText(HomeScreen.this, "id: " + selectedBookId + "\nsub id: " + selectedSubId, Toast.LENGTH_SHORT).show();
                         new ProtocolAST().execute("return", "book", selectedBookId, selectedSubId);
                         dialog.dismiss();
                     }
@@ -408,7 +354,6 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     selectedToyId = dialogToyIds.get(position);
-                    Toast.makeText(HomeScreen.this, selectedToyId, Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
@@ -439,7 +384,6 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
                     } else {
                         selectedSubId = " ";
                     }
-                    Toast.makeText(HomeScreen.this, selectedSubId, Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
@@ -461,7 +405,6 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
                 .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // Toast.makeText(HomeScreen.this, "id: " + selectedToyId + "\nsub id: " + selectedSubId, Toast.LENGTH_SHORT).show();
                         new ProtocolAST().execute("issue", "toy", selectedToyId, selectedSubId);
                         dialog.dismiss();
                     }
@@ -504,7 +447,6 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
                     } else {
                         selectedToyId = " ";
                     }
-                    // Toast.makeText(HomeScreen.this, selectedBookId, Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
@@ -531,7 +473,6 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     selectedSubId = dialogSubscriberNames.get(position);
-                    // Toast.makeText(HomeScreen.this, selectedSubId, Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
@@ -553,7 +494,6 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
                 .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // Toast.makeText(HomeScreen.this, "id: " + selectedToyId + "\nsub id: " + selectedSubId, Toast.LENGTH_SHORT).show();
                         new ProtocolAST().execute("return", "toy", selectedToyId, selectedSubId);
                         dialog.dismiss();
                     }
@@ -628,7 +568,6 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.hs_logout){
-            // Toast.makeText(this, "LOGOUT clicked", Toast.LENGTH_SHORT).show();
             logOut();
         }
         return true;
@@ -645,8 +584,6 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
         @Override
         protected void onPreExecute() {
             progressDialog = new ProgressDialog(HomeScreen.this);
-            // progressDialog.setMessage("logging you out...");
-            // progressDialog.show();
         }
 
         @Override
@@ -660,7 +597,6 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
         @Override
         protected void onPostExecute(String s) {
-            // progressDialog.dismiss();
             Intent toLogin = new Intent(HomeScreen.this, LoginActivity.class);
             toLogin.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(toLogin);
@@ -684,25 +620,21 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
             String sub_id = "";
 
             if(!subscriber_id.contains("/")){
-                // Toast.makeText(HomeScreen.this, "subscriber_id not id but name", Toast.LENGTH_SHORT).show();
                 Log.v("name to id", "not id");
                 try {
                     Log.v("name to id", "try start protocol");
                     sub_id = new GetIdFromName().execute(subscriber_id).get();
                     if(sub_id.length() < 0){
                         Log.v("name to id","sub_id.length() < 0");
-                        // Toast.makeText(HomeScreen.this, "Sorry something went wrong when running protocol", Toast.LENGTH_SHORT).show();
                         return "";
                     }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                     Log.v("name to id","interrupted");
-                    // Toast.makeText(HomeScreen.this, "Sorry something went wrong when running protocol", Toast.LENGTH_SHORT).show();
                     return "";
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                     Log.v("name to id","execution");
-                    // Toast.makeText(HomeScreen.this, "Sorry something went wrong when running protocol", Toast.LENGTH_SHORT).show();
                     return "";
                 }
             } else {
@@ -781,8 +713,6 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
         @Override
         protected void onPreExecute() {
 
-            // progressDialog.setMessage("please wait");
-            // progressDialog.show();
             if(dialogBookIds.size() > 0){
                 dialogBookIds.clear();
             }
@@ -820,7 +750,6 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
                         JSONObject book = root.getJSONObject(i);
                         dialogBookIds.add(book.getString("book_id"));
-                        // dialogBookIds.add(book.getString("book_name"));
 
                     }
 
@@ -846,7 +775,6 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
         @Override
         protected void onPostExecute(ArrayList<String> strings) {
-            // progressDialog.dismiss();
         }
     }
 
@@ -854,8 +782,6 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
         @Override
         protected void onPreExecute() {
-            // progressDialog.setMessage("please wait");
-            // progressDialog.show();
             if(dialogToyIds.size() > 0){
                 dialogToyIds.clear();
             }
@@ -892,7 +818,6 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
                         JSONObject toy = root.getJSONObject(i);
                         dialogToyIds.add(toy.getString("toy_id"));
-//                        dialogToyIds.add(toy.getString("toy_name"));
 
                     }
 
@@ -973,7 +898,6 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
                         JSONObject subscriber = root.getJSONObject(i);
                         dialogSubscriberNames.add(subscriber.getString("subscriber_id"));
-//                        dialogSubscriberNames.add(subscriber.getString("subscriber_name"));
 
                     }
 
@@ -1007,8 +931,6 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
         @Override
         protected void onPreExecute() {
-            // progressDialog.setMessage("please wait...");
-            // progressDialog.show();
             if(dialogBookIds.size() > 0){
                 dialogBookIds.clear();
             }
@@ -1044,7 +966,6 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
                         JSONObject book = root.getJSONObject(i);
                         dialogBookIds.add(book.getString("book_id"));
-                        // dialogBookIds.add(book.getString("book_name"));
 
                     }
 
@@ -1069,7 +990,6 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
         @Override
         protected void onPostExecute(ArrayList<String> strings) {
-            // progressDialog.dismiss();
         }
     }
 
@@ -1077,8 +997,6 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
         @Override
         protected void onPreExecute() {
-            // progressDialog.setMessage("please wait...");
-            // progressDialog.show();
             if(dialogToyIds.size() > 0){
                 dialogToyIds.clear();
             }
@@ -1138,7 +1056,6 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
         @Override
         protected void onPostExecute(ArrayList<String> strings) {
-            // progressDialog.dismiss();
         }
     }
 
@@ -1146,8 +1063,6 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
         @Override
         protected void onPreExecute() {
-            // progressDialog.setMessage("please wait...");
-            // progressDialog.show();
             if(dialogSubscriberNames.size() > 0){
                 dialogSubscriberNames.clear();
             }
@@ -1183,7 +1098,6 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
                         JSONObject subscriber = root.getJSONObject(i);
                         dialogSubscriberNames.add(subscriber.getString("subscriber_id"));
-//                        dialogSubscriberNames.add(subscriber.getString("subscriber_name"));
 
                     }
 
@@ -1208,7 +1122,6 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
         @Override
         protected void onPostExecute(ArrayList<String> strings) {
-            // progressDialog.dismiss();
         }
     }
 
