@@ -1,8 +1,6 @@
 package com.cia.rfclibrary;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -16,7 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.cia.rfclibrary.Adapters.Log.LogRVAdapter;
+import com.cia.rfclibrary.Adapters.SubscriberDetailsLog.LogRVAdapter;
 import com.cia.rfclibrary.Classes.Subscriber;
 
 import org.json.JSONArray;
@@ -26,7 +24,6 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;

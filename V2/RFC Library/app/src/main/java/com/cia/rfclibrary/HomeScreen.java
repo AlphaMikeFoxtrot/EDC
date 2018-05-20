@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.cia.rfclibrary.Classes.Book;
@@ -89,8 +90,8 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
         issueBook = findViewById(R.id.issue_book_card);
         issueToy = findViewById(R.id.issue_toy_card);
-        returnBook = findViewById(R.id.return_book_card);
-        returnToy = findViewById(R.id.return_toy_card);
+        // returnBook = findViewById(R.id.return_book_card);
+        // returnToy = findViewById(R.id.return_toy_card);
         viewIssuedBooks = findViewById(R.id.view_issued_books_card);
         viewIssuedToys = findViewById(R.id.view_issued_toys_card);
         viewSubscribers = findViewById(R.id.view_subscribers_card);
@@ -100,14 +101,22 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
         issueBook.setOnClickListener(this);
         issueToy.setOnClickListener(this);
-        returnBook.setOnClickListener(this);
-        returnToy.setOnClickListener(this);
+//        returnBook.setOnClickListener(this);
+//        returnToy.setOnClickListener(this);
         viewIssuedBooks.setOnClickListener(this);
         viewIssuedToys.setOnClickListener(this);
         viewSubscribers.setOnClickListener(this);
         viewBooks.setOnClickListener(this);
         viewToys.setOnClickListener(this);
         viewSummary.setOnClickListener(this);
+
+        LinearLayout bookCon = findViewById(R.id.issue_book_container);
+        LinearLayout toyCon = findViewById(R.id.issue_toy_container);
+
+        if(sharedPreferences.getString(getString(R.string.sp_clearance), "0").equals("0")){
+            bookCon.setVisibility(View.GONE);
+            toyCon.setVisibility(View.GONE);
+        }
 
     }
 
@@ -124,13 +133,13 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
                 issueToyClicked();
                 break;
 
-            case R.id.return_book_card:
-                returnBookClicked();
-                break;
+//            case R.id.return_book_card:
+//                returnBookClicked();
+//                break;
 
-            case R.id.return_toy_card:
-                returnToyClicked();
-                break;
+//            case R.id.return_toy_card:
+//                returnToyClicked();
+//                break;
 
             case R.id.view_issued_books_card:
                 viewIssuedBooksClicked();
@@ -153,6 +162,8 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
                 break;
 
             case R.id.view_summary_card:
+                viewSummaryClicked();
+                break;
 
         }
 
@@ -179,7 +190,8 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
             bookId.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    selectedBookId = dialogBookIds.get(position);
+                    String[] selectedBookIdList = dialogBookIds.get(position).split("  ");
+                    selectedBookId = selectedBookIdList[0];
                 }
 
                 @Override
@@ -195,7 +207,7 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
         final SearchableSpinner subscriberId = prompt.findViewById(R.id.prompt_subscriber_id);
         try {
-            dialogSubscriberNames = new GetSubscriberNamesAST().execute("100").get();
+            dialogSubscriberNames = new GetSubscriberNamesAST().execute("300").get();
             final ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                     this,
                     android.R.layout.simple_spinner_item,
@@ -205,7 +217,8 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
             subscriberId.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    selectedSubId = dialogSubscriberNames.get(position);
+                    String[] selectedSubIdList = dialogSubscriberNames.get(position).split("  ");
+                    selectedSubId = selectedSubIdList[0];
                 }
 
                 @Override
@@ -380,7 +393,8 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     if(dialogSubscriberNames.size() > 0) {
-                        selectedSubId = dialogSubscriberNames.get(position);
+                        String[] selectedSubIdList = dialogSubscriberNames.get(position).split("  ");
+                        selectedSubId = selectedSubIdList[0];
                     } else {
                         selectedSubId = " ";
                     }
@@ -472,7 +486,8 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
             subscriberId.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    selectedSubId = dialogSubscriberNames.get(position);
+                    String[] selectedSubIdList = dialogSubscriberNames.get(position).split("  ");
+                    selectedSubId = selectedSubIdList[0];
                 }
 
                 @Override
@@ -557,6 +572,10 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
     private void viewSummaryClicked(){
 
+        Intent toSum = new Intent(this, Summary.class);
+        toSum.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(toSum);
+
     }
 
     @Override
@@ -590,6 +609,7 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
         protected String doInBackground(Void... voids) {
             editor.putBoolean(getString(R.string.sp_session), false);
             editor.putString(getString(R.string.sp_username), "");
+            editor.putString(getString(R.string.sp_clearance), "");
             editor.commit();
 
             return "";
@@ -749,7 +769,14 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
                     for (int i = 0; i < root.length(); i++){
 
                         JSONObject book = root.getJSONObject(i);
-                        dialogBookIds.add(book.getString("book_id"));
+
+                        StringBuilder listItem = new StringBuilder();
+                        listItem.append(book.getString("book_id"));
+                        listItem.append("  (");
+                        listItem.append(book.getString("book_name"));
+                        listItem.append(") ");
+
+                        dialogBookIds.add(listItem.toString());
 
                     }
 
@@ -897,7 +924,13 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
                     for (int i = 0; i < root.length(); i++){
 
                         JSONObject subscriber = root.getJSONObject(i);
-                        dialogSubscriberNames.add(subscriber.getString("subscriber_id"));
+
+                        StringBuilder listItem = new StringBuilder();
+                        listItem.append(subscriber.getString("subscriber_id"));
+                        listItem.append("  (");
+                        listItem.append(subscriber.getString("subscriber_name"));
+                        listItem.append(")");
+                        dialogSubscriberNames.add(listItem.toString());
 
                     }
 
@@ -965,7 +998,14 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
                     for (int i = 0; i < root.length(); i++){
 
                         JSONObject book = root.getJSONObject(i);
-                        dialogBookIds.add(book.getString("book_id"));
+
+                        StringBuilder listItem = new StringBuilder();
+                        listItem.append(book.getString("book_id"));
+                        listItem.append("  (");
+                        listItem.append(book.getString("book_name"));
+                        listItem.append(") ");
+
+                        dialogBookIds.add(listItem.toString());
 
                     }
 

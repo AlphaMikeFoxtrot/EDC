@@ -6,6 +6,7 @@
     <string name="sp_name">current_user_sp</string>
     <string name="sp_username">current_user_username</string>
     <string name="sp_session">current_user_session</string>
+    <string name="sp_clearance">current_user_clearance</string>
 
     <!-- Strings related to URLs -->
     <string name="check_session_url">http://www.fardeenpanjwani.com/rfc_reboot/login/check_session.php</string>
@@ -24,4 +25,5 @@
     <string name="get_subscribers_raw_url">http://fardeenpanjwani.com/rfc_reboot/get/get_subscribers_raw.php</string>
     <string name="get_months_url">http://fardeenpanjwani.com/rfc_reboot/get/get_months.php</string>
     <string name="get_log_url">http://fardeenpanjwani.com/rfc_reboot/get/get_log_from_month.php</string>
+    <string name="get_analytics_url">http://fardeenpanjwani.com/rfc_reboot/get/get_analytics_by_month.php</string>
 </resources>

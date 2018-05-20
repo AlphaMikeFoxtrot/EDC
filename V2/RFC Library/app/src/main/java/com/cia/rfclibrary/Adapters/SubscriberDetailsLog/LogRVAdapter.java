@@ -1,4 +1,4 @@
-package com.cia.rfclibrary.Adapters.Log;
+package com.cia.rfclibrary.Adapters.SubscriberDetailsLog;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.cia.rfclibrary.Classes.Subscriber;
 import com.cia.rfclibrary.R;
 import com.cia.rfclibrary.SubscriberDetails;
 
@@ -24,7 +23,6 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;

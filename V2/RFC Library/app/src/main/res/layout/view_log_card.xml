@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     app:cardCornerRadius="4dp"
-    android:layout_margin="4dp"
+    android:layout_margin="12dp"
     app:cardElevation="1dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -12,10 +12,11 @@
     <TextView
         android:id="@+id/view_log_card_month"
         android:layout_margin="12dp"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
         tools:text="MAY"
+        android:layout_gravity="center"
         android:textStyle="bold"
         android:gravity="center" />
 

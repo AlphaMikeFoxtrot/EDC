@@ -13,6 +13,12 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.cia.rfclibrary.Classes.Admin;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -29,6 +35,7 @@ public class LoginActivity extends AppCompatActivity {
     Button login;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
+    Admin admin;
     public static final String LOG_TAG = "login_log_tag";
     ProgressDialog progressDialog;
 
@@ -196,20 +203,36 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             progressDialog.dismiss();
-            if(s.contains("clear")){
-                Toast.makeText(LoginActivity.this, "login success", Toast.LENGTH_SHORT).show();
-                editor.putString(getString(R.string.sp_username), username_login);
-                editor.putBoolean(getString(R.string.sp_session), true);
-                editor.commit();
-                Intent toHome = new Intent(LoginActivity.this, HomeScreen.class);
-                toHome.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(toHome);
-            } else if(s.contains("auth_fail")){
+            if(s.contains("auth_fail")){
                 Toast.makeText(LoginActivity.this, "username and password incorrect", Toast.LENGTH_SHORT).show();
                 username.setError("INCORRECT");
                 password.setError("INCORRECT");
-            } else {
-                Toast.makeText(LoginActivity.this, "something went wrong! Please try again later\n" + s, Toast.LENGTH_SHORT).show();
+            } else if(s.contains("username")){
+                Toast.makeText(LoginActivity.this, "login success", Toast.LENGTH_SHORT).show();
+
+                try {
+
+                    JSONArray root = new JSONArray(s);
+                    JSONObject user = root.getJSONObject(0);
+                    editor.putString(getString(R.string.sp_username), user.getString("username"));
+                    editor.putString(getString(R.string.sp_clearance), user.getString("clearance"));
+
+                    boolean sess;
+                    if(user.getString("session").contains("0")){
+                        sess = false;
+                    } else {
+                        sess = true;
+                    }
+                    editor.putBoolean(getString(R.string.sp_session), sess);
+                    editor.commit();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                Intent toHome = new Intent(LoginActivity.this, HomeScreen.class);
+                toHome.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(toHome);
             }
         }
     }
