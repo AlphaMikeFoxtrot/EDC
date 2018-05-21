@@ -7,4 +7,15 @@
         android:title="Logout"
         app:showAsAction="never"/>
 
+    <item
+        android:id="@+id/hs_reset"
+        android:title="Reset"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/hs_add"
+        android:title="Add"
+        android:icon="@drawable/ic_action_add"
+        app:showAsAction="always"/>
+
 </menu>

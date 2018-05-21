@@ -1,6 +1,7 @@
 package com.cia.rfclibrary;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,6 +12,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,9 +22,14 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.cia.rfclibrary.Classes.Book;
@@ -41,7 +48,10 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 public class HomeScreen extends AppCompatActivity implements View.OnClickListener{
@@ -51,6 +61,10 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
     SharedPreferences.Editor editor;
     ProgressDialog progressDialog;
     public static final String LOG_TAG = "home_screen_log";
+
+    Calendar myCalendar = Calendar.getInstance();
+
+    AlertDialog alertDialogAdd;
 
     String selectedSubId, selectedBookId, selectedToyId;
 
@@ -582,7 +596,11 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.home_screen_menu, menu);
+        if(sharedPreferences.getString(getString(R.string.sp_clearance), "0").equals("0")){
+            getMenuInflater().inflate(R.menu.privilaged_home_screen_menu, menu);
+        } else {
+            getMenuInflater().inflate(R.menu.home_screen_menu, menu);
+        }
         return true;
     }
 
@@ -592,8 +610,228 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
             logOut();
         } else if(item.getItemId() == R.id.hs_reset){
             reset();
+        } else if(item.getItemId() == R.id.hs_add){
+            add();
         }
         return true;
+    }
+
+    private void add() {
+
+        LayoutInflater layoutInflater = LayoutInflater.from(this);
+        View prompt = layoutInflater.inflate(R.layout.add_prompt, null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(prompt);
+
+        final Button addBook = prompt.findViewById(R.id.add_prompt_book);
+        addBook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addBookClicked();
+            }
+        });
+
+        final Button addToy = prompt.findViewById(R.id.add_prompt_toy);
+        addToy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addToyClicked();
+            }
+        });
+
+        final Button addSubscriber = prompt.findViewById(R.id.add_prompt_subscriber);
+        addSubscriber.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addSubscriberClicked();
+            }
+        });
+
+        builder
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setCancelable(false);
+
+        alertDialogAdd = builder.create();
+        alertDialogAdd.show();
+
+    }
+
+    private void addSubscriberClicked() {
+
+        LayoutInflater layoutInflater = LayoutInflater.from(HomeScreen.this);
+        View prompt =  layoutInflater.inflate(R.layout.add_subscriber_prompt, null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(HomeScreen.this);
+        builder.setView(prompt);
+
+        final EditText name, reb, leb, center, dob, phone;
+        name = prompt.findViewById(R.id.add_subscriber_name);
+        reb = prompt.findViewById(R.id.add_subscriber_reb);
+        leb = prompt.findViewById(R.id.add_subscriber_leb);
+        center = prompt.findViewById(R.id.add_subscriber_center);
+        dob = prompt.findViewById(R.id.add_subscriber_dob);
+        phone = prompt.findViewById(R.id.add_subscriber_phone);
+
+        final String e_type_sel, e_for_sel, gender_sel;
+
+        String[] eTypes = {"new", "old"};
+        String[] eFors = {"RFC", "ETL", "RFC + ETL"};
+        String[] genders = {"male", "female"};
+
+        final RadioGroup e_type, e_for, gender;
+        e_type = prompt.findViewById(R.id.add_subscriber_e_type_rg);
+        e_for = prompt.findViewById(R.id.add_subscriber_e_for_rg);
+        gender = prompt.findViewById(R.id.add_subscriber_gender_rg);
+
+        dob.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                final Calendar myCalendar = Calendar.getInstance();
+
+                final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                          int dayOfMonth) {
+                        myCalendar.set(Calendar.YEAR, year);
+                        myCalendar.set(Calendar.MONTH, monthOfYear);
+                        myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                        updateLabel();
+                    }
+
+                    private void updateLabel() {
+
+                        String myFormat = "dd-MM-yyyy"; //In which you need put here
+                        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+                        dob.setText(sdf.format(myCalendar.getTime()));
+
+                    }
+
+                };
+
+                dob.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        new DatePickerDialog(HomeScreen.this, date, myCalendar
+                                .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                                myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                    }
+                });
+
+            }
+        });
+
+        builder
+                .setCancelable(false)
+                .setNeutralButton("Reset", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // do something
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        alertDialogAdd.dismiss();
+                    }
+                })
+                .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        if(name.getText().toString().isEmpty()){
+                            name.setError("Value cannot be empty");
+                        } else if(phone.getText().toString().isEmpty()){
+                            phone.setError("Value cannot be empty");
+                        } else if(dob.getText().toString().isEmpty()){
+                            dob.setError("Value cannot be empty");
+                        } else if(reb.getText().toString().isEmpty()){
+                            reb.setError("Value cannot be empty");
+                        } else if(leb.getText().toString().isEmpty()){
+                            leb.setError("Value cannot be empty");
+                        } else if(center.getText().toString().isEmpty()){
+                            center.setError("Value cannot be empty");
+                        } else {
+
+                        }
+
+                    }
+                });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+    }
+
+    private void addToyClicked() {
+
+        LayoutInflater inflater = LayoutInflater.from(HomeScreen.this);
+        View prompt = inflater.inflate(R.layout.add_book_toy_prompt, null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(HomeScreen.this);
+        builder.setView(prompt);
+
+        final EditText name = prompt.findViewById(R.id.add_book_toy_prompt_et);
+
+        builder
+                .setCancelable(false)
+                .setMessage("Name of the Toy: ")
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        new AddAST().execute("200", name.getText().toString());
+                    }
+                });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+    }
+
+    private void addBookClicked() {
+
+        LayoutInflater inflater = LayoutInflater.from(HomeScreen.this);
+        View prompt = inflater.inflate(R.layout.add_book_toy_prompt, null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(HomeScreen.this);
+        builder.setView(prompt);
+
+        final EditText name = prompt.findViewById(R.id.add_book_toy_prompt_et);
+
+        builder
+                .setCancelable(false)
+                .setMessage("Name of the Book: ")
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        new AddAST().execute("100", name.getText().toString());
+                    }
+                });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
     }
 
     private void reset() {
@@ -604,7 +842,7 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
         final EditText rootUsername = promptsView.findViewById(R.id.root_username);
         final EditText rootPassword = promptsView.findViewById(R.id.root_password);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(HomeScreen.this);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(HomeScreen.this);
 
         builder.setView(promptsView);
 
@@ -614,7 +852,25 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if(rootUsername.getText().toString().contains("russia") && rootPassword.getText().toString().contains("moscow")) {
-                            new Reset().execute();
+
+                            AlertDialog.Builder builder1 = new AlertDialog.Builder(HomeScreen.this);
+                            builder1.setMessage("Are you sure you want to perform soft reset on the data?")
+                                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            new Reset().execute();
+                                        }
+                                    })
+                                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+
+                            AlertDialog alertDialog2 = builder1.create();
+                            alertDialog2.show();
+
                         } else {
                             dialogInterface.dismiss();
                             Toast.makeText(HomeScreen.this, "username and password incorrect.", Toast.LENGTH_SHORT).show();
@@ -1344,4 +1600,87 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
         }
     }
 
+    private class AddAST extends AsyncTask<String, Void, String>{
+
+        ProgressDialog progressDialogAdd = new ProgressDialog(HomeScreen.this);
+
+        @Override
+        protected void onPreExecute() {
+            progressDialogAdd.setMessage("Please wait...");
+            progressDialogAdd.show();
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            String type = strings[0];
+            String name = strings[1];
+
+            HttpURLConnection httpURLConnection = null;
+            BufferedReader bufferedReader = null;
+            BufferedWriter bufferedWriter = null;
+
+            try {
+
+                URL url = new URL(getString(R.string.add_url));
+                httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setDoInput(true);
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.connect();
+
+                bufferedWriter = new BufferedWriter(new OutputStreamWriter(httpURLConnection.getOutputStream(), "UTF-8"));
+                String data = URLEncoder.encode("type", "UTF-8") +"="+ URLEncoder.encode(type, "UTF-8") +"&"+
+                        URLEncoder.encode("name", "UTF-8") +"="+ URLEncoder.encode(name, "UTF-8");
+
+                bufferedWriter.write(data);
+                bufferedWriter.flush();
+                bufferedWriter.close();
+
+                bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+
+                String line;
+                StringBuilder response = new StringBuilder();
+
+                while((line = bufferedReader.readLine()) != null){
+                    response.append(line);
+                }
+
+                return response.toString();
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+                Log.v(LOG_TAG, e.toString());
+                return "";
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.v(LOG_TAG, e.toString());
+                return "";
+            } finally {
+                if(httpURLConnection != null){
+                    httpURLConnection.disconnect();
+                }
+                if(bufferedReader != null){
+                    try {
+                        bufferedReader.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+
+            progressDialogAdd.dismiss();
+            if(s.isEmpty()){
+                Toast.makeText(HomeScreen.this, "Sorry! Something went wrong when adding data to the server\nPlease try again after some time", Toast.LENGTH_SHORT).show();
+            } else if (s.contains("success")){
+                Toast.makeText(HomeScreen.this, "added successfully", Toast.LENGTH_SHORT).show();
+                alertDialogAdd.dismiss();
+            } else if(s.contains("error")){
+                Toast.makeText(HomeScreen.this, "Sorry! Something went wrong when adding data to the server: \n" + s, Toast.LENGTH_SHORT).show();
+            }
+
+        }
+    }
 }

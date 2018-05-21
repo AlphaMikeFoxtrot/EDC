@@ -175,7 +175,7 @@ public class SubscriberDetails extends AppCompatActivity {
                     for(int i = 0; i < root.length(); i++){
 
                         JSONObject iLog = root.getJSONObject(i);
-                        months.add(iLog.getString("date"));
+                        months.add(iLog.getString("month"));
 
                     }
 

@@ -213,6 +213,8 @@ public class Summary extends AppCompatActivity {
 
     public class GetSummaryAST extends AsyncTask<Void, Void, Void>{
 
+        ProgressDialog progressDialog = new ProgressDialog(Summary.this);
+
         @Override
         protected void onPreExecute() {
             progressDialog.show();
@@ -311,8 +313,13 @@ public class Summary extends AppCompatActivity {
 
     private class GetMonthsAST extends AsyncTask<Void, Void, String>{
 
+        ProgressDialog progressDialog = new ProgressDialog(Summary.this);
+
         @Override
         protected void onPreExecute() {
+            if(months.size() > 0){
+                months.clear();
+            }
             progressDialog.setMessage("please wait...");
             progressDialog.show();
         }
@@ -396,10 +403,15 @@ public class Summary extends AppCompatActivity {
 
     public class GetMonthlyAnalysis extends AsyncTask<String, Void, String>{
 
+        ProgressDialog progressDialogMonthlyAnalysis = new ProgressDialog(Summary.this);
+
         @Override
         protected void onPreExecute() {
-            progressDialog.setMessage("please wait...");
-            progressDialog.show();
+            if(logs.size() > 0){
+                logs.clear();
+            }
+            progressDialogMonthlyAnalysis.setMessage("please wait...");
+            progressDialogMonthlyAnalysis.show();
         }
 
         @Override
@@ -462,7 +474,7 @@ public class Summary extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String s) {
-            progressDialog.dismiss();
+            progressDialogMonthlyAnalysis.dismiss();
             if(s.isEmpty()){
                 Toast.makeText(Summary.this, "Sorry! Something went wrong when getting anaytics", Toast.LENGTH_SHORT).show();
             } else {

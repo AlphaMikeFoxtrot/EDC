@@ -166,14 +166,9 @@ public class LogRVAdapter extends RecyclerView.Adapter<LogRVAdapter.LogVH> {
                     JSONArray root = new JSONArray(response.toString());
                     int bookCount = 0;
                     int toyCount = 0;
-                    for(int i = 0; i < root.length(); i++){
-                        JSONObject iLog = root.getJSONObject(i);
-                        if(iLog.getString("book_id").contains("NULL")){
-                            toyCount += 1;
-                        } else if(iLog.getString("toy_id").contains("NULL")){
-                            bookCount += 1;
-                        }
-                    }
+                    JSONObject iLog = root.getJSONObject(0);
+                    bookCount += Integer.parseInt(iLog.getString("book_count"));
+                    toyCount += Integer.parseInt(iLog.getString("toy_count"));
                     message = "Number of books taken: " + bookCount + "\nNumber of toys taken: " + toyCount;
                     return message;
                 } else {

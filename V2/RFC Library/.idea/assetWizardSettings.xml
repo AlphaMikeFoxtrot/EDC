@@ -23,7 +23,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/content/ic_filter_list_black_24dp.xml" />
+                                                <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/action/ic_account_balance_black_24dp.xml" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -45,7 +45,7 @@
                                   <option name="values">
                                     <map>
                                       <entry key="imageAsset" value="E:\_ Android App Projects\EDC\V2\Material RES\Icons\sub_detail_book.png" />
-                                      <entry key="outputName" value="ic_action_filter_black" />
+                                      <entry key="outputName" value="et_eb" />
                                     </map>
                                   </option>
                                 </PersistentState>
