@@ -26,4 +26,5 @@
     <string name="get_months_url">http://fardeenpanjwani.com/rfc_reboot/get/get_months.php</string>
     <string name="get_log_url">http://fardeenpanjwani.com/rfc_reboot/get/get_log_from_month.php</string>
     <string name="get_analytics_url">http://fardeenpanjwani.com/rfc_reboot/get/get_analytics_by_month.php</string>
+    <string name="soft_reset_url">http://fardeenpanjwani.com/rfc_reboot/update/reset/soft_reset.php</string>
 </resources>

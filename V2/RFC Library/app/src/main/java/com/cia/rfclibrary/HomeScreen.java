@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -19,6 +20,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -207,7 +209,7 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
         final SearchableSpinner subscriberId = prompt.findViewById(R.id.prompt_subscriber_id);
         try {
-            dialogSubscriberNames = new GetSubscriberNamesAST().execute("300").get();
+            dialogSubscriberNames = new GetSubscriberNamesAST().execute("100").get();
             final ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                     this,
                     android.R.layout.simple_spinner_item,
@@ -382,7 +384,7 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
         final SearchableSpinner subscriberId = prompt.findViewById(R.id.prompt_subscriber_id);
         try {
-            dialogSubscriberNames = new GetSubscriberNamesAST().execute("300").get();
+            dialogSubscriberNames = new GetSubscriberNamesAST().execute("200").get();
             final ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                     this,
                     android.R.layout.simple_spinner_item,
@@ -588,8 +590,47 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.hs_logout){
             logOut();
+        } else if(item.getItemId() == R.id.hs_reset){
+            reset();
         }
         return true;
+    }
+
+    private void reset() {
+
+        LayoutInflater li = LayoutInflater.from(this);
+        View promptsView = li.inflate(R.layout.reset_prompt , null);
+
+        final EditText rootUsername = promptsView.findViewById(R.id.root_username);
+        final EditText rootPassword = promptsView.findViewById(R.id.root_password);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(HomeScreen.this);
+
+        builder.setView(promptsView);
+
+        builder
+                .setCancelable(false)
+                .setPositiveButton("SUBMIT", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if(rootUsername.getText().toString().contains("russia") && rootPassword.getText().toString().contains("moscow")) {
+                            new Reset().execute();
+                        } else {
+                            dialogInterface.dismiss();
+                            Toast.makeText(HomeScreen.this, "username and password incorrect.", Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+                })
+                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     public void logOut(){
@@ -1231,6 +1272,76 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
             }
         }
 
+    }
+
+    private class Reset extends AsyncTask<Void, Void, String>{
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog.setMessage("resetting server data");
+            progressDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            HttpURLConnection httpURLConnection = null;
+            BufferedReader bufferedReader = null;
+
+            try {
+
+                URL url = new URL(getString(R.string.soft_reset_url));
+                httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.connect();
+
+                bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+
+                String line;
+                StringBuilder response = new StringBuilder();
+
+                while((line = bufferedReader.readLine()) != null){
+                    response.append(line);
+                }
+
+                return response.toString();
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+                Log.v(LOG_TAG, e.toString());
+                return "";
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.v(LOG_TAG, e.toString());
+                return "";
+            } finally {
+                if(httpURLConnection != null){
+                    httpURLConnection.disconnect();
+                }
+                if(bufferedReader != null){
+                    try {
+                        bufferedReader.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Log.v(LOG_TAG, e.toString());
+                    }
+                }
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+
+            progressDialog.dismiss();
+
+            if(s.isEmpty()){
+                Toast.makeText(HomeScreen.this, "something went wrong when resetting data", Toast.LENGTH_SHORT).show();
+            } else if(s.contains("reset")){
+                Toast.makeText(HomeScreen.this, "Data reset successful!", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(HomeScreen.this, "Something went wrong when resetting data: \n" + s, Toast.LENGTH_SHORT).show();
+            }
+
+        }
     }
 
 }
