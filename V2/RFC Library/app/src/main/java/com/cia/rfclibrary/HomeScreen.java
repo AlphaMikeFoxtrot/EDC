@@ -63,6 +63,7 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
     public static final String LOG_TAG = "home_screen_log";
 
     Calendar myCalendar = Calendar.getInstance();
+    public AlertDialog alertDialogSubscriber;
 
     AlertDialog alertDialogAdd;
 
@@ -670,6 +671,8 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
         AlertDialog.Builder builder = new AlertDialog.Builder(HomeScreen.this);
         builder.setView(prompt);
 
+        RadioButton genderButton;
+
         final EditText name, reb, leb, center, dob, phone;
         name = prompt.findViewById(R.id.add_subscriber_name);
         reb = prompt.findViewById(R.id.add_subscriber_reb);
@@ -680,9 +683,9 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
         final String e_type_sel, e_for_sel, gender_sel;
 
-        String[] eTypes = {"new", "old"};
-        String[] eFors = {"RFC", "ETL", "RFC + ETL"};
-        String[] genders = {"male", "female"};
+        final String[] eTypes = {"bs", "new", "old"};
+        final String[] eFors = {"bs", "RFC", "ETL", "RFC + ETL"};
+        final String[] genders = {"bs", "male", "female"};
 
         final RadioGroup e_type, e_for, gender;
         e_type = prompt.findViewById(R.id.add_subscriber_e_type_rg);
@@ -731,12 +734,7 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
         builder
                 .setCancelable(false)
-                .setNeutralButton("Reset", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // do something
-                    }
-                })
+                .setNeutralButton("Reset", null)
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -744,31 +742,80 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
                         alertDialogAdd.dismiss();
                     }
                 })
-                .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Submit", null);
+
+        alertDialogSubscriber = builder.create();
+
+        alertDialogSubscriber.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                Button submit = alertDialogSubscriber.getButton(DialogInterface.BUTTON_POSITIVE);
+                submit.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(View v) {
+
+                        String[] selections = {"bs", "new", "old", "RFC", "ETL", "RFC + ETL", "Male", "Female"};
 
                         if(name.getText().toString().isEmpty()){
                             name.setError("Value cannot be empty");
-                        } else if(phone.getText().toString().isEmpty()){
+                        } if(phone.getText().toString().isEmpty()){
                             phone.setError("Value cannot be empty");
-                        } else if(dob.getText().toString().isEmpty()){
+                        } if(dob.getText().toString().isEmpty()){
                             dob.setError("Value cannot be empty");
-                        } else if(reb.getText().toString().isEmpty()){
+                        } if(reb.getText().toString().isEmpty()){
                             reb.setError("Value cannot be empty");
-                        } else if(leb.getText().toString().isEmpty()){
+                        } if(leb.getText().toString().isEmpty()){
                             leb.setError("Value cannot be empty");
-                        } else if(center.getText().toString().isEmpty()){
+                        } if(center.getText().toString().isEmpty()){
                             center.setError("Value cannot be empty");
                         } else {
+
+                            new AddSubscriberAST()
+                                    .execute(
+                                            name.getText().toString(),
+                                            reb.getText().toString(),
+                                            leb.getText().toString(),
+                                            center.getText().toString(),
+                                            phone.getText().toString(),
+                                            selections[Integer.parseInt(String.valueOf(gender.getCheckedRadioButtonId()))],
+                                            selections[Integer.parseInt(String.valueOf(e_type.getCheckedRadioButtonId()))],
+                                            selections[Integer.parseInt(String.valueOf(e_for.getCheckedRadioButtonId()))],
+                                            dob.getText().toString()
+                                    );
 
                         }
 
                     }
                 });
 
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
+                Button reset = alertDialogSubscriber.getButton(DialogInterface.BUTTON_NEUTRAL);
+                reset.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        gender.clearCheck();
+                        e_type.clearCheck();
+                        e_for.clearCheck();
+                        name.setText("");
+                        name.setHint("name");
+                        phone.setText("");
+                        phone.setHint("phone number");
+                        dob.setText("");
+                        dob.setHint("Date of Birth");
+                        reb.setText("");
+                        reb.setHint("REB");
+                        leb.setText("");
+                        leb.setHint("LEB");
+                        center.setText("");
+                        center.setHint("center");
+
+                    }
+                });
+
+            }
+        });
+
+        alertDialogSubscriber.show();
 
     }
 
@@ -1681,6 +1728,105 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
                 Toast.makeText(HomeScreen.this, "Sorry! Something went wrong when adding data to the server: \n" + s, Toast.LENGTH_SHORT).show();
             }
 
+        }
+    }
+
+    private class AddSubscriberAST extends AsyncTask<String, Void, String>{
+
+        ProgressDialog progressDialogSub = new ProgressDialog(HomeScreen.this);
+
+        @Override
+        protected void onPreExecute() {
+            progressDialogSub.setMessage("Please wait...");
+            progressDialogSub.show();
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            String name, reb, leb, center, phone, gender, type, enrolledFor, dob;
+            name = strings[0];
+            reb = strings[1];
+            leb = strings[2];
+            center = strings[3];
+            phone = strings[4];
+            gender = strings[5];
+            type = strings[6];
+            enrolledFor = strings[7];
+            dob = strings[8];
+
+            HttpURLConnection httpURLConnection = null;
+            BufferedWriter bufferedWriter = null;
+            BufferedReader bufferedReader = null;
+
+            try {
+
+                URL url = new URL(getString(R.string.add_subscriber_url));
+                httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setDoInput(true);
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.connect();
+
+                bufferedWriter = new BufferedWriter(new OutputStreamWriter(httpURLConnection.getOutputStream(), "UTF-8"));
+
+                String data = URLEncoder.encode("name", "UTF-8") +"="+ URLEncoder.encode(name, "UTF-8") +"&"+
+                        URLEncoder.encode("reb", "UTF-8") +"="+ URLEncoder.encode(reb, "UTF-8") +"&"+
+                        URLEncoder.encode("leb", "UTF-8") +"="+ URLEncoder.encode(leb, "UTF-8") +"&"+
+                        URLEncoder.encode("center", "UTF-8") +"="+ URLEncoder.encode(center, "UTF-8") +"&"+
+                        URLEncoder.encode("type", "UTF-8") +"="+ URLEncoder.encode(type, "UTF-8") +"&"+
+                        URLEncoder.encode("for", "UTF-8") +"="+ URLEncoder.encode(enrolledFor, "UTF-8") +"&"+
+                        URLEncoder.encode("phone", "UTF-8") +"="+ URLEncoder.encode(phone, "UTF-8") +"&"+
+                        URLEncoder.encode("dob", "UTF-8") +"="+ URLEncoder.encode(dob, "UTF-8") +"&"+
+                        URLEncoder.encode("gender", "UTF-8") +"="+ URLEncoder.encode(gender, "UTF-8");
+
+                bufferedWriter.write(data);
+                bufferedWriter.flush();
+                bufferedWriter.close();
+
+                bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+
+                String line;
+                StringBuilder response = new StringBuilder();
+
+                while((line = bufferedReader.readLine()) != null){
+                    response.append(line);
+                }
+
+                return response.toString();
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+                Log.v(LOG_TAG, e.toString());
+                return "";
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.v(LOG_TAG, e.toString());
+                return "";
+            } finally {
+                if(httpURLConnection != null){
+                    httpURLConnection.disconnect();
+                }
+                if(bufferedReader != null){
+                    try {
+                        bufferedReader.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            progressDialogSub.dismiss();
+            alertDialogSubscriber.dismiss();
+            alertDialogAdd.dismiss();
+            if(s.contains("success")){
+                Toast.makeText(HomeScreen.this, "subscriber successfully added to the database!", Toast.LENGTH_SHORT).show();
+            } else if(s.contains("fail")){
+                Toast.makeText(HomeScreen.this, "Sorry! Something went wrong when uploading data to the server: \n" + s, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(HomeScreen.this, "Sorry! Something went wrong when uploading data to the server", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }
