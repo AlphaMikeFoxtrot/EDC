@@ -23,18 +23,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/action/ic_account_balance_black_24dp.xml" />
-                                              </map>
-                                            </option>
-                                          </PersistentState>
-                                        </value>
-                                      </entry>
-                                      <entry key="image">
-                                        <value>
-                                          <PersistentState>
-                                            <option name="values">
-                                              <map>
-                                                <entry key="paddingPercent" value="-10" />
+                                                <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/social/ic_school_black_24dp.xml" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -44,8 +33,9 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="imageAsset" value="E:\_ Android App Projects\EDC\V2\Material RES\Icons\sub_detail_book.png" />
-                                      <entry key="outputName" value="et_eb" />
+                                      <entry key="assetType" value="IMAGE" />
+                                      <entry key="imageAsset" value="E:\_ Android App Projects\EDC\V2\Material RES\Icons\school.png" />
+                                      <entry key="outputName" value="et_school" />
                                     </map>
                                   </option>
                                 </PersistentState>
