@@ -256,7 +256,13 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="3dp"
-            android:layout_margin="12dp"
+            android:layout_marginTop="12dp"
+            android:background="@color/colorPrimary"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_marginBottom="12dp"
             android:background="@color/colorPrimary"/>
 
         <TextView
@@ -273,7 +279,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="3dp"
-            android:layout_margin="12dp"
+            android:layout_marginBottom="12dp"
             android:background="@color/colorPrimary"/>
 
         <LinearLayout
@@ -427,7 +433,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="3dp"
-            android:layout_margin="12dp"
+            android:layout_marginTop="12dp"
             android:background="@color/colorPrimary"/>
 
         <TextView
@@ -445,7 +451,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="3dp"
-            android:layout_margin="12dp"
+            android:layout_marginBottom="12dp"
             android:background="@color/colorPrimary"/>
 
         <EditText
@@ -525,7 +531,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="3dp"
-            android:layout_margin="12dp"
+            android:layout_marginTop="12dp"
             android:background="@color/colorPrimary"/>
 
         <TextView
@@ -543,7 +549,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="3dp"
-            android:layout_margin="12dp"
+            android:layout_marginBottom="12dp"
             android:background="@color/colorPrimary"/>
 
         <EditText
@@ -623,7 +629,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="3dp"
-            android:layout_margin="12dp"
+            android:layout_marginTop="12dp"
             android:background="@color/colorPrimary"/>
 
     </LinearLayout>

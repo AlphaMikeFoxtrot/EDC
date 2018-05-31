@@ -470,6 +470,654 @@
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_marginTop="12dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="Is ECRE"
+                        android:fontFamily="sans-serif-smallcaps"
+                        android:textStyle="bold"
+                        android:layout_marginRight="6dp"
+                        android:textSize="22sp"
+                        android:gravity="center_vertical|end" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.1"
+                        android:background="@android:color/transparent"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:id="@+id/subscriber_detail_is_ecre"
+                        tools:text="Male"
+                        android:layout_marginLeft="6dp"
+                        android:textSize="22sp"
+                        android:fontFamily="sans-serif-smallcaps"
+                        android:gravity="center_vertical|left" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginTop="12dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="ECRE Level"
+                        android:fontFamily="sans-serif-smallcaps"
+                        android:textStyle="bold"
+                        android:layout_marginRight="6dp"
+                        android:textSize="22sp"
+                        android:gravity="center_vertical|end" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.1"
+                        android:background="@android:color/transparent"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:id="@+id/subscriber_detail_ecre_level"
+                        tools:text="Male"
+                        android:layout_marginLeft="6dp"
+                        android:textSize="22sp"
+                        android:fontFamily="sans-serif-smallcaps"
+                        android:gravity="center_vertical|left" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginTop="12dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="Is External ECD"
+                        android:fontFamily="sans-serif-smallcaps"
+                        android:textStyle="bold"
+                        android:layout_marginRight="6dp"
+                        android:textSize="22sp"
+                        android:gravity="center_vertical|end" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.1"
+                        android:background="@android:color/transparent"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:id="@+id/subscriber_detail_is_external_ecd"
+                        tools:text="Male"
+                        android:layout_marginLeft="6dp"
+                        android:textSize="22sp"
+                        android:fontFamily="sans-serif-smallcaps"
+                        android:gravity="center_vertical|left" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginTop="12dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="External ECD name"
+                        android:fontFamily="sans-serif-smallcaps"
+                        android:textStyle="bold"
+                        android:layout_marginRight="6dp"
+                        android:textSize="22sp"
+                        android:gravity="center_vertical|end" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.1"
+                        android:background="@android:color/transparent"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:id="@+id/subscriber_detail_external_ecd_name"
+                        tools:text="Male"
+                        android:layout_marginLeft="6dp"
+                        android:textSize="22sp"
+                        android:fontFamily="sans-serif-smallcaps"
+                        android:gravity="center_vertical|left" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginTop="12dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="Class"
+                        android:fontFamily="sans-serif-smallcaps"
+                        android:textStyle="bold"
+                        android:layout_marginRight="6dp"
+                        android:textSize="22sp"
+                        android:gravity="center_vertical|end" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.1"
+                        android:background="@android:color/transparent"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:id="@+id/subscriber_detail_class"
+                        tools:text="Male"
+                        android:layout_marginLeft="6dp"
+                        android:textSize="22sp"
+                        android:fontFamily="sans-serif-smallcaps"
+                        android:gravity="center_vertical|left" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginTop="12dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="School Board"
+                        android:fontFamily="sans-serif-smallcaps"
+                        android:textStyle="bold"
+                        android:layout_marginRight="6dp"
+                        android:textSize="22sp"
+                        android:gravity="center_vertical|end" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.1"
+                        android:background="@android:color/transparent"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:id="@+id/subscriber_detail_board"
+                        tools:text="Male"
+                        android:layout_marginLeft="6dp"
+                        android:textSize="22sp"
+                        android:fontFamily="sans-serif-smallcaps"
+                        android:gravity="center_vertical|left" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginTop="12dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="Mother's name"
+                        android:fontFamily="sans-serif-smallcaps"
+                        android:textStyle="bold"
+                        android:layout_marginRight="6dp"
+                        android:textSize="22sp"
+                        android:gravity="center_vertical|end" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.1"
+                        android:background="@android:color/transparent"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:id="@+id/subscriber_detail_m_name"
+                        tools:text="Male"
+                        android:layout_marginLeft="6dp"
+                        android:textSize="22sp"
+                        android:fontFamily="sans-serif-smallcaps"
+                        android:gravity="center_vertical|left" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginTop="12dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="Mother's Qualification"
+                        android:fontFamily="sans-serif-smallcaps"
+                        android:textStyle="bold"
+                        android:layout_marginRight="6dp"
+                        android:textSize="22sp"
+                        android:gravity="center_vertical|end" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.1"
+                        android:background="@android:color/transparent"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:id="@+id/subscriber_detail_m_qual"
+                        tools:text="Male"
+                        android:layout_marginLeft="6dp"
+                        android:textSize="22sp"
+                        android:fontFamily="sans-serif-smallcaps"
+                        android:gravity="center_vertical|left" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginTop="12dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="Mother's Occupation"
+                        android:fontFamily="sans-serif-smallcaps"
+                        android:textStyle="bold"
+                        android:layout_marginRight="6dp"
+                        android:textSize="22sp"
+                        android:gravity="center_vertical|end" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.1"
+                        android:background="@android:color/transparent"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:id="@+id/subscriber_detail_m_occ"
+                        tools:text="Male"
+                        android:layout_marginLeft="6dp"
+                        android:textSize="22sp"
+                        android:fontFamily="sans-serif-smallcaps"
+                        android:gravity="center_vertical|left" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginTop="12dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="Mother's Phone Number"
+                        android:fontFamily="sans-serif-smallcaps"
+                        android:textStyle="bold"
+                        android:layout_marginRight="6dp"
+                        android:textSize="22sp"
+                        android:gravity="center_vertical|end" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.1"
+                        android:background="@android:color/transparent"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:id="@+id/subscriber_detail_m_phone"
+                        tools:text="Male"
+                        android:layout_marginLeft="6dp"
+                        android:textSize="22sp"
+                        android:fontFamily="sans-serif-smallcaps"
+                        android:gravity="center_vertical|left" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginTop="12dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="Mother's email address"
+                        android:fontFamily="sans-serif-smallcaps"
+                        android:textStyle="bold"
+                        android:layout_marginRight="6dp"
+                        android:textSize="22sp"
+                        android:gravity="center_vertical|end" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.1"
+                        android:background="@android:color/transparent"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:id="@+id/subscriber_detail_m_email"
+                        tools:text="Male"
+                        android:layout_marginLeft="6dp"
+                        android:textSize="22sp"
+                        android:fontFamily="sans-serif-smallcaps"
+                        android:gravity="center_vertical|left" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginTop="12dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="Languages spoken by mother"
+                        android:fontFamily="sans-serif-smallcaps"
+                        android:textStyle="bold"
+                        android:layout_marginRight="6dp"
+                        android:textSize="22sp"
+                        android:gravity="center_vertical|end" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.1"
+                        android:background="@android:color/transparent"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:id="@+id/subscriber_detail_m_lang"
+                        tools:text="Male"
+                        android:layout_marginLeft="6dp"
+                        android:textSize="22sp"
+                        android:fontFamily="sans-serif-smallcaps"
+                        android:gravity="center_vertical|left" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginTop="12dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="Father's name"
+                        android:fontFamily="sans-serif-smallcaps"
+                        android:textStyle="bold"
+                        android:layout_marginRight="6dp"
+                        android:textSize="22sp"
+                        android:gravity="center_vertical|end" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.1"
+                        android:background="@android:color/transparent"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:id="@+id/subscriber_detail_f_name"
+                        tools:text="Male"
+                        android:layout_marginLeft="6dp"
+                        android:textSize="22sp"
+                        android:fontFamily="sans-serif-smallcaps"
+                        android:gravity="center_vertical|left" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginTop="12dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="Father's qualification"
+                        android:fontFamily="sans-serif-smallcaps"
+                        android:textStyle="bold"
+                        android:layout_marginRight="6dp"
+                        android:textSize="22sp"
+                        android:gravity="center_vertical|end" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.1"
+                        android:background="@android:color/transparent"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:id="@+id/subscriber_detail_f_qual"
+                        tools:text="Male"
+                        android:layout_marginLeft="6dp"
+                        android:textSize="22sp"
+                        android:fontFamily="sans-serif-smallcaps"
+                        android:gravity="center_vertical|left" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginTop="12dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="Father's Occupation"
+                        android:fontFamily="sans-serif-smallcaps"
+                        android:textStyle="bold"
+                        android:layout_marginRight="6dp"
+                        android:textSize="22sp"
+                        android:gravity="center_vertical|end" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.1"
+                        android:background="@android:color/transparent"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:id="@+id/subscriber_detail_f_occ"
+                        tools:text="Male"
+                        android:layout_marginLeft="6dp"
+                        android:textSize="22sp"
+                        android:fontFamily="sans-serif-smallcaps"
+                        android:gravity="center_vertical|left" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginTop="12dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="Father's phone number"
+                        android:fontFamily="sans-serif-smallcaps"
+                        android:textStyle="bold"
+                        android:layout_marginRight="6dp"
+                        android:textSize="22sp"
+                        android:gravity="center_vertical|end" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.1"
+                        android:background="@android:color/transparent"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:id="@+id/subscriber_detail_f_phone"
+                        tools:text="Male"
+                        android:layout_marginLeft="6dp"
+                        android:textSize="22sp"
+                        android:fontFamily="sans-serif-smallcaps"
+                        android:gravity="center_vertical|left" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginTop="12dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="Father's email address"
+                        android:fontFamily="sans-serif-smallcaps"
+                        android:textStyle="bold"
+                        android:layout_marginRight="6dp"
+                        android:textSize="22sp"
+                        android:gravity="center_vertical|end" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.1"
+                        android:background="@android:color/transparent"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:id="@+id/subscriber_detail_f_email"
+                        tools:text="Male"
+                        android:layout_marginLeft="6dp"
+                        android:textSize="22sp"
+                        android:fontFamily="sans-serif-smallcaps"
+                        android:gravity="center_vertical|left" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginTop="12dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="languages spoken by Father"
+                        android:fontFamily="sans-serif-smallcaps"
+                        android:textStyle="bold"
+                        android:layout_marginRight="6dp"
+                        android:textSize="22sp"
+                        android:gravity="center_vertical|end" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.1"
+                        android:background="@android:color/transparent"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:id="@+id/subscriber_detail_f_lang"
+                        tools:text="Male"
+                        android:layout_marginLeft="6dp"
+                        android:textSize="22sp"
+                        android:fontFamily="sans-serif-smallcaps"
+                        android:gravity="center_vertical|left" />
+
+                </LinearLayout>
+
             </LinearLayout>
 
             <android.support.v7.widget.RecyclerView

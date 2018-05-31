@@ -31,8 +31,7 @@ import java.util.ArrayList;
 
 public class SubscriberDetails extends AppCompatActivity {
 
-    TextView name, bookCount, toyCount, phone, dob, enrolledFor, enrolledOn, enrollmentType, reb, leb, center, gender;
-    public static TextView id;
+    TextView name, bookCount, toyCount, phone, dob, enrolledFor, is_ecre, is_external_ecd, enrolledOn, enrollmentType, reb, leb, center, gender, ecre_level, external_ecd_name, sub_class, school_board, m_name, m_qual, m_occ, m_phone, m_email, m_lang, f_name, f_qual, f_occ, f_phone, f_email, f_lang;    public static TextView id;
     LinearLayout viewMoreContainer;
     Button viewMoreButton;
     RecyclerView analytics;
@@ -67,6 +66,24 @@ public class SubscriberDetails extends AppCompatActivity {
         leb = findViewById(R.id.subscriber_detail_leb);
         center = findViewById(R.id.subscriber_detail_center);
         gender = findViewById(R.id.subscriber_detail_gender);
+        is_ecre = findViewById(R.id.subscriber_detail_is_ecre);
+        ecre_level = findViewById(R.id.subscriber_detail_ecre_level);
+        is_external_ecd = findViewById(R.id.subscriber_detail_is_external_ecd);
+        external_ecd_name = findViewById(R.id.subscriber_detail_external_ecd_name);
+        sub_class = findViewById(R.id.subscriber_detail_class);
+        school_board = findViewById(R.id.subscriber_detail_board);
+        m_name = findViewById(R.id.subscriber_detail_m_name);
+        m_qual = findViewById(R.id.subscriber_detail_m_qual);
+        m_occ = findViewById(R.id.subscriber_detail_m_occ);
+        m_phone = findViewById(R.id.subscriber_detail_m_phone);
+        m_email = findViewById(R.id.subscriber_detail_m_email);
+        m_lang = findViewById(R.id.subscriber_detail_m_lang);
+        f_name = findViewById(R.id.subscriber_detail_f_name);
+        f_qual = findViewById(R.id.subscriber_detail_f_qual);
+        f_occ = findViewById(R.id.subscriber_detail_f_occ);
+        f_phone = findViewById(R.id.subscriber_detail_f_phone);
+        f_email = findViewById(R.id.subscriber_detail_f_email);
+        f_lang = findViewById(R.id.subscriber_detail_f_lang);
 
         viewMoreContainer = findViewById(R.id.subscriber_detail_view_more_con);
 
@@ -88,6 +105,24 @@ public class SubscriberDetails extends AppCompatActivity {
         leb.setText(subscriber.getLeb());
         center.setText(subscriber.getCenter());
         gender.setText(subscriber.getGender());
+        is_ecre.setText(subscriber.getis_ecre());
+        ecre_level.setText(subscriber.getecre_level());
+        is_external_ecd.setText(subscriber.getis_external_ecd());
+        external_ecd_name.setText(subscriber.getexternal_ecd_name());
+        sub_class.setText(subscriber.getSubscriber_class());
+        school_board.setText(subscriber.getBoard());
+        m_name.setText(subscriber.getm_name());
+        m_qual.setText(subscriber.getm_qual());
+        m_occ.setText(subscriber.getm_occ());
+        m_phone.setText(subscriber.getm_phone());
+        m_email.setText(subscriber.getm_email());
+        m_lang.setText(subscriber.getm_lang());
+        f_name.setText(subscriber.getf_name());
+        f_qual.setText(subscriber.getf_qual());
+        f_occ.setText(subscriber.getf_occ());
+        f_phone.setText(subscriber.getf_phone());
+        f_email.setText(subscriber.getf_email());
+        f_lang.setText(subscriber.getf_lang());
         new GetMonthsAST().execute();
 
         viewMoreButton.setOnClickListener(new View.OnClickListener() {

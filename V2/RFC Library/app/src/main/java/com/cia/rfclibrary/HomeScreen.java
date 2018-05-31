@@ -673,13 +673,29 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
         RadioButton genderButton;
 
-        final EditText name, reb, leb, center, dob, phone;
+        final EditText name, reb, leb, center, dob, phone, ecre_level, external_ecd_name, sub_class, school_board, m_name, m_qual, m_occ, m_phone, m_email, m_lang, f_name, f_qual, f_occ, f_phone, f_email, f_lang;
         name = prompt.findViewById(R.id.add_subscriber_name);
         reb = prompt.findViewById(R.id.add_subscriber_reb);
         leb = prompt.findViewById(R.id.add_subscriber_leb);
         center = prompt.findViewById(R.id.add_subscriber_center);
         dob = prompt.findViewById(R.id.add_subscriber_dob);
         phone = prompt.findViewById(R.id.add_subscriber_phone);
+        ecre_level = prompt.findViewById(R.id.add_subscriber_ecre_level);
+        external_ecd_name = prompt.findViewById(R.id.add_subscriber_external_ecd_name);
+        sub_class = prompt.findViewById(R.id.add_subscriber_class);
+        school_board = prompt.findViewById(R.id.add_subscriber_board);
+        m_name = prompt.findViewById(R.id.add_subscriber_mother_name);
+        m_qual = prompt.findViewById(R.id.add_subscriber_mother_qual);
+        m_occ = prompt.findViewById(R.id.add_subscriber_mother_occ);
+        m_phone = prompt.findViewById(R.id.add_subscriber_mother_phone);
+        m_email = prompt.findViewById(R.id.add_subscriber_mother_email);
+        m_lang = prompt.findViewById(R.id.add_subscriber_mother_lang);
+        f_name = prompt.findViewById(R.id.add_subscriber_father_name);
+        f_qual = prompt.findViewById(R.id.add_subscriber_father_qual);
+        f_occ = prompt.findViewById(R.id.add_subscriber_father_occ);
+        f_phone = prompt.findViewById(R.id.add_subscriber_father_phone);
+        f_email = prompt.findViewById(R.id.add_subscriber_father_email);
+        f_lang = prompt.findViewById(R.id.add_subscriber_father_lang);
 
         final String e_type_sel, e_for_sel, gender_sel;
 
@@ -687,7 +703,9 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
         final String[] eFors = {"bs", "RFC", "ETL", "RFC + ETL"};
         final String[] genders = {"bs", "male", "female"};
 
-        final RadioGroup e_type, e_for, gender;
+        final RadioGroup e_type, e_for, gender, is_ecre, is_external_ecd;
+        is_external_ecd = prompt.findViewById(R.id.add_subscriber_is_external_ecd);
+        is_ecre = prompt.findViewById(R.id.add_subscriber_is_ecre);
         e_type = prompt.findViewById(R.id.add_subscriber_e_type_rg);
         e_for = prompt.findViewById(R.id.add_subscriber_e_for_rg);
         gender = prompt.findViewById(R.id.add_subscriber_gender_rg);
@@ -754,7 +772,7 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
                     @Override
                     public void onClick(View v) {
 
-                        String[] selections = {"bs", "new", "old", "RFC", "ETL", "RFC + ETL", "Male", "Female"};
+                        String[] selections = {"bs", "new", "old", "RFC", "ETL", "RFC + ETL", "Male", "Female", "TRUE", "FALSE", "TRUE", "FALSE"};
 
                         if(name.getText().toString().isEmpty()){
                             name.setError("Value cannot be empty");
@@ -780,7 +798,25 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
                                             selections[Integer.parseInt(String.valueOf(gender.getCheckedRadioButtonId()))],
                                             selections[Integer.parseInt(String.valueOf(e_type.getCheckedRadioButtonId()))],
                                             selections[Integer.parseInt(String.valueOf(e_for.getCheckedRadioButtonId()))],
-                                            dob.getText().toString()
+                                            dob.getText().toString(),
+                                            selections[Integer.parseInt(String.valueOf(is_ecre.getCheckedRadioButtonId()))],
+                                            ecre_level.getText().toString(),
+                                            selections[Integer.parseInt(String.valueOf(is_external_ecd.getCheckedRadioButtonId()))],
+                                            external_ecd_name.getText().toString(),
+                                            sub_class.getText().toString(),
+                                            school_board.getText().toString(),
+                                            m_name.getText().toString(),
+                                            m_qual.getText().toString(),
+                                            m_occ.getText().toString(),
+                                            m_phone.getText().toString(),
+                                            m_email.getText().toString(),
+                                            m_lang.getText().toString(),
+                                            f_name.getText().toString(),
+                                            f_qual.getText().toString(),
+                                            f_occ.getText().toString(),
+                                            f_phone.getText().toString(),
+                                            f_email.getText().toString(),
+                                            f_lang.getText().toString()
                                     );
 
                         }
@@ -788,26 +824,76 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
                     }
                 });
 
-                Button reset = alertDialogSubscriber.getButton(DialogInterface.BUTTON_NEUTRAL);
+                final Button reset = alertDialogSubscriber.getButton(DialogInterface.BUTTON_NEUTRAL);
                 reset.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
-                        gender.clearCheck();
-                        e_type.clearCheck();
-                        e_for.clearCheck();
-                        name.setText("");
-                        name.setHint("name");
-                        phone.setText("");
-                        phone.setHint("phone number");
-                        dob.setText("");
-                        dob.setHint("Date of Birth");
-                        reb.setText("");
-                        reb.setHint("REB");
-                        leb.setText("");
-                        leb.setHint("LEB");
-                        center.setText("");
-                        center.setHint("center");
+                        AlertDialog.Builder resetPrompt = new AlertDialog.Builder(HomeScreen.this);
+                        resetPrompt
+                                .setTitle("Warning")
+                                .setMessage("Are you sure you want to reset the form?")
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                        gender.clearCheck();
+                                        e_type.clearCheck();
+                                        e_for.clearCheck();
+                                        name.setText("");
+                                        name.setHint("name");
+                                        phone.setText("");
+                                        phone.setHint("phone number");
+                                        dob.setText("");
+                                        dob.setHint("Date of Birth");
+                                        reb.setText("");
+                                        reb.setHint("REB");
+                                        leb.setText("");
+                                        leb.setHint("LEB");
+                                        center.setText("");
+                                        center.setHint("center");
+                                        external_ecd_name.setText("");
+                                        external_ecd_name.setHint("External ECD name");
+                                        sub_class.setText("");
+                                        sub_class.setHint("Class studying in");
+                                        school_board.setText("");
+                                        school_board.setHint("School Board(CBSE, ICSE...)");
+                                        m_name.setText("");
+                                        m_name.setHint("Name");
+                                        m_qual.setText("");
+                                        m_qual.setHint("Qualification");
+                                        m_occ.setText("");
+                                        m_occ.setHint("Occupation");
+                                        m_phone.setText("");
+                                        m_phone.setHint("Phone Number");
+                                        m_email.setText("");
+                                        m_email.setHint("email address");
+                                        m_lang.setText("");
+                                        m_lang.setHint("Languages known");
+                                        f_name.setText("");
+                                        f_name.setHint("Name");
+                                        f_qual.setText("");
+                                        f_qual.setHint("Qualification");
+                                        f_occ.setText("");
+                                        f_occ.setHint("Occupation");
+                                        f_phone.setText("");
+                                        f_phone.setHint("Phone Number");
+                                        f_email.setText("");
+                                        f_email.setHint("email address");
+                                        f_lang.setText("");
+                                        f_lang.setHint("Languages known");
+
+                                    }
+                                })
+                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+
+                        AlertDialog alertDialog = resetPrompt.create();
+                        alertDialog.show();
 
                     }
                 });
@@ -1743,7 +1829,7 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
         @Override
         protected String doInBackground(String... strings) {
-            String name, reb, leb, center, phone, gender, type, enrolledFor, dob;
+            String is_ecre, is_external_ecd, name, reb, leb, center, phone, gender, type, enrolledFor, dob, ecre_level, external_ecd_name, sub_class, school_board, m_name, m_qual, m_occ, m_phone, m_email, m_lang, f_name, f_qual, f_occ, f_phone, f_email, f_lang;;
             name = strings[0];
             reb = strings[1];
             leb = strings[2];
@@ -1753,6 +1839,24 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
             type = strings[6];
             enrolledFor = strings[7];
             dob = strings[8];
+            is_ecre = strings[9];
+            ecre_level = strings[10];
+            is_external_ecd = strings[11];
+            external_ecd_name = strings[12];
+            sub_class = strings[13];
+            school_board = strings[14];
+            m_name = strings[15];
+            m_qual = strings[16];
+            m_occ = strings[17];
+            m_phone = strings[18];
+            m_email = strings[19];
+            m_lang = strings[20];
+            f_name = strings[21];
+            f_qual = strings[22];
+            f_occ = strings[23];
+            f_phone = strings[24];
+            f_email = strings[25];
+            f_lang = strings[26];
 
             HttpURLConnection httpURLConnection = null;
             BufferedWriter bufferedWriter = null;
@@ -1776,7 +1880,25 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
                         URLEncoder.encode("for", "UTF-8") +"="+ URLEncoder.encode(enrolledFor, "UTF-8") +"&"+
                         URLEncoder.encode("phone", "UTF-8") +"="+ URLEncoder.encode(phone, "UTF-8") +"&"+
                         URLEncoder.encode("dob", "UTF-8") +"="+ URLEncoder.encode(dob, "UTF-8") +"&"+
-                        URLEncoder.encode("gender", "UTF-8") +"="+ URLEncoder.encode(gender, "UTF-8");
+                        URLEncoder.encode("gender", "UTF-8") +"="+ URLEncoder.encode(gender, "UTF-8") +"&"+
+                        URLEncoder.encode("is_ecre", "UTF-8") +"="+ URLEncoder.encode(is_ecre, "UTF-8") +"&"+
+                        URLEncoder.encode("ecre_level", "UTF-8") +"="+ URLEncoder.encode(ecre_level, "UTF-8") +"&"+
+                        URLEncoder.encode("is_external_ecd", "UTF-8") +"="+ URLEncoder.encode(is_external_ecd, "UTF-8") +"&"+
+                        URLEncoder.encode("external_ecd_name", "UTF-8") +"="+ URLEncoder.encode(external_ecd_name, "UTF-8") +"&"+
+                        URLEncoder.encode("sub_class", "UTF-8") +"="+ URLEncoder.encode(sub_class, "UTF-8") +"&"+
+                        URLEncoder.encode("school_board", "UTF-8") +"="+ URLEncoder.encode(school_board, "UTF-8") +"&"+
+                        URLEncoder.encode("m_name", "UTF-8") +"="+ URLEncoder.encode(m_name, "UTF-8") +"&"+
+                        URLEncoder.encode("m_qual", "UTF-8") +"="+ URLEncoder.encode(m_qual, "UTF-8") +"&"+
+                        URLEncoder.encode("m_occ", "UTF-8") +"="+ URLEncoder.encode(m_occ, "UTF-8") +"&"+
+                        URLEncoder.encode("m_phone", "UTF-8") +"="+ URLEncoder.encode(m_phone, "UTF-8") +"&"+
+                        URLEncoder.encode("m_email", "UTF-8") +"="+ URLEncoder.encode(m_email, "UTF-8") +"&"+
+                        URLEncoder.encode("m_lang", "UTF-8") +"="+ URLEncoder.encode(m_lang, "UTF-8") +"&"+
+                        URLEncoder.encode("f_name", "UTF-8") +"="+ URLEncoder.encode(f_name, "UTF-8") +"&"+
+                        URLEncoder.encode("f_qual", "UTF-8") +"="+ URLEncoder.encode(f_qual, "UTF-8") +"&"+
+                        URLEncoder.encode("f_occ", "UTF-8") +"="+ URLEncoder.encode(f_occ, "UTF-8") +"&"+
+                        URLEncoder.encode("f_phone", "UTF-8") +"="+ URLEncoder.encode(f_phone, "UTF-8") +"&"+
+                        URLEncoder.encode("f_email", "UTF-8") +"="+ URLEncoder.encode(f_email, "UTF-8") +"&"+
+                        URLEncoder.encode("f_lang", "UTF-8") +"="+ URLEncoder.encode(f_lang, "UTF-8");
 
                 bufferedWriter.write(data);
                 bufferedWriter.flush();
