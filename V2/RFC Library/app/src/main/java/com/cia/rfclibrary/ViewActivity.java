@@ -46,7 +46,7 @@ import java.util.concurrent.ExecutionException;
 public class ViewActivity extends AppCompatActivity {
 
     RecyclerView mRecyclerView;
-    TextView error, title;
+    TextView error, title, len;
 
     ProgressBar progressBar;
 
@@ -78,6 +78,7 @@ public class ViewActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.view_act_rv);
         progressBar = findViewById(R.id.view_stuff_bar);
         error = findViewById(R.id.view_act_error);
+        len = findViewById(R.id.view_stuff_arsenal_len);
         title = findViewById(R.id.view_stuff_toolbar_title);
         toolbar = findViewById(R.id.view_stuff_toolbar);
         setSupportActionBar(toolbar);
@@ -101,6 +102,7 @@ public class ViewActivity extends AppCompatActivity {
                 title.setText("View Books");
                 GetBooksAST book_ast = new GetBooksAST();
                 book_ast.execute();
+                len.setText("Number of books in library: " + books.size());
                 break;
 
             case 150:
@@ -108,6 +110,7 @@ public class ViewActivity extends AppCompatActivity {
                 title.setText("View Issued Books");
                 GetIssuedBooksAST issued_book_ast = new GetIssuedBooksAST();
                 issued_book_ast.execute();
+                len.setText("Number of books currrently issued: " + issuedBooks.size());
                 break;
 
             case 200:
@@ -115,6 +118,7 @@ public class ViewActivity extends AppCompatActivity {
                 title.setText("View Subscribers");
                 GetSubscribersAST getSubscribersAST = new GetSubscribersAST();
                 getSubscribersAST.execute();
+                len.setText("Number of subscribers currently enrolled: " + subscribers.size());
                 break;
 
             case 300:
@@ -122,6 +126,7 @@ public class ViewActivity extends AppCompatActivity {
                 title.setText("View Toys");
                 GetToysAST getToysAST = new GetToysAST();
                 getToysAST.execute();
+                len.setText("Number of toys in library: " + toys.size());
                 break;
 
             case 350:
@@ -129,6 +134,7 @@ public class ViewActivity extends AppCompatActivity {
                 title.setText("View Issued Toys");
                 GetIssuedToysAST getIssuedToysAST = new GetIssuedToysAST();
                 getIssuedToysAST.execute();
+                len.setText("Number of toys currently issued: " + issuedToys.size());
                 break;
 
             default:
@@ -629,6 +635,7 @@ public class ViewActivity extends AppCompatActivity {
     public void setSearchError(){
 
         error.setVisibility(View.VISIBLE);
+        len.setVisibility(View.GONE);
         error.setText("Sorry! Your search query returned no results!");
 
     }
@@ -725,6 +732,7 @@ public class ViewActivity extends AppCompatActivity {
                 mRecyclerView.setAdapter(issuedBookAdapter);
             } else {
                 error.setVisibility(View.VISIBLE);
+                len.setVisibility(View.GONE);
                 error.setText("Sorry there seems to be no books issued currently!");
             }
         }
@@ -822,6 +830,7 @@ public class ViewActivity extends AppCompatActivity {
                 mRecyclerView.setAdapter(issuedToyAdapter);
             } else {
                 error.setVisibility(View.VISIBLE);
+                len.setVisibility(View.GONE);
                 error.setText("Sorry there seems to be no toys issued currently!");
             }
         }
@@ -917,6 +926,7 @@ public class ViewActivity extends AppCompatActivity {
                 mRecyclerView.setAdapter(bookAdapter);
             } else {
                 error.setVisibility(View.VISIBLE);
+                len.setVisibility(View.GONE);
                 error.setText("Sorry there seems to be no books issued currently!");
             }
         }
@@ -1013,6 +1023,7 @@ public class ViewActivity extends AppCompatActivity {
                 mRecyclerView.setAdapter(toyAdapter);
             } else {
                 error.setVisibility(View.VISIBLE);
+                len.setVisibility(View.GONE);
                 error.setText("Sorry there seems to be no toys issued currently!");
             }
         }
@@ -1143,6 +1154,7 @@ public class ViewActivity extends AppCompatActivity {
                 mRecyclerView.setAdapter(subscriberAdapter);
             } else {
                 error.setVisibility(View.VISIBLE);
+                len.setVisibility(View.GONE);
                 error.setText("Sorry there seems to be no subscribers available right now!");
             }
         }

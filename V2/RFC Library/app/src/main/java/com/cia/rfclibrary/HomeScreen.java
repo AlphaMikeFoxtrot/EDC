@@ -383,7 +383,8 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
             toyId.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    selectedToyId = dialogToyIds.get(position);
+                    String[] selectedToyIdList = dialogToyIds.get(position).split("  ");
+                    selectedToyId = selectedToyIdList[0];
                 }
 
                 @Override
@@ -1274,7 +1275,14 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
                     for (int i = 0; i < root.length(); i++){
 
                         JSONObject toy = root.getJSONObject(i);
-                        dialogToyIds.add(toy.getString("toy_id"));
+
+                        StringBuilder listItem = new StringBuilder();
+                        listItem.append(toy.getString("toy_id"));
+                        listItem.append("  (");
+                        listItem.append(toy.getString("toy_name"));
+                        listItem.append(") ");
+
+                        dialogToyIds.add(listItem.toString());
 
                     }
 
