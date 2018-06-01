@@ -290,20 +290,20 @@ public class ViewActivity extends AppCompatActivity {
                                         subscriber.setecre_level(iSubscriber.getString("ecre_level"));
                                         subscriber.setis_external_ecd(iSubscriber.getString("is_external_ecd"));
                                         subscriber.setexternal_ecd_name(iSubscriber.getString("external_ecd_name"));
-                                        subscriber.setSubscriber_class(iSubscriber.getString("sub_class"));
-                                        subscriber.setBoard(iSubscriber.getString("school_board"));
-                                        subscriber.setm_name(iSubscriber.getString("m_name"));
-                                        subscriber.setm_qual(iSubscriber.getString("m_qual"));
-                                        subscriber.setm_occ(iSubscriber.getString("m_occ"));
-                                        subscriber.setm_phone(iSubscriber.getString("m_phone"));
-                                        subscriber.setm_email(iSubscriber.getString("m_email"));
-                                        subscriber.setm_lang(iSubscriber.getString("m_lang"));
-                                        subscriber.setf_name(iSubscriber.getString("f_name"));
-                                        subscriber.setf_qual(iSubscriber.getString("f_qual"));
-                                        subscriber.setf_occ(iSubscriber.getString("f_occ"));
-                                        subscriber.setf_phone(iSubscriber.getString("f_phone"));
-                                        subscriber.setf_email(iSubscriber.getString("f_email"));
-                                        subscriber.setf_lang(iSubscriber.getString("f_lang"));
+                                        subscriber.setSubscriber_class(iSubscriber.getString("class"));
+                                        subscriber.setBoard(iSubscriber.getString("board"));
+                                        subscriber.setm_name(iSubscriber.getString("mother_name"));
+                                        subscriber.setm_qual(iSubscriber.getString("mother_qual"));
+                                        subscriber.setm_occ(iSubscriber.getString("mother_occ"));
+                                        subscriber.setm_phone(iSubscriber.getString("mother_phone"));
+                                        subscriber.setm_email(iSubscriber.getString("mother_email"));
+                                        subscriber.setm_lang(iSubscriber.getString("mother_lang"));
+                                        subscriber.setf_name(iSubscriber.getString("father_name"));
+                                        subscriber.setf_qual(iSubscriber.getString("father_qual"));
+                                        subscriber.setf_occ(iSubscriber.getString("father_occ"));
+                                        subscriber.setf_phone(iSubscriber.getString("father_phone"));
+                                        subscriber.setf_email(iSubscriber.getString("father_email"));
+                                        subscriber.setf_lang(iSubscriber.getString("father_lang"));
                                         list.add(subscriber);
 
                                     }
@@ -1082,6 +1082,24 @@ public class ViewActivity extends AppCompatActivity {
                         subscriber.setGender(iSubscriber.getString("subscriber_gender"));
                         subscriber.setBookCount(iSubscriber.getString("book_count"));
                         subscriber.setToyCount(iSubscriber.getString("toy_count"));
+                        subscriber.setis_ecre(iSubscriber.getString("is_ecre"));
+                        subscriber.setecre_level(iSubscriber.getString("ecre_level"));
+                        subscriber.setis_external_ecd(iSubscriber.getString("is_external_ecd"));
+                        subscriber.setexternal_ecd_name(iSubscriber.getString("external_ecd_name"));
+                        subscriber.setSubscriber_class(iSubscriber.getString("class"));
+                        subscriber.setBoard(iSubscriber.getString("board"));
+                        subscriber.setm_name(iSubscriber.getString("mother_name"));
+                        subscriber.setm_qual(iSubscriber.getString("mother_qual"));
+                        subscriber.setm_occ(iSubscriber.getString("mother_occ"));
+                        subscriber.setm_phone(iSubscriber.getString("mother_phone"));
+                        subscriber.setm_email(iSubscriber.getString("mother_email"));
+                        subscriber.setm_lang(iSubscriber.getString("mother_lang"));
+                        subscriber.setf_name(iSubscriber.getString("father_name"));
+                        subscriber.setf_qual(iSubscriber.getString("father_qual"));
+                        subscriber.setf_occ(iSubscriber.getString("father_occ"));
+                        subscriber.setf_phone(iSubscriber.getString("father_phone"));
+                        subscriber.setf_email(iSubscriber.getString("father_email"));
+                        subscriber.setf_lang(iSubscriber.getString("father_lang"));
                         subscribers.add(subscriber);
 
                     }

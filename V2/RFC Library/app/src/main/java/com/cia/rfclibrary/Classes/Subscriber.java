@@ -45,7 +45,7 @@ public class Subscriber implements Parcelable{
     public Subscriber() {
     }
 
-    public Subscriber(Parcel in) {
+    protected Subscriber(Parcel in) {
         name = in.readString();
         id = in.readString();
         enrolledFor = in.readString();

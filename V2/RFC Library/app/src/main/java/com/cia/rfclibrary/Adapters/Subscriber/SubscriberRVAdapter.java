@@ -94,6 +94,7 @@ public class SubscriberRVAdapter extends RecyclerView.Adapter<SubscriberRVAdapte
                 Intent toDetails = new Intent(context, SubscriberDetails.class);
                 toDetails.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 toDetails.putExtra("subscriber", subscribers.get(getAdapterPosition()));
+                Toast.makeText(context, "" + subscribers.get(getAdapterPosition()).getis_ecre(), Toast.LENGTH_SHORT).show();
                 context.startActivity(toDetails);
 
                 }

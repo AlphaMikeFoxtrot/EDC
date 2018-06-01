@@ -105,9 +105,17 @@ public class SubscriberDetails extends AppCompatActivity {
         leb.setText(subscriber.getLeb());
         center.setText(subscriber.getCenter());
         gender.setText(subscriber.getGender());
-        is_ecre.setText(subscriber.getis_ecre());
+        if(subscriber.getis_ecre().equals("1")){
+            is_ecre.setText("True");
+        } else if (subscriber.getis_ecre().equals("0")){
+            is_ecre.setText("False");
+        }
         ecre_level.setText(subscriber.getecre_level());
-        is_external_ecd.setText(subscriber.getis_external_ecd());
+        if(subscriber.getis_external_ecd().equals("1")){
+            is_external_ecd.setText("True");
+        } else if(subscriber.getis_external_ecd().equals("0")){
+            is_external_ecd.setText("False");
+        }
         external_ecd_name.setText(subscriber.getexternal_ecd_name());
         sub_class.setText(subscriber.getSubscriber_class());
         school_board.setText(subscriber.getBoard());
