@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@android:color/white"
     android:padding="16dp"
     android:gravity="center"
     android:id="@+id/login_form"
@@ -15,6 +16,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="400px"
+            android:layout_height="400px"
+            android:layout_gravity="center"
+            android:src="@drawable/raw"
+            android:layout_marginBottom="24dp" />
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
@@ -55,7 +63,6 @@
         android:layout_gravity="center"
         android:layout_margin="12dp"
         app:cardCornerRadius="4dp"
-        app:contentPadding="4dp"
         app:cardElevation="12dp"
         android:layout_height="wrap_content">
 

@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
@@ -32,6 +33,7 @@ import com.cia.rfclibrary.Adapters.SummaryLogs.MonthlyLogRVAdapter;
 import com.cia.rfclibrary.Adapters.SummaryLogs.SummaryRVAdapter;
 import com.cia.rfclibrary.Classes.MonthlyLog;
 import com.cia.rfclibrary.Classes.Subscriber;
+import com.cia.rfclibrary.NetworkUtils.NetworkChangeReceiver;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -65,10 +67,37 @@ public class Summary extends AppCompatActivity {
     MonthlyLogRVAdapter monthlyLogRVAdapter;
     LinearLayout summaryCon, analyticsCon;
 
+    NetworkChangeReceiver receiver;
+    Boolean flag = false;
+    IntentFilter filter;
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(flag) {
+            unregisterReceiver(receiver);
+            flag = false;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(flag) {
+            unregisterReceiver(receiver);
+            flag = false;
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_summary);
+
+        filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        receiver = new NetworkChangeReceiver();
+        registerReceiver(receiver, filter);
+        flag = true;
 
         title = findViewById(R.id.summary_toolbar_title);
         title.setText("Summary");

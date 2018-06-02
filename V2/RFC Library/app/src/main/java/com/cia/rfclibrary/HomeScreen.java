@@ -6,7 +6,9 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -33,6 +35,7 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.cia.rfclibrary.Classes.Book;
+import com.cia.rfclibrary.NetworkUtils.NetworkChangeReceiver;
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 
 import org.json.JSONArray;
@@ -62,6 +65,10 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
     ProgressDialog progressDialog;
     public static final String LOG_TAG = "home_screen_log";
 
+    NetworkChangeReceiver receiver;
+    Boolean flag = false;
+    IntentFilter filter;
+
     Calendar myCalendar = Calendar.getInstance();
     public AlertDialog alertDialogSubscriber;
 
@@ -85,6 +92,24 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
             viewSummary;
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        if(flag) {
+            unregisterReceiver(receiver);
+            flag = false;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(flag) {
+            unregisterReceiver(receiver);
+            flag = false;
+        }
+    }
+
+    @Override
     public void onBackPressed() {
         Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_HOME);
@@ -96,6 +121,11 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
+
+        filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        receiver = new NetworkChangeReceiver();
+        registerReceiver(receiver, filter);
+        flag = true;
 
         progressDialog = new ProgressDialog(this);
 

@@ -2,7 +2,9 @@ package com.cia.rfclibrary;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.cia.rfclibrary.Classes.Admin;
+import com.cia.rfclibrary.NetworkUtils.NetworkChangeReceiver;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,6 +42,29 @@ public class LoginActivity extends AppCompatActivity {
     public static final String LOG_TAG = "login_log_tag";
     ProgressDialog progressDialog;
 
+    NetworkChangeReceiver receiver;
+    Boolean flag = false;
+    IntentFilter filter;
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(flag) {
+            unregisterReceiver(receiver);
+            flag = false;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(flag) {
+            unregisterReceiver(receiver);
+            flag = false;
+        }
+    }
+
+
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(Intent.ACTION_MAIN);
@@ -51,6 +77,11 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        receiver = new NetworkChangeReceiver();
+        registerReceiver(receiver, filter);
+        flag = true;
 
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
@@ -130,8 +161,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private class CheckLoginAST extends AsyncTask<String, Void, String> {
+
         public String username_login;
         public String password_login;
+        public String id;
 
         @Override
         protected void onPreExecute() {

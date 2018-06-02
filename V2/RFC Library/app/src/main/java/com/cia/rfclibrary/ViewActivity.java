@@ -1,6 +1,8 @@
 package com.cia.rfclibrary;
 
 import android.app.ProgressDialog;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.HandlerThread;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +27,7 @@ import com.cia.rfclibrary.Adapters.Toy.ToyRVAdapter;
 import com.cia.rfclibrary.Classes.Book;
 import com.cia.rfclibrary.Classes.Subscriber;
 import com.cia.rfclibrary.Classes.Toy;
+import com.cia.rfclibrary.NetworkUtils.NetworkChangeReceiver;
 import com.google.android.gms.stats.internal.G;
 
 import org.json.JSONArray;
@@ -48,6 +51,8 @@ public class ViewActivity extends AppCompatActivity {
     RecyclerView mRecyclerView;
     TextView error, title, len;
 
+    int i_book_size, book_size, s_size, i_toy_size, toy_size;
+
     ProgressBar progressBar;
 
     private final String LOG_TAG = "view_act";
@@ -69,10 +74,37 @@ public class ViewActivity extends AppCompatActivity {
     android.support.v7.widget.Toolbar toolbar;
     int mode;
 
+    NetworkChangeReceiver receiver;
+    Boolean flag = false;
+    IntentFilter filter;
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(flag) {
+            unregisterReceiver(receiver);
+            flag = false;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(flag) {
+            unregisterReceiver(receiver);
+            flag = false;
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view);
+
+        filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        receiver = new NetworkChangeReceiver();
+        registerReceiver(receiver, filter);
+        flag = true;
 
         progressDialog = new ProgressDialog(this);
         mRecyclerView = findViewById(R.id.view_act_rv);
@@ -728,6 +760,8 @@ public class ViewActivity extends AppCompatActivity {
         protected void onPostExecute(ArrayList<Book> books) {
             progressDialog.dismiss();
             if(books.size() > 0){
+                i_book_size = books.size();
+                len.setText("Number of books currently issued: " + i_book_size);
                 issuedBookAdapter = new IssuedBookRVAdapter(ViewActivity.this, books);
                 mRecyclerView.setAdapter(issuedBookAdapter);
             } else {
@@ -826,6 +860,8 @@ public class ViewActivity extends AppCompatActivity {
         protected void onPostExecute(ArrayList<Toy> toys) {
             progressDialog.dismiss();
             if(toys.size() > 0){
+                i_toy_size = toys.size();
+                len.setText("Number of toys currently issued: " + i_toy_size);
                 issuedToyAdapter = new IssuedToyRVAdapter(ViewActivity.this, toys);
                 mRecyclerView.setAdapter(issuedToyAdapter);
             } else {
@@ -922,6 +958,8 @@ public class ViewActivity extends AppCompatActivity {
         protected void onPostExecute(ArrayList<Book> books) {
             progressDialog.dismiss();
             if(books.size() > 0){
+                book_size = books.size();
+                len.setText("Number of books in library: " + book_size);
                 bookAdapter = new BookRVAdapter(ViewActivity.this, books);
                 mRecyclerView.setAdapter(bookAdapter);
             } else {
@@ -1019,6 +1057,8 @@ public class ViewActivity extends AppCompatActivity {
         protected void onPostExecute(ArrayList<Toy> toys) {
             progressDialog.dismiss();
             if(toys.size() > 0){
+                toy_size = toys.size();
+                len.setText("Number of toys in library: " + toy_size);
                 toyAdapter = new ToyRVAdapter(ViewActivity.this, toys);
                 mRecyclerView.setAdapter(toyAdapter);
             } else {
@@ -1150,6 +1190,8 @@ public class ViewActivity extends AppCompatActivity {
         protected void onPostExecute(ArrayList<Subscriber> subscribers) {
             progressDialog.dismiss();
             if(subscribers.size() > 0){
+                s_size = subscribers.size();
+                len.setText("Number of subscribers currently enrolled in library: " + s_size);
                 subscriberAdapter = new SubscriberRVAdapter(ViewActivity.this, subscribers);
                 mRecyclerView.setAdapter(subscriberAdapter);
             } else {
