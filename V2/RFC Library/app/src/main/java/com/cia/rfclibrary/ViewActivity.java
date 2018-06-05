@@ -677,7 +677,7 @@ public class ViewActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
 
-            progressDialog.setMessage("please wait...");
+            progressDialog.setMessage(getString(R.string.ast_pd_message));
             progressDialog.show();
 
         }
@@ -777,7 +777,7 @@ public class ViewActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
 
-            progressDialog.setMessage("please wait...");
+            progressDialog.setMessage(getString(R.string.ast_pd_message));
             progressDialog.show();
 
         }
@@ -877,7 +877,7 @@ public class ViewActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
 
-            progressDialog.setMessage("please wait...");
+            progressDialog.setMessage(getString(R.string.ast_pd_message));
             progressDialog.show();
 
         }
@@ -976,7 +976,7 @@ public class ViewActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
 
-            progressDialog.setMessage("please wait...");
+            progressDialog.setMessage(getString(R.string.ast_pd_message));
             progressDialog.show();
 
         }
@@ -1078,7 +1078,7 @@ public class ViewActivity extends AppCompatActivity {
             if(subscribers.size() > 0){
                 subscribers.clear();
             }
-            progressDialog.setMessage("please wait...");
+            progressDialog.setMessage(getString(R.string.ast_pd_message));
             progressDialog.show();
 
         }

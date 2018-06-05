@@ -185,7 +185,7 @@ public class SubscriberDetails extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            progressDialog.setMessage("please wait...");
+            progressDialog.setMessage(getString(R.string.ast_pd_message));
             progressDialog.show();
         }
 

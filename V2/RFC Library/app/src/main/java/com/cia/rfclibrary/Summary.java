@@ -105,7 +105,7 @@ public class Summary extends AppCompatActivity {
         analyticsCon = findViewById(R.id.analytics_con);
         error = findViewById(R.id.summary_error);
         progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("please wait...");
+        progressDialog.setMessage(getString(R.string.ast_pd_message));
         analyticsRV = findViewById(R.id.analytics_rv);
         analyticsRV.setLayoutManager(new LinearLayoutManager(this));
         recyclerView = findViewById(R.id.summary_rv);
@@ -349,7 +349,7 @@ public class Summary extends AppCompatActivity {
             if(months.size() > 0){
                 months.clear();
             }
-            progressDialog.setMessage("please wait...");
+            progressDialog.setMessage(getString(R.string.ast_pd_message));
             progressDialog.show();
         }
 
@@ -439,7 +439,7 @@ public class Summary extends AppCompatActivity {
             if(logs.size() > 0){
                 logs.clear();
             }
-            progressDialogMonthlyAnalysis.setMessage("please wait...");
+            progressDialogMonthlyAnalysis.setMessage(getString(R.string.ast_pd_message));
             progressDialogMonthlyAnalysis.show();
         }
 

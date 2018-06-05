@@ -169,7 +169,7 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             progressDialog = new ProgressDialog(LoginActivity.this);
-            progressDialog.setMessage("please wait...");
+            progressDialog.setMessage(getString(R.string.ast_pd_message));
             progressDialog.show();
         }
 

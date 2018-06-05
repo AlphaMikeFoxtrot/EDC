@@ -1777,7 +1777,7 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
         @Override
         protected void onPreExecute() {
-            progressDialogAdd.setMessage("Please wait...");
+            progressDialogAdd.setMessage(getString(R.string.ast_pd_message));
             progressDialogAdd.show();
         }
 
@@ -1861,7 +1861,7 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
 
         @Override
         protected void onPreExecute() {
-            progressDialogSub.setMessage("Please wait...");
+            progressDialogSub.setMessage(getString(R.string.ast_pd_message));
             progressDialogSub.show();
         }
 
